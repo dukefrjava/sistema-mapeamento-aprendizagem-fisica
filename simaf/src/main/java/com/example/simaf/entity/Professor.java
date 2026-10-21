@@ -26,6 +26,12 @@ public class Professor {
     @OneToMany(mappedBy = "professor")
     private List<Turma> turmas = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "professor")
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+
+    public List<Avaliacao> getAvaliacoes() { return avaliacoes; }
+
     public Professor() {}
 
     public Integer getId() { return id; }

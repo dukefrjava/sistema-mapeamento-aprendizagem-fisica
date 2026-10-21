@@ -1,5 +1,10 @@
 package com.example.simaf.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -22,6 +27,12 @@ public class Turma {
     @ManyToOne
     @JoinColumn(name = "professor_id")
     private Professor professor;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "turma")
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+
+    public List<Avaliacao> getAvaliacoes() { return avaliacoes; }
 
     public Turma() {}
 
