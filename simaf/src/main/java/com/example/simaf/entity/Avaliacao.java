@@ -2,7 +2,9 @@ package com.example.simaf.entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,8 +38,14 @@ public class Avaliacao {
     @JsonIgnore
     @OneToMany(mappedBy = "avaliacao")
     private List<Resposta> respostas = new ArrayList<>();
-
     public List<Resposta> getRespostas() { return respostas; }
+
+    @ManyToMany
+    @JoinTable(
+        name = "avaliacao_questao",
+        joinColumns = @JoinColumn(name = "avaliacao_id"),
+        inverseJoinColumns = @JoinColumn(name = "questao_id"))
+    private Set<Questao> questoes = new HashSet<>();
 
     public Avaliacao() {}
 
@@ -54,4 +62,7 @@ public class Avaliacao {
 
     public Professor getProfessor() { return professor; }
     public void setProfessor(Professor professor) { this.professor = professor; }
+
+    public Set<Questao> getQuestoes() { return questoes; }
+    public void setQuestoes(Set<Questao> questoes) { this.questoes = questoes; }
 }
