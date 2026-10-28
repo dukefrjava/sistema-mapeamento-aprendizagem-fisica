@@ -22,6 +22,10 @@ public class Resposta {
     @JoinColumn(name = "aluno_id", nullable = false)
     private Aluno aluno;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "alternativa_id", nullable = false)
+    private Alternativa alternativa;
+
     public Resposta() {}
 
     @PrePersist
@@ -41,4 +45,7 @@ public class Resposta {
 
     public Aluno getAluno() { return aluno; }
     public void setAluno(Aluno aluno) { this.aluno = aluno; }
+
+    public Alternativa getAlternativa() { return alternativa; }
+    public void setAlternativa(Alternativa alternativa) { this.alternativa = alternativa; }
 }
