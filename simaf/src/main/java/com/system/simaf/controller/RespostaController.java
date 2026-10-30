@@ -17,11 +17,6 @@ public class RespostaController {
         this.repository = repository;
     }
 
-    @GetMapping
-    public List<Resposta> listar() {
-        return repository.findAll();
-    }
-
     @PostMapping
     public Resposta criar(@RequestBody Resposta resposta) {
         return repository.save(resposta);
