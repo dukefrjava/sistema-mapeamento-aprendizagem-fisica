@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMAF</title>
+<link rel="icon" type="image/x-icon" href="/images/graduate.svg">
+<style>
+:root{--bg:#eef1ee;--panel:#fff;--ink:#1d2b2a;--mute:#64736f;--line:#d5dcd8;--acc:#1f5f5b;--acc-ink:#fff;--bad:#b3261e;--ok:#1b6b3a}
+@media (prefers-color-scheme:dark){:root{--bg:#141b1a;--panel:#1c2524;--ink:#e6eeec;--mute:#93a39f;--line:#2f3b39;--acc:#58b3ac;--acc-ink:#0d1a19;--bad:#ff8a80;--ok:#7bd49a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,sans-serif;display:flex;min-height:100vh}
+nav{width:200px;flex:none;background:var(--panel);border-right:1px solid var(--line);padding:16px 10px;position:sticky;top:0;height:100vh;overflow:auto}
+nav h1{font-size:18px;margin:0 8px 12px}
+nav button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--ink);padding:7px 10px;border-radius:6px;font:inherit;cursor:pointer}
+nav button:hover{background:var(--bg)}
+nav button.on{background:var(--acc);color:var(--acc-ink)}
+nav .sep{margin:12px 10px 4px;color:var(--mute);font-size:13px}
+nav label{display:block;margin:16px 8px 0;color:var(--mute);font-size:13px}
+nav input{width:100%}
+main{flex:1;padding:24px;max-width:960px;min-width:0}
+h2{margin:0 0 16px;font-size:22px}
+h3{margin:24px 0 8px;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px}
+form{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.f{display:flex;flex-direction:column;gap:4px}
+.f.wide{grid-column:1/-1}
+.f>span{font-size:13px;color:var(--mute)}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+input[type=checkbox],input[type=radio]{width:auto;accent-color:var(--acc)}
+button.p{background:var(--acc);color:var(--acc-ink);border:0;border-radius:6px;padding:8px 16px;font:inherit;cursor:pointer}
+button.s{background:none;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:5px 10px;font:inherit;cursor:pointer}
+.checks{display:flex;flex-wrap:wrap;gap:6px 14px}
+.checks label{display:flex;gap:5px;align-items:center}
+.alt{display:grid;grid-template-columns:50px 1fr auto;gap:8px;align-items:start;border-top:1px solid var(--line);padding:10px 0}
+.alt .checks{grid-column:1/-1}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600;font-size:13px}
+.q{border-top:1px solid var(--line);padding:12px 0}
+.q label{display:flex;gap:8px;padding:3px 0}
+#msg{position:fixed;right:16px;bottom:16px;max-width:420px;padding:12px 16px;border-radius:8px;background:var(--panel);border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.18);display:none;white-space:pre-wrap}
+#msg.bad{border-color:var(--bad);color:var(--bad)}
+#msg.ok{border-color:var(--ok);color:var(--ok)}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px}
+.kv dt{color:var(--mute)}.kv dd{margin:0}
+.empty{color:var(--mute)}
+@media(max-width:700px){body{flex-direction:column}nav{width:auto;height:auto;position:static;display:flex;flex-wrap:wrap;gap:4px}nav h1,nav .sep,nav label{display:none}nav button{width:auto}}
+</style>
+</head>
+<body>
+<nav id="nav"></nav>
+<main id="main"></main>
+<div id="msg" role="status"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+function h(tag, attrs, ...kids){
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs||{})){
+    if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k==='class') e.className = v;
+    else if (v!==false && v!=null) e.setAttribute(k, v===true?'':v);
+  }
+  kids.flat().forEach(c => e.append(c instanceof Node ? c : document.createTextNode(c ?? '')));
+  return e;
+}
+let baseUrl = 'http://localhost:8080';
+
+async function api(path, method='GET', body){
+  const r = await fetch(baseUrl.replace(/\/$/,'') + path, {
+    method, headers:{'Content-Type':'application/json'},
+    body: body ? JSON.stringify(body) : undefined
+  });
+  const t = await r.text();
+  let d; try { d = t ? JSON.parse(t) : null } catch { d = t }
+  if (!r.ok) throw {status:r.status, data:d};
+  return d;
+}
+let timer;
+function toast(text, ok){
+  const m = $('#msg'); m.textContent = text; m.className = ok?'ok':'bad'; m.style.display='block';
+  clearTimeout(timer); timer = setTimeout(()=>m.style.display='none', ok?3000:9000);
+}
+function fail(e){
+  if (e && e.status){
+    const d = e.data, detail = d && d.message ? d.message : '';
+    toast('Erro ' + e.status + (detail?': '+detail:'') + (e.status>=500?'\nVeja o terminal do Spring (linha "Caused by:").':''));
+  } else toast('Não foi possível conectar em ' + baseUrl + '.\nA aplicação Spring está rodando? O CORS está configurado?');
+}
+
+/* ---------- Definição das entidades ---------- */
+const E = {
+  professores:{title:'Professores', path:'/professores', label:o=>o.nome, fields:[
+    {k:'nome',l:'Nome'},{k:'email',l:'E-mail',t:'email'},{k:'disciplina',l:'Disciplina'}]},
+  turmas:{title:'Turmas', path:'/turmas', label:o=>o.codigo, fields:[
+    {k:'codigo',l:'Código'},{k:'anoLetivo',l:'Ano letivo',t:'number'},{k:'serie',l:'Série'},
+    {k:'professor',l:'Professor',t:'ref',from:'professores'}]},
+  alunos:{title:'Alunos', path:'/alunos', label:o=>o.matricula, fields:[
+    {k:'matricula',l:'Matrícula'},{k:'email',l:'E-mail',t:'email'},{k:'turma',l:'Turma',t:'ref',from:'turmas'}]},
+  dimensoes:{title:'Dimensões ACE', path:'/dimensoes', label:o=>o.codigo, fields:[
+    {k:'codigo',l:'Código'},{k:'tipoRaciocinio',l:'Tipo de raciocínio'},{k:'complexidade',l:'Complexidade'}]},
+  categorias:{title:'Categorias conceituais', path:'/categorias', label:o=>o.codigo+' '+(o.nome||''), fields:[
+    {k:'codigo',l:'Código'},{k:'nome',l:'Nome'}]},
+  concepcoes:{title:'Concepções alternativas', path:'/concepcoes', label:o=>'#'+o.id+' '+(o.descricao||'').slice(0,40), fields:[
+    {k:'descricao',l:'Descrição',t:'textarea',wide:1},{k:'sugestaoIntervencao',l:'Sugestão de intervenção',t:'textarea',wide:1},
+    {k:'categorias',l:'Categorias',t:'refs',from:'categorias',wide:1}]},
+  questoes:{title:'Questões', path:'/questoes', label:o=>'#'+o.id+' '+(o.enunciado||'').slice(0,40), fields:[
+    {k:'enunciado',l:'Enunciado',t:'textarea',wide:1},{k:'instrumento',l:'Instrumento'},{k:'tipo',l:'Tipo'},
+    {k:'descartada',l:'Descartada',t:'bool'},{k:'dimensao',l:'Dimensão ACE',t:'ref',from:'dimensoes'},
+    {k:'alternativas',l:'Alternativas',t:'alts',wide:1}]},
+  avaliacoes:{title:'Avaliações', path:'/avaliacoes', label:o=>o.titulo, fields:[
+    {k:'titulo',l:'Título'},{k:'data',l:'Data',t:'date'},{k:'fase',l:'Fase'},
+    {k:'professor',l:'Professor',t:'ref',from:'professores'},{k:'turma',l:'Turma (opcional)',t:'ref',from:'turmas',opt:1},
+    {k:'questoes',l:'Questões',t:'refs',from:'questoes',wide:1}]},
+};
+const cache = {};
+async function load(key){ cache[key] = await api(E[key].path); return cache[key]; }
+const lab = (key,o) => E[key].label(o) || '#'+o.id;
+
+/* ---------- Campos do formulário ---------- */
+function checks(name, items, key){
+  return h('div',{class:'checks'}, items.length ? items.map(o =>
+    h('label',{}, h('input',{type:'checkbox',name,value:o.id}), lab(key,o))) : h('span',{class:'empty'},'Nada cadastrado ainda.'));
+}
+function altRow(concs){
+  const row = h('div',{class:'alt'},
+    h('input',{placeholder:'Letra','data-a':'letra',maxlength:2}),
+    h('input',{placeholder:'Texto da alternativa','data-a':'texto'}),
+    h('button',{type:'button',class:'s',onclick:()=>row.remove()},'Remover'),
+    h('label',{}, h('input',{type:'checkbox','data-a':'correta'}),' correta'),
+    h('div',{class:'checks'}, concs.length ? [h('span',{class:'empty'},'Concepções:'), ...concs.map(c =>
+      h('label',{}, h('input',{type:'checkbox','data-c':c.id}), lab('concepcoes',c)))] : []));
+  return row;
+}
+function fieldEl(f){
+  const w = h('div',{class:'f'+(f.wide?' wide':'')});
+  w.append(h('span',{},f.l));
+  if (f.t==='textarea') w.append(h('textarea',{name:f.k,rows:3,required:true}));
+  else if (f.t==='bool') w.append(h('label',{class:'checks'}, h('input',{type:'checkbox',name:f.k}),'sim'));
+  else if (f.t==='ref'){
+    const s = h('select',{name:f.k,required:!f.opt}, h('option',{value:''},'— escolher —'),
+      (cache[f.from]||[]).map(o => h('option',{value:o.id}, lab(f.from,o))));
+    w.append(s);
+  }
+  else if (f.t==='refs') w.append(checks(f.k, cache[f.from]||[], f.from));
+  else if (f.t==='alts'){
+    const box = h('div',{id:'alts'});
+    w.append(box, h('button',{type:'button',class:'s',onclick:()=>box.append(altRow(cache.concepcoes||[]))},'+ Adicionar alternativa'));
+    box.append(altRow(cache.concepcoes||[]), altRow(cache.concepcoes||[]));
+  }
+  else w.append(h('input',{name:f.k,type:f.t||'text',required:true,step:f.t==='number'?'1':null}));
+  return w;
+}
+function collect(form, def){
+  const o = {};
+  for (const f of def.fields){
+    if (f.t==='bool') o[f.k] = form.elements[f.k].checked;
+    else if (f.t==='number') o[f.k] = Number(form.elements[f.k].value);
+    else if (f.t==='ref'){ const v = form.elements[f.k].value; if (v) o[f.k] = {id:Number(v)}; }
+    else if (f.t==='refs') o[f.k] = [...form.querySelectorAll(`input[name="${f.k}"]:checked`)].map(x=>({id:Number(x.value)}));
+    else if (f.t==='alts') o[f.k] = [...form.querySelectorAll('#alts .alt')].map(r => ({
+      letra: r.querySelector('[data-a=letra]').value, texto: r.querySelector('[data-a=texto]').value,
+      correta: r.querySelector('[data-a=correta]').checked,
+      concepcoes: [...r.querySelectorAll('[data-c]:checked')].map(x=>({id:Number(x.dataset.c)}))
+    })).filter(a => a.letra && a.texto);
+    else o[f.k] = form.elements[f.k].value;
+  }
+  return o;
+}
+function cell(f,o){
+  const v = o[f.k];
+  if (f.t==='ref') return v ? lab(f.from,v) : '—';
+  if (f.t==='refs') return (v||[]).map(x=>lab(f.from,x)).join(', ') || '—';
+  if (f.t==='alts') return (v||[]).map(a=>a.letra+(a.correta?'*':'')).join('  ') || '—';
+  if (f.t==='bool') return v ? 'sim' : 'não';
+  return v ?? '—';
+}
+
+/* ---------- Telas ---------- */
+async function viewEntity(key){
+  const def = E[key], main = $('#main');
+  main.replaceChildren(h('h2',{},def.title), h('p',{class:'empty'},'Carregando…'));
+  try {
+    const needs = [...new Set(def.fields.filter(f=>f.from).map(f=>f.from))];
+    if (key==='questoes') needs.push('concepcoes');
+    await Promise.all(needs.map(load));
+    var rows = await api(def.path);
+  } catch(e){ fail(e); main.replaceChildren(h('h2',{},def.title), h('p',{class:'empty'},'Não foi possível carregar.')); return; }
+
+  const form = h('form',{onsubmit: async ev => {
+    ev.preventDefault();
+    try { await api(def.path,'POST',collect(form,def)); toast('Salvo.',true); viewEntity(key); }
+    catch(e){ fail(e); }
+  }}, def.fields.map(fieldEl), h('div',{class:'f wide'}, h('button',{class:'p',type:'submit'},'Salvar')));
+
+  const table = rows.length ? h('div',{class:'tbl'}, h('table',{},
+    h('thead',{}, h('tr',{}, h('th',{},'id'), def.fields.map(f=>h('th',{},f.l)))),
+    h('tbody',{}, rows.map(o => h('tr',{}, h('td',{},o.id), def.fields.map(f=>h('td',{},String(cell(f,o))))))))) :
+    h('p',{class:'empty'},'Nenhum registro. Use o formulário acima para cadastrar o primeiro.');
+
+  main.replaceChildren(h('h2',{},def.title), h('div',{class:'card'},form), h('h3',{},'Cadastrados ('+rows.length+')'), h('div',{class:'card'},table));
+}
+
+async function pickers(){
+  await Promise.all(['avaliacoes','alunos'].map(load));
+  const sa = h('select',{id:'sa'}, cache.avaliacoes.map(o=>h('option',{value:o.id},'#'+o.id+' '+o.titulo)));
+  const sl = h('select',{id:'sl'}, cache.alunos.map(o=>h('option',{value:o.id},'#'+o.id+' '+o.matricula)));
+  return {sa, sl};
+}
+async function viewAplicar(){
+  const main = $('#main'); main.replaceChildren(h('h2',{},'Aplicar avaliação'));
+  let p; try { p = await pickers(); } catch(e){ fail(e); return; }
+  if (!cache.avaliacoes.length || !cache.alunos.length){
+    main.append(h('p',{class:'empty'},'Cadastre ao menos uma avaliação e um aluno antes de aplicar.')); return; }
+  const area = h('div');
+  const open = () => {
+    const av = cache.avaliacoes.find(x=>String(x.id)===p.sa.value);
+    const qs = (av.questoes||[]);
+    if (!qs.length){ area.replaceChildren(h('p',{class:'empty'},'Esta avaliação não tem questões. Cadastre uma avaliação com questões marcadas.')); return; }
+    const f = h('form',{onsubmit: async ev => {
+      ev.preventDefault();
+      const ids = [...f.querySelectorAll('input[type=radio]:checked')].map(x=>Number(x.value));
+      try { await api(`/avaliacoes/${av.id}/respostas`,'POST',{alunoId:Number(p.sl.value),alternativasIds:ids}); toast('Respostas enviadas.',true); viewResultado(av.id, p.sl.value); }
+      catch(e){ e && e.status===409 ? toast('Este aluno já enviou respostas nesta avaliação.') : fail(e); }
+    }}, qs.map(q => h('div',{class:'q wide f',style:'grid-column:1/-1'},
+      h('strong',{},'#'+q.id+' '+(q.enunciado||'')),
+      (q.alternativas||[]).map(a => h('label',{}, h('input',{type:'radio',name:'q'+q.id,value:a.id}), a.letra+') '+a.texto)))),
+      h('div',{class:'f wide'}, h('button',{class:'p',type:'submit'},'Enviar respostas')));
+    area.replaceChildren(f);
+  };
+  p.sa.addEventListener('change',open);
+  main.append(h('div',{class:'card'}, h('div',{class:'f'},h('span',{},'Avaliação'),p.sa), h('div',{class:'f',style:'margin-top:12px'},h('span',{},'Aluno'),p.sl), area));
+  open();
+}
+async function viewResultado(avId, alId){
+  const main = $('#main'); main.replaceChildren(h('h2',{},'Resultado do aluno'));
+  let p; try { p = await pickers(); } catch(e){ fail(e); return; }
+  if (avId) p.sa.value = avId; if (alId) p.sl.value = alId;
+  const out = h('div',{style:'margin-top:16px'});
+  const go = async () => {
+    try {
+      const r = await api(`/avaliacoes/${p.sa.value}/alunos/${p.sl.value}/resultado`);
+      out.replaceChildren(h('dl',{class:'kv'},
+        h('dt',{},'Acertos'),h('dd',{},r.acertos+' de '+r.total),
+        h('dt',{},'Percentual'),h('dd',{},r.percentual.toFixed(1)+'%'),
+        h('dt',{},'Desempenho'),h('dd',{},String(r.desempenho).replace('_',' ')),
+        h('dt',{},'Concepções identificadas'),h('dd',{},(r.concepcoesIdentificadas||[]).join('; ')||'nenhuma'),
+        h('dt',{},'Acerto por dimensão'),h('dd',{},Object.entries(r.acertoPorDimensao||{}).map(([k,v])=>k+': '+v.toFixed(0)+'%').join('  ')||'—')));
+    } catch(e){ out.replaceChildren(); e && e.status===404 ? toast('Este aluno ainda não tem respostas nesta avaliação.') : fail(e); }
+  };
+  main.append(h('div',{class:'card'}, h('div',{class:'f'},h('span',{},'Avaliação'),p.sa), h('div',{class:'f',style:'margin-top:12px'},h('span',{},'Aluno'),p.sl),
+    h('button',{class:'p',style:'margin-top:12px',onclick:go},'Ver resultado'), out));
+  if (avId) go();
+}
+
+/* ---------- Navegação ---------- */
+const pages = [...Object.keys(E).map(k=>[k,E[k].title,()=>viewEntity(k)]), ['aplicar','Aplicar avaliação',viewAplicar], ['resultado','Resultado do aluno',()=>viewResultado()]];
+function go(key){
+  document.querySelectorAll('nav button[data-k]').forEach(b=>b.classList.toggle('on',b.dataset.k===key));
+  pages.find(p=>p[0]===key)[2]();
+}
+const nav = $('#nav');
+nav.append(h('h1',{},'SIMAF'), h('div',{class:'sep'},'Cadastros'));
+pages.forEach(([k,t],i) => {
+  if (k==='aplicar') nav.append(h('div',{class:'sep'},'Aplicação'));
+  nav.append(h('button',{'data-k':k,onclick:()=>go(k)},t));
+});
+nav.append(h('label',{},'URL da API', h('input',{value:baseUrl,onchange:e=>{baseUrl=e.target.value}})));
+go('professores');
+</script>
+</body>
+</html>
