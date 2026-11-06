@@ -1,3 +1,5 @@
+## ANTIGO FEITO PARA TESTE
+
 ## LÊ PNG
 
 import sys
