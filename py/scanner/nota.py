@@ -6,7 +6,7 @@ def calcular_nota(resposta_aluno, gabarito):
         aluno = str(aluno).lower() if aluno else None
         correta = str(resposta_correta).lower()
         certo = aluno == correta
-        acerto += int(certo)
+        acertos += int(certo)
         detalhe[questao] = {"resposta_aluno": aluno, "resposta_correta": correta, "correto": certo}
 
-    return (acerto / len(gabarito) if gabarito else 0.0), detalhe
+    return (acertos / len(gabarito) if gabarito else 0.0), detalhe
