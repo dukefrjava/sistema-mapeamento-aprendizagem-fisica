@@ -28,7 +28,7 @@ def binarizar(cinza):
     return cv2.adaptiveThreshold(cinza, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                  cv2.THRESH_BINARY, 31, 15)
 
-def ordenar_fts(pts):
+def _ordenar_pontos(pts):
     pts = pts.reshape(4, 2).astype("float32")
     soma, dif = pts.sum(axis=1), np.diff(pts, axis=1).ravel()
     return np.array([pts[np.argmin(soma)], pts[np.argmin(dif)],

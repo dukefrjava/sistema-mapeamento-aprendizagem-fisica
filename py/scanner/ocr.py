@@ -13,3 +13,9 @@ def palavras(img, idioma=None):
     d = pytesseract.image_to_data(pre.para_cinza(img), output_type=Output.DICT, lang=idioma or config.IDIOMA)
 
     return [{"texto": d["text"][i].strip(), "x": d["left"][i], "y": d["top"][i], "w": d["width"][i], "h": d["height"][i]} for i in range(len(d["text"])) if d["text"][i].strip()]
+
+def extrair_texto(img, idioma=None):
+    # TEXTO DE UMA FOTO DE DOCUMENTO: PERSPECTIVA -> PRÉ PROCESSAMENTO -> OCR
+    pronta = pre.preparar_para_ocr(pre.corrigir_perspectiva(img))
+    return pytesseract.image_to_string(pronta, lang=idioma or config.IDIOMA,
+                                       config="--psm 3").strip()

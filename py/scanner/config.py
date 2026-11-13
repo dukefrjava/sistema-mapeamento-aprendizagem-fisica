@@ -3,7 +3,7 @@
 import os
 
 # IDIOMA E CONFIG 
-IDIOMA = os.environ.get("TESSARACT_LANG", "por+eng")
+IDIOMA = os.environ.get("TESSARACT_LANG", "por")
 TESSERACT_CMD = os.environ.get("TESSERACT_CMD")
 
 # renderiza a 3x (~216 DPI): nítido o bastante para medir tinta

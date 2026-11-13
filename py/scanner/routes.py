@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from PIL import UnidentifiedImageError
 
+from . import correcao_imagem, correcao_pdf, nlp, ocr, preprocessing as pre
+
 from . import correcao_imagem, correcao_pdf
 
 bp = Blueprint("scanner",__name__)
@@ -38,7 +40,7 @@ def health():
 
 @bp.post("/analisar-pdf")
 def analisar_pdf():
-    respostas, avisos = correcao_pdf.analisar_marcacoes(_arquivo("arquivo"))
+    respostas, avisos = correcao_pdf.analisar_marcacoes(_arquivo("arquivo", "pdf"))
     return jsonify(respostas=respostas, avisos=avisos)
 
 @bp.post("/analisar-imagem")
@@ -46,3 +48,8 @@ def analisar_imagem():
     modelo, marcada = _arquivo("modelo", "imagem"), _arquivo("marcada", "imagem")
     respostas, avisos = correcao_imagem.analisar_marcacoes(modelo, marcada)
     return jsonify(repostas=respostas, avisos=avisos)
+
+@bp.post("/extrair-texto")
+def extrair_texto():
+    texto = ocr.extrair_texto(pre.carregar_imagem(_arquivo("arquivo", "imagem")))
+    return jsonify(texto=texto, fisica=nlp.extrair_fisica(texto))
