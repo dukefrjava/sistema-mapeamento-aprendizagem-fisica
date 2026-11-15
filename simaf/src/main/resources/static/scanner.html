@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMAF - Ler prova</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 12px; background: #eef1ee; color: #1d2b2a; }
+h1 { font-size: 20px; margin: 4px 0 12px; }
+.card { background: #ffffff; border: 1px solid #cdd6d2; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+label { display: block; margin: 12px 0 4px; font-size: 14px; color: #55645f; }
+select, input { width: 100%; font-size: 16px; padding: 8px; box-sizing: border-box; }
+button { font-size: 17px; padding: 12px 18px; margin-top: 14px; border: 0; border-radius: 6px; background: #1f5f5b; color: #ffffff; width: 100%; }
+button[disabled] { background: #8aa7a4; }
+#msg { padding: 10px; border-radius: 6px; margin-bottom: 12px; display: none; }
+#msg.ok { background: #dff3e6; color: #1b6b3a; display: block; }
+#msg.erro { background: #fde4e1; color: #b3261e; display: block; }
+#msg.info { background: #e3eef3; color: #1f4f66; display: block; }
+table { border-collapse: collapse; width: 100%; }
+td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
+ul { padding-left: 20px; }
+</style>
+</head>
+<body>
+<h1>SIMAF &middot; Ler prova</h1>
+
+<div id="msg"></div>
+
+<div class="card">
+  <label for="avaliacao">Avaliação</label>
+  <select id="avaliacao"></select>
+
+  <label for="aluno">Aluno</label>
+  <select id="aluno"></select>
+
+  <label for="modo">Tipo de arquivo</label>
+  <select id="modo">
+    <option value="imagem">Foto da prova</option>
+    <option value="pdf">PDF</option>
+  </select>
+
+  <div id="boxImagem">
+    <label for="modelo">Modelo (prova em branco)</label>
+    <input type="file" id="modelo" accept="image/*">
+    <label for="marcada">Prova marcada (abre a câmera)</label>
+    <input type="file" id="marcada" accept="image/*" capture="environment">
+  </div>
+
+  <div id="boxPdf" style="display:none">
+    <label for="pdf">PDF da prova marcada</label>
+    <input type="file" id="pdf" accept="application/pdf">
+  </div>
+
+  <button type="button" id="ler">Ler prova</button>
+</div>
+
+<div class="card" id="resultado" style="display:none">
+  <strong>O que foi lido</strong>
+  <table><thead><tr><th>Questão</th><th>Resposta</th></tr></thead><tbody id="linhas"></tbody></table>
+  <div id="avisos"></div>
+  <button type="button" id="gravar">Confirmar e gravar respostas</button>
+</div>
+
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+
+  function mostrar(texto, tipo) {
+    var m = $('msg');
+    m.className = tipo;
+    m.textContent = texto;
+  }
+
+  // XMLHttpRequest em vez de fetch: funciona no Safari do iOS 9.
+  function ajax(metodo, url, corpo, ok, erro) {
+    var x = new XMLHttpRequest();
+    x.open(metodo, url, true);
+    x.onreadystatechange = function () {
+      if (x.readyState !== 4) { return; }
+      var dados = null;
+      try { dados = JSON.parse(x.responseText); } catch (e) { dados = null; }
+      if (x.status >= 200 && x.status < 300) { ok(dados); } else { erro(x.status, dados); }
+    };
+    x.send(corpo);
+  }
+
+  function preencher(selectId, lista, rotulo) {
+    var s = $(selectId);
+    s.innerHTML = '';
+    if (!lista || lista.length === 0) {
+      var vazio = document.createElement('option');
+      vazio.value = '';
+      vazio.textContent = '(nada cadastrado)';
+      s.appendChild(vazio);
+      return;
+    }
+    for (var i = 0; i < lista.length; i++) {
+      var o = document.createElement('option');
+      o.value = lista[i].id;
+      o.textContent = rotulo(lista[i]);
+      s.appendChild(o);
+    }
+  }
+
+  function carregarListas() {
+    ajax('GET', '/avaliacoes', null, function (d) {
+      preencher('avaliacao', d, function (a) { return '#' + a.id + ' ' + a.titulo; });
+    }, function () { mostrar('Não foi possível carregar as avaliações.', 'erro'); });
+    ajax('GET', '/alunos', null, function (d) {
+      preencher('aluno', d, function (a) { return '#' + a.id + ' ' + a.matricula; });
+    }, function () { mostrar('Não foi possível carregar os alunos.', 'erro'); });
+  }
+
+  function atualizarModo() {
+    var pdf = $('modo').value === 'pdf';
+    $('boxImagem').style.display = pdf ? 'none' : 'block';
+    $('boxPdf').style.display = pdf ? 'block' : 'none';
+  }
+
+  function montarCorpo() {
+    var f = new FormData();
+    if ($('modo').value === 'pdf') {
+      if (!$('pdf').files || !$('pdf').files[0]) { return null; }
+      f.append('arquivo', $('pdf').files[0]);
+    } else {
+      if (!$('modelo').files || !$('modelo').files[0] || !$('marcada').files || !$('marcada').files[0]) { return null; }
+      f.append('modelo', $('modelo').files[0]);
+      f.append('marcada', $('marcada').files[0]);
+    }
+    return f;
+  }
+
+  function mostrarResultado(r) {
+    var corpo = $('linhas');
+    corpo.innerHTML = '';
+    var chaves = Object.keys(r.respostasDetectadas || {});
+    chaves.sort(function (a, b) { return parseInt(a.slice(1), 10) - parseInt(b.slice(1), 10); });
+    for (var i = 0; i < chaves.length; i++) {
+      var tr = document.createElement('tr');
+      var td1 = document.createElement('td');
+      var td2 = document.createElement('td');
+      td1.textContent = chaves[i];
+      td2.textContent = String(r.respostasDetectadas[chaves[i]]).toUpperCase();
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      corpo.appendChild(tr);
+    }
+    var av = $('avisos');
+    av.innerHTML = '';
+    if (r.avisos && r.avisos.length > 0) {
+      var ul = document.createElement('ul');
+      for (var j = 0; j < r.avisos.length; j++) {
+        var li = document.createElement('li');
+        li.textContent = r.avisos[j];
+        ul.appendChild(li);
+      }
+      av.appendChild(ul);
+    }
+    $('resultado').style.display = 'block';
+    $('gravar').style.display = (r.salvo || !r.alternativasIds || r.alternativasIds.length === 0) ? 'none' : 'block';
+  }
+
+  function enviar(salvar) {
+    var av = $('avaliacao').value;
+    var al = $('aluno').value;
+    if (!av || !al) { mostrar('Escolha a avaliação e o aluno.', 'erro'); return; }
+    var corpo = montarCorpo();
+    if (!corpo) { mostrar('Escolha o(s) arquivo(s) antes de enviar.', 'erro'); return; }
+
+    var url = '/avaliacoes/' + av + '/alunos/' + al + '/escanear/' + $('modo').value + '?salvar=' + (salvar ? 'true' : 'false');
+    $('ler').disabled = true;
+    $('gravar').disabled = true;
+    mostrar(salvar ? 'Gravando...' : 'Lendo a prova... pode levar até 1 minuto.', 'info');
+
+    ajax('POST', url, corpo, function (r) {
+      $('ler').disabled = false;
+      $('gravar').disabled = false;
+      mostrarResultado(r);
+      mostrar(r.salvo ? 'Respostas gravadas.' : 'Confira a leitura e confirme para gravar.', r.salvo ? 'ok' : 'info');
+    }, function (status, d) {
+      $('ler').disabled = false;
+      $('gravar').disabled = false;
+      var texto = d && d.message ? d.message : 'Erro ' + status;
+      if (status === 0) { texto = 'Sem conexão com o servidor.'; }
+      if (status === 409) { texto = 'Este aluno já enviou respostas nesta avaliação.'; }
+      mostrar(texto, 'erro');
+    });
+  }
+
+  $('modo').onchange = atualizarModo;
+  $('ler').onclick = function () { enviar(false); };
+  $('gravar').onclick = function () { enviar(true); };
+  atualizarModo();
+  carregarListas();
+}());
+</script>
+</body>
+</html>

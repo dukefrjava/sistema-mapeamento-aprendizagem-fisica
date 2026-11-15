@@ -47,7 +47,7 @@ def analisar_pdf():
 def analisar_imagem():
     modelo, marcada = _arquivo("modelo", "imagem"), _arquivo("marcada", "imagem")
     respostas, avisos = correcao_imagem.analisar_marcacoes(modelo, marcada)
-    return jsonify(repostas=respostas, avisos=avisos)
+    return jsonify(respostas=respostas, avisos=avisos)
 
 @bp.post("/extrair-texto")
 def extrair_texto():

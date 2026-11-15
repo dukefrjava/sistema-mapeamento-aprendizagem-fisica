@@ -25,6 +25,9 @@ public class Questao {
     @Column(nullable = false)
     private boolean descartada;
 
+    @Column(nullable = false)
+    private Integer numero;
+
     @ManyToOne
     @JoinColumn(name = "dimensao_id")
     private DimensaoAce dimensao;
@@ -54,7 +57,10 @@ public class Questao {
 
     public List<Alternativa> getAlternativas() { return alternativas; }
 
-    // Preenche o lado "dono" da relação ao receber o JSON
+    public Integer getNumero() { return numero; }
+    public void setNumero(Integer numero) { this.numero = numero; } 
+
+    // PREENCE O LADO "DONO" DA RELAÇÃO AO RECEBER O JSON
     public void setAlternativas(List<Alternativa> alternativas) {
         this.alternativas.clear();
         if (alternativas != null) {

@@ -32,6 +32,13 @@ build/
 ### VS Code ###
 .vscode/
 
+### Docker ###
+docker-compose.yml
+
 ### python ###
 __pycache__/
+*.pyc
 .venv/
+py/debug_*.png
+simaf/target/
+simaf/log.txt
