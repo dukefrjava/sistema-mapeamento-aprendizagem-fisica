@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMAF - Dashboard</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 12px; background: #eef1ee; color: #1d2b2a; max-width: 900px; }
+h1 { font-size: 20px; margin: 4px 0 12px; }
+h2 { font-size: 16px; margin: 0 0 8px; }
+.card { background: #ffffff; border: 1px solid #cdd6d2; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+select { width: 100%; font-size: 16px; padding: 8px; box-sizing: border-box; }
+#msg { padding: 10px; border-radius: 6px; margin-bottom: 12px; display: none; background: #fde4e1; color: #b3261e; }
+.kpis { overflow: hidden; }
+.kpi { float: left; width: 20%; min-width: 110px; padding: 4px 8px 4px 0; box-sizing: border-box; }
+.kpi b { display: block; font-size: 24px; }
+.kpi span { font-size: 12px; color: #55645f; }
+.linha { margin: 8px 0; }
+.rotulo { font-size: 13px; margin-bottom: 2px; }
+.trilho { background: #e4e9e6; border-radius: 4px; height: 16px; }
+.barra { height: 16px; border-radius: 4px; background: #1f5f5b; }
+.barra.bom { background: #2f855a; }
+.barra.medio { background: #d69e2e; }
+.barra.ruim { background: #c53030; }
+.num { font-size: 12px; color: #55645f; float: right; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
+.sug { font-size: 12px; color: #55645f; }
+.vazio { color: #55645f; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>SIMAF &middot; Dashboard da avaliação</h1>
+<div id="msg"></div>
+
+<div class="card">
+  <label for="avaliacao">Avaliação</label>
+  <select id="avaliacao"></select>
+</div>
+
+<div id="conteudo" style="display:none">
+  <div class="card kpis" id="kpis"></div>
+  <div class="card"><h2>Acerto por questão</h2><div id="questoes"></div></div>
+  <div class="card"><h2>Principais dificuldades (categorias conceituais)</h2><div id="categorias"></div></div>
+  <div class="card"><h2>Concepções alternativas mais frequentes</h2><div id="concepcoes"></div></div>
+  <div class="card"><h2>Mapa por dimensão ACE</h2><div id="dimensoes"></div></div>
+  <div class="card"><h2>Alunos (do menor para o maior desempenho)</h2><div id="alunos"></div></div>
+</div>
+
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function el(tag, classe, texto) {
+    var e = document.createElement(tag);
+    if (classe) { e.className = classe; }
+    if (texto !== undefined && texto !== null) { e.textContent = texto; }
+    return e;
+  }
+  function limpar(id) { var n = $(id); n.innerHTML = ''; return n; }
+  function erro(t) { var m = $('msg'); m.textContent = t; m.style.display = t ? 'block' : 'none'; }
+  function nota(p) { return p >= 70 ? 'bom' : (p >= 40 ? 'medio' : 'ruim'); }
+  function fmt(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
+
+  // XMLHttpRequest em vez de fetch: funciona no Safari do iOS 9.
+  function ajax(url, ok, falha) {
+    var x = new XMLHttpRequest();
+    x.open('GET', url, true);
+    x.onreadystatechange = function () {
+      if (x.readyState !== 4) { return; }
+      var d = null;
+      try { d = JSON.parse(x.responseText); } catch (e) { d = null; }
+      if (x.status >= 200 && x.status < 300) { ok(d); } else { falha(x.status, d); }
+    };
+    x.send(null);
+  }
+
+  // Uma linha com rótulo, barra proporcional e número.
+  function barra(alvo, rotulo, percentual, texto, classe) {
+    var l = el('div', 'linha');
+    var r = el('div', 'rotulo', rotulo);
+    r.appendChild(el('span', 'num', texto));
+    var t = el('div', 'trilho');
+    var b = el('div', 'barra' + (classe ? ' ' + classe : ''));
+    b.style.width = Math.max(0, Math.min(100, percentual)) + '%';
+    t.appendChild(b);
+    l.appendChild(r);
+    l.appendChild(t);
+    alvo.appendChild(l);
+  }
+
+  function kpi(alvo, valor, rotulo) {
+    var k = el('div', 'kpi');
+    k.appendChild(el('b', '', valor));
+    k.appendChild(el('span', '', rotulo));
+    alvo.appendChild(k);
+  }
+
+  function vazio(alvo, texto) { alvo.appendChild(el('div', 'vazio', texto)); }
+
+  function mostrar(d) {
+    var k = limpar('kpis');
+    kpi(k, String(d.alunosResponderam), 'alunos responderam');
+    kpi(k, fmt(d.mediaPercentual) + '%', 'média da turma');
+    kpi(k, String(d.distribuicao.ADEQUADO), 'adequado');
+    kpi(k, String(d.distribuicao.EM_DESENVOLVIMENTO), 'em desenvolvimento');
+    kpi(k, String(d.distribuicao.CRITICO), 'crítico');
+
+    var q = limpar('questoes');
+    if (d.alunosResponderam === 0) { vazio(q, 'Nenhuma resposta gravada para esta avaliação ainda.'); }
+    for (var i = 0; i < d.questoes.length; i++) {
+      var it = d.questoes[i];
+      barra(q, 'Q' + it.numero + ' · ' + it.enunciado, it.percentualAcerto,
+            it.acertos + '/' + it.respondentes + ' (' + fmt(it.percentualAcerto) + '%)', nota(it.percentualAcerto));
+    }
+
+    var c = limpar('categorias');
+    var max = 1;
+    for (var a = 0; a < d.categorias.length; a++) { if (d.categorias[a].ocorrencias > max) { max = d.categorias[a].ocorrencias; } }
+    if (d.categorias.length === 0) { vazio(c, 'Nenhum erro ligado a uma categoria conceitual.'); }
+    for (var j = 0; j < d.categorias.length; j++) {
+      var ct = d.categorias[j];
+      barra(c, ct.codigo + ' · ' + ct.nome, ct.ocorrencias * 100 / max, ct.ocorrencias + ' erro(s)', 'ruim');
+    }
+
+    var cc = limpar('concepcoes');
+    if (d.concepcoes.length === 0) { vazio(cc, 'Nenhuma concepção alternativa identificada.'); }
+    for (var m = 0; m < d.concepcoes.length; m++) {
+      var co = d.concepcoes[m];
+      var bloco = el('div', 'linha');
+      var topo = el('div', 'rotulo', co.descricao);
+      topo.appendChild(el('span', 'num', co.ocorrencias + ' vez(es)'));
+      bloco.appendChild(topo);
+      if (co.sugestaoIntervencao) { bloco.appendChild(el('div', 'sug', 'Sugestão: ' + co.sugestaoIntervencao)); }
+      cc.appendChild(bloco);
+    }
+
+    var dm = limpar('dimensoes');
+    var cods = Object.keys(d.acertoPorDimensao);
+    if (cods.length === 0) { vazio(dm, 'Nenhuma questão classificada em dimensão ACE.'); }
+    for (var n = 0; n < cods.length; n++) {
+      var p = d.acertoPorDimensao[cods[n]];
+      barra(dm, cods[n], p, fmt(p) + '%', nota(p));
+    }
+
+    var al = limpar('alunos');
+    if (d.alunos.length === 0) { vazio(al, 'Nenhum aluno respondeu ainda.'); }
+    else {
+      var tb = el('table');
+      var cab = el('tr');
+      var tit = ['Matrícula', 'Acertos', '%', 'Desempenho'];
+      for (var h = 0; h < tit.length; h++) { cab.appendChild(el('th', '', tit[h])); }
+      tb.appendChild(cab);
+      for (var s = 0; s < d.alunos.length; s++) {
+        var x = d.alunos[s];
+        var tr = el('tr');
+        tr.appendChild(el('td', '', x.matricula));
+        tr.appendChild(el('td', '', x.acertos + '/' + x.total));
+        tr.appendChild(el('td', '', fmt(x.percentual)));
+        tr.appendChild(el('td', '', String(x.desempenho).replace('_', ' ').toLowerCase()));
+        tb.appendChild(tr);
+      }
+      al.appendChild(tb);
+    }
+    $('conteudo').style.display = 'block';
+  }
+
+  function carregar() {
+    var id = $('avaliacao').value;
+    if (!id) { return; }
+    erro('');
+    ajax('/avaliacoes/' + id + '/dashboard', mostrar, function (status, d) {
+      $('conteudo').style.display = 'none';
+      erro(d && d.message ? d.message : 'Erro ' + status + ' ao carregar o dashboard.');
+    });
+  }
+
+  ajax('/avaliacoes', function (lista) {
+    var s = $('avaliacao');
+    s.innerHTML = '';
+    if (!lista || lista.length === 0) { erro('Nenhuma avaliação cadastrada.'); return; }
+    for (var i = 0; i < lista.length; i++) {
+      var o = document.createElement('option');
+      o.value = lista[i].id;
+      o.textContent = '#' + lista[i].id + ' ' + lista[i].titulo;
+      s.appendChild(o);
+    }
+    carregar();
+  }, function () { erro('Não foi possível carregar as avaliações.'); });
+
+  $('avaliacao').onchange = carregar;
+}());
+</script>
+</body>
+</html>
