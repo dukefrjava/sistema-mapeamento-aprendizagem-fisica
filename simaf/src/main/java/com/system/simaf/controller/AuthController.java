@@ -49,6 +49,9 @@ public class AuthController {
         if (dto.senha() == null || dto.senha().length() < 8) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A senha precisa ter ao menos 8 caracteres");
         }
+        if (vazio(dto.nome()) || vazio(dto.email()) || !dto.email().contains("@")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Informe nome e um e-mail válido");
+        }
         String email = dto.email().trim();
         if (repository.existsByEmailIgnoreCase(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já cadastrado");

@@ -1,110 +1,129 @@
+<#
+  SIMAF - cria um cenario de demonstracao: turma, 8 alunos, dimensoes, categorias, concepcoes,
+  uma prova de Fisica com respostas de 6 alunos e uma prova para ler pelo scanner.
+  Pode ser repetido: o que ja existe e reaproveitado.
+  Uso:  .\seed-simaf.ps1 -Email voce@escola.com
+        .\seed-simaf.ps1 -BaseUrl https://SEU-JAVA.onrender.com -Email voce@escola.com
+  IMPORTANTE: salve este arquivo como UTF-8 com BOM (VS Code: Salvar com codificacao > UTF-8 with BOM).
+#>
 param(
-    [Parameter(Mandatory = $true)]
-    [string]$BaseUrl,          # Ex: "https://simaf-java.onrender.com"
-
-    [Parameter(Mandatory = $true)]
-    [string]$Email,
-
-    [Parameter(Mandatory = $true)]
-    [string]$Senha,
-
-    [string]$Convite = ""        # Obrigatório apenas se for registrar o professor pela primeira vez
+  [string]$BaseUrl = 'http://localhost:8080',
+  [Parameter(Mandatory = $true)][string]$Email,
+  [string]$Senha
 )
+$ErrorActionPreference = 'Stop'
+if ([int][char]'é' -ne 233) { throw 'Acentos corrompidos: salve o arquivo como UTF-8 com BOM e rode de novo.' }
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$BaseUrl = $BaseUrl.TrimEnd('/')
+if (-not $Senha) {
+  $sec = Read-Host "Senha de $Email" -AsSecureString
+  $Senha = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec))
+}
+$auth = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("${Email}:${Senha}"))
 
-$ErrorActionPreference = "Stop"
-$BaseUrl = $BaseUrl.TrimEnd("/")
-
-# 1. Registrar professor (se informado $Convite)
-if (-not [string]::IsNullOrWhiteSpace($Convite)) {
-    Write-Host "Registrando professor em $BaseUrl/auth/registrar ..." -ForegroundColor Cyan
-    $registroBody = @{
-        email  = $Email
-        senha  = $Senha
-        convite = $Convite
-    } | ConvertTo-Json
-
-    try {
-        Invoke-RestMethod -Method Post -Uri "$BaseUrl/auth/registrar" -ContentType "application/json" -Body $registroBody | Out-Null
-        Write-Host "Professor registrado (ou já existente)." -ForegroundColor Green
+function Api([string]$Metodo, [string]$Caminho, $Corpo = $null) {
+  $p = @{ Method = $Metodo; Uri = "$BaseUrl$Caminho"; Headers = @{ Authorization = $auth }; TimeoutSec = 180 }
+  if ($null -ne $Corpo) {
+    $p.ContentType = 'application/json; charset=utf-8'
+    $p.Body = [Text.Encoding]::UTF8.GetBytes((ConvertTo-Json -InputObject $Corpo -Depth 8 -Compress))
+  }
+  try { return Invoke-RestMethod @p }
+  catch {
+    $msg = $_.ErrorDetails.Message
+    if (-not $msg -and $_.Exception.Response) {
+      try { $msg = (New-Object IO.StreamReader($_.Exception.Response.GetResponseStream())).ReadToEnd() } catch {}
     }
-    catch {
-        Write-Warning "Aviso no /auth/registrar (pode já existir): $($_.Exception.Message)"
-    }
+    Write-Host "ERRO em $Metodo $Caminho : $msg $($_.Exception.Message)" -ForegroundColor Red
+    throw
+  }
+}
+function Garantir([string]$Caminho, [string]$Campo, $Valor, $Corpo, [string]$Rotulo) {
+  $achado = @(Api GET $Caminho) | Where-Object { $_.$Campo -eq $Valor } | Select-Object -First 1
+  if ($achado) { Write-Host "  (já existia) $Rotulo" -ForegroundColor DarkGray; return $achado }
+  $novo = Api POST $Caminho $Corpo
+  Write-Host "  criado: $Rotulo" -ForegroundColor Green
+  return $novo
+}
+function Ref($o) { @{ id = $o.id } }
+function Alt([string]$l, [string]$t, [bool]$ok, $conc = @()) {
+  @{ letra = $l; texto = $t; correta = $ok; concepcoes = @($conc | ForEach-Object { @{ id = $_.id } }) }
+}
+function NovaQuestao($n, $enun, $dim, $alts) {
+  $corpo = @{ numero = $n; enunciado = $enun; instrumento = 'Prova de demonstração'; tipo = 'Múltipla escolha'
+              descartada = $false; alternativas = @($alts) }
+  if ($dim) { $corpo.dimensao = Ref $dim }
+  $q = Api POST '/questoes' $corpo
+  $mapa = @{}; foreach ($a in $q.alternativas) { $mapa[$a.letra] = $a.id }
+  Write-Host "  questão $n criada" -ForegroundColor Green
+  return @{ obj = $q; mapa = $mapa }
 }
 
-# 2. Montar header Basic Auth para as demais requisições
-$pair = "$Email`:$Senha"
-$encodedCreds = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($pair))
-$headers = @{
-    Authorization = "Basic $encodedCreds"
-    "Content-Type"  = "application/json; charset=utf-8"
+Write-Host '1/7 Login' -ForegroundColor Cyan
+$eu = Api GET '/auth/eu'
+Write-Host "  conectada como $($eu.usuario)" -ForegroundColor Green
+$prof = @(Api GET '/professores') | Where-Object { $_.email -eq $Email } | Select-Object -First 1
+if (-not $prof) { throw "Professor $Email não encontrado em /professores" }
+
+Write-Host '2/7 Turma e alunos' -ForegroundColor Cyan
+$turma = Garantir '/turmas' 'codigo' 'FIS-9A' @{ codigo = 'FIS-9A'; anoLetivo = 2026; serie = '9º ano'; professor = (Ref $prof) } 'turma FIS-9A'
+$alunos = @{}
+foreach ($m in 2026101..2026108) {
+  $alunos["$m"] = Garantir '/alunos' 'matricula' "$m" @{ matricula = "$m"; email = "aluno$m@escola.com"; turma = (Ref $turma) } "aluno $m"
 }
 
-function Invoke-SimafPost {
-    param(
-        [string]$Path,
-        [hashtable]$Payload
-    )
-    $json = $Payload | ConvertTo-Json -Depth 10
-    return Invoke-RestMethod -Method Post -Uri "$BaseUrl$Path" -Headers $headers -Body $json
+Write-Host '3/7 Dimensões, categorias e concepções' -ForegroundColor Cyan
+$d1 = Garantir '/dimensoes' 'codigo' 'D1' @{ codigo = 'D1'; tipoRaciocinio = 'Dedutivo'; complexidade = 'Média' } 'dimensão D1'
+$d2 = Garantir '/dimensoes' 'codigo' 'D2' @{ codigo = 'D2'; tipoRaciocinio = 'Indutivo'; complexidade = 'Alta' } 'dimensão D2'
+$c1 = Garantir '/categorias' 'codigo' 'C1' @{ codigo = 'C1'; nome = 'Confusão entre grandezas' } 'categoria C1'
+$c2 = Garantir '/categorias' 'codigo' 'C2' @{ codigo = 'C2'; nome = 'Força como causa do movimento' } 'categoria C2'
+$c3 = Garantir '/categorias' 'codigo' 'C3' @{ codigo = 'C3'; nome = 'Erro de unidade' } 'categoria C3'
+function Conc($desc, $sug, $cat) { Garantir '/concepcoes' 'descricao' $desc @{ descricao = $desc; sugestaoIntervencao = $sug; categorias = @(Ref $cat) } "concepção: $desc" }
+$cMult  = Conc 'Multiplica distância e tempo para obter a velocidade' 'Retomar v = Δs/Δt com exemplos do cotidiano' $c1
+$cForca = Conc 'Acredita que é preciso uma força para manter o movimento' 'Discutir o princípio da inércia com situações sem atrito' $c2
+$cUnid  = Conc 'Não converte as unidades antes de calcular' 'Praticar a conversão entre km/h e m/s' $c3
+$cMassa = Conc 'Confunde massa com peso' 'Diferenciar massa (kg) e peso (N) com exemplos' $c1
+
+$hoje = (Get-Date).ToString('yyyy-MM-dd')
+$titFis = 'Prova de Cinemática e Dinâmica (exemplo)'
+$titScan = 'Prova scanner (demonstração)'
+$existentes = @(Api GET '/avaliacoes')
+
+Write-Host '4/7 Prova de Física' -ForegroundColor Cyan
+if ($existentes | Where-Object { $_.titulo -eq $titFis }) {
+  Write-Host '  (já existia) pulando questões e respostas' -ForegroundColor DarkGray
+} else {
+  $qs = @(
+    (NovaQuestao 1 'Um carro percorre 120 km em 2 h. Qual é a velocidade média do carro?' $d1 @(
+      (Alt 'A' '60 km/h' $true), (Alt 'B' '240 km/h' $false @($cMult)), (Alt 'C' '118 km/h' $false), (Alt 'D' '122 km/h' $false))),
+    (NovaQuestao 2 'Um bloco desliza numa superfície sem atrito, com velocidade constante. Se nenhuma força atuar sobre ele, o que acontece com a velocidade?' $d1 @(
+      (Alt 'A' 'Diminui até parar' $false @($cForca)), (Alt 'B' 'Permanece constante' $true), (Alt 'C' 'Aumenta gradualmente' $false @($cForca)), (Alt 'D' 'Inverte o sentido' $false))),
+    (NovaQuestao 3 'Qual é a velocidade, em m/s, de um corpo que se move a 72 km/h?' $d2 @(
+      (Alt 'A' '20 m/s' $true), (Alt 'B' '72 m/s' $false @($cUnid)), (Alt 'C' '259,2 m/s' $false @($cUnid)), (Alt 'D' '7,2 m/s' $false))),
+    (NovaQuestao 4 'Uma pessoa tem massa de 60 kg. Qual é o peso dela, adotando g = 10 m/s²?' $d2 @(
+      (Alt 'A' '600 N' $true), (Alt 'B' '60 N' $false @($cMassa)), (Alt 'C' '6 N' $false), (Alt 'D' '60 kg' $false @($cMassa))))
+  )
+  $av = Api POST '/avaliacoes' @{ titulo = $titFis; data = $hoje; fase = '1ª fase'; professor = (Ref $prof); questoes = @($qs | ForEach-Object { Ref $_.obj }) }
+  Write-Host "  avaliação criada (id $($av.id))" -ForegroundColor Green
+  $resp = [ordered]@{ '2026101' = 'ABAA'; '2026102' = 'ABAB'; '2026103' = 'AABA'; '2026104' = 'BBAB'; '2026105' = 'BABB'; '2026106' = 'ACCD' }
+  foreach ($m in $resp.Keys) {
+    $ids = @(); for ($i = 0; $i -lt 4; $i++) { $ids += $qs[$i].mapa["$($resp[$m][$i])"] }
+    Api POST "/avaliacoes/$($av.id)/respostas" @{ alunoId = $alunos[$m].id; alternativasIds = $ids } | Out-Null
+    Write-Host "  respostas do aluno $m gravadas" -ForegroundColor Green
+  }
 }
 
-# --- AJUSTE OS CAMINHOS E CAMPOS ABAIXO CONFORME SEUS CONTROLLERS ---
-
-# 3. Turma
-$turma = Invoke-SimafPost -Path "/turmas" -Payload @{
-    nome = "Turma Demo Física"
-    # ano = 2026
-}
-$turmaId = $turma.id
-Write-Host "Turma criada: ID=$turmaId" -ForegroundColor Green
-
-# 4. Quatro alunos
-$nomesAlunos = @("Aluno 1", "Aluno 2", "Aluno 3", "Aluno 4")
-$alunosIds = @()
-foreach ($nome in $nomesAlunos) {
-    $aluno = Invoke-SimafPost -Path "/alunos" -Payload @{
-        nome    = $nome
-        turmaId = $turmaId
-    }
-    $alunosIds += $aluno.id
-    Write-Host "Aluno criado: $nome (ID=$($aluno.id))" -ForegroundColor Green
+Write-Host '5/7 Prova para o scanner' -ForegroundColor Cyan
+if ($existentes | Where-Object { $_.titulo -eq $titScan }) {
+  Write-Host '  (já existia)' -ForegroundColor DarkGray
+} else {
+  $s1 = NovaQuestao 1 'Quanto é 1 + 1?' $null @((Alt 'A' '5' $false), (Alt 'B' '2' $true), (Alt 'C' '65' $false))
+  $s2 = NovaQuestao 2 'Quanto é 64 + 1?' $null @((Alt 'A' '5' $false), (Alt 'B' '2' $false), (Alt 'C' '65' $true))
+  $av2 = Api POST '/avaliacoes' @{ titulo = $titScan; data = $hoje; fase = '1ª fase'; professor = (Ref $prof); questoes = @((Ref $s1.obj), (Ref $s2.obj)) }
+  Write-Host "  avaliação criada (id $($av2.id))" -ForegroundColor Green
 }
 
-# 5. Dimensão, Categoria e Concepção
-$dimensao = Invoke-SimafPost -Path "/dimensoes" -Payload @{
-    nome = "Dimensão Demo"
-}
-
-$categoria = Invoke-SimafPost -Path "/categorias" -Payload @{
-    nome       = "Categoria Demo"
-    dimensaoId = $dimensao.id
-}
-
-$concepcao = Invoke-SimafPost -Path "/concepcoes" -Payload @{
-    descricao   = "Concepção alternativa de teste"
-    categoriaId = $categoria.id
-}
-
-# 6. Duas questões (com numero)
-$q1 = Invoke-SimafPost -Path "/questoes" -Payload @{
-    numero      = 1
-    enunciado   = "Questão 1 de demonstração"
-    concepcaoId = $concepcao.id
-}
-
-$q2 = Invoke-SimafPost -Path "/questoes" -Payload @{
-    numero      = 2
-    enunciado   = "Questão 2 de demonstração"
-    concepcaoId = $concepcao.id
-}
-
-# 7. Avaliação
-$avaliacao = Invoke-SimafPost -Path "/avaliacoes" -Payload @{
-    titulo     = "Avaliação Diagnóstica Demo"
-    turmaId    = $turmaId
-    questaoIds = @($q1.id, $q2.id)
-}
-Write-Host "Avaliação criada: ID=$($avaliacao.id)" -ForegroundColor Green
-
-Write-Host "Cenário base concluído. Agora use scanner.html com limpa.png e marcada.png e abra dashboard.html." -ForegroundColor Yellow
+Write-Host '6/7 Conferindo' -ForegroundColor Cyan
+Write-Host "  avaliações: $(@(Api GET '/avaliacoes').Count) | alunos: $(@(Api GET '/alunos').Count) | questões: $(@(Api GET '/questoes').Count)"
+Write-Host '7/7 Pronto' -ForegroundColor Cyan
+Write-Host "  Dashboard: $BaseUrl/dashboard.html  (escolha a prova de Cinemática)"
+Write-Host "  Scanner:   $BaseUrl/scanner.html  (prova scanner, aluno 2026107, limpa.png e marcada.png)"

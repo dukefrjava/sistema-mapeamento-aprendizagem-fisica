@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMAF - Cadastros</title><link rel="stylesheet" href="/css/simaf.css"></head>
+<body><div class="wrap">
+<div class="bar"><a href="/index.html">Início</a></div>
+<h1>Cadastros</h1><div id="msg"></div>
+<div class="abas" id="abas"></div>
+<div class="card" id="form"></div>
+<div class="card"><h2 id="tit"></h2><div id="lista"></div></div>
+</div>
+<script src="/js/simaf.js"></script>
+<script>
+(function () {
+  Simaf.exigir();
+  function $(i) { return document.getElementById(i); }
+  function el(t, c, x) { var e = document.createElement(t); if (c) { e.className = c; } if (x !== undefined && x !== null) { e.textContent = x; } return e; }
+  function msg(t, c) { var m = $('msg'); m.className = c || ''; m.textContent = t || ''; }
+
+  var E = {
+    turmas: { t: 'Turmas', p: '/turmas', dep: ['professores'], f: [
+      { k: 'codigo', l: 'Código' }, { k: 'anoLetivo', l: 'Ano letivo', t: 'number' }, { k: 'serie', l: 'Série' },
+      { k: 'professor', l: 'Professor', t: 'ref', de: 'professores' }] },
+    alunos: { t: 'Alunos', p: '/alunos', dep: ['turmas'], f: [
+      { k: 'matricula', l: 'Matrícula' }, { k: 'email', l: 'E-mail', t: 'email' }, { k: 'turma', l: 'Turma', t: 'ref', de: 'turmas' }] },
+    dimensoes: { t: 'Dimensões ACE', p: '/dimensoes', dep: [], f: [
+      { k: 'codigo', l: 'Código' }, { k: 'tipoRaciocinio', l: 'Tipo de raciocínio' }, { k: 'complexidade', l: 'Complexidade' }] },
+    categorias: { t: 'Categorias conceituais', p: '/categorias', dep: [], f: [{ k: 'codigo', l: 'Código' }, { k: 'nome', l: 'Nome' }] },
+    concepcoes: { t: 'Concepções alternativas', p: '/concepcoes', dep: ['categorias'], f: [
+      { k: 'descricao', l: 'Descrição', t: 'textarea' }, { k: 'sugestaoIntervencao', l: 'Sugestão de intervenção', t: 'textarea' },
+      { k: 'categorias', l: 'Categorias', t: 'refs', de: 'categorias' }] },
+    questoes: { t: 'Questões', p: '/questoes', dep: ['dimensoes', 'concepcoes'], f: [
+      { k: 'numero', l: 'Número na prova', t: 'number' }, { k: 'enunciado', l: 'Enunciado', t: 'textarea' },
+      { k: 'instrumento', l: 'Instrumento' }, { k: 'tipo', l: 'Tipo' }, { k: 'descartada', l: 'Descartada', t: 'bool' },
+      { k: 'dimensao', l: 'Dimensão ACE', t: 'ref', de: 'dimensoes', opt: 1 }, { k: 'alternativas', l: 'Alternativas', t: 'alts' }] },
+    avaliacoes: { t: 'Avaliações', p: '/avaliacoes', dep: ['professores', 'questoes'], f: [
+      { k: 'titulo', l: 'Título' }, { k: 'data', l: 'Data (AAAA-MM-DD)', t: 'date' }, { k: 'fase', l: 'Fase' },
+      { k: 'professor', l: 'Professor', t: 'ref', de: 'professores' }, { k: 'questoes', l: 'Questões', t: 'refs', de: 'questoes' }] }
+  };
+  var LISTAS = { professores: '/professores' };
+  var ROT = {
+    professores: function (o) { return o.nome + ' (' + o.email + ')'; }, turmas: function (o) { return o.codigo; },
+    dimensoes: function (o) { return o.codigo; }, categorias: function (o) { return o.codigo + ' ' + o.nome; },
+    concepcoes: function (o) { return '#' + o.id + ' ' + (o.descricao || '').slice(0, 50); },
+    questoes: function (o) { return 'Q' + (o.numero || '?') + ' #' + o.id + ' ' + (o.enunciado || '').slice(0, 50); }
+  };
+  var chave, cache = {};
+  for (var k in E) { if (E.hasOwnProperty(k)) { LISTAS[k] = E[k].p; } }
+  function rot(de, o) { return ROT[de] ? ROT[de](o) : '#' + o.id; }
+
+  function carregar(lista, cb) {
+    var falta = lista.length, i;
+    if (!falta) { cb(); return; }
+    function fim() { falta--; if (falta === 0) { cb(); } }
+    for (i = 0; i < lista.length; i++) {
+      (function (c) {
+        Simaf.ajax('GET', LISTAS[c], null, function (d) { cache[c] = d || []; fim(); },
+          function () { msg('Não foi possível carregar ' + c, 'erro'); cache[c] = cache[c] || []; fim(); });
+      }(lista[i]));
+    }
+  }
+  function checks(nome, de) {
+    var d = el('div', 'chk'), l = cache[de] || [], i;
+    if (!l.length) { d.appendChild(el('span', 'aux', 'Nada cadastrado ainda')); }
+    for (i = 0; i < l.length; i++) {
+      var lb = el('label'), cb = el('input');
+      cb.type = 'checkbox'; cb.name = nome; cb.value = l[i].id;
+      lb.appendChild(cb); lb.appendChild(document.createTextNode(' ' + rot(de, l[i])));
+      d.appendChild(lb);
+    }
+    return d;
+  }
+  function linhaAlt() {
+    var r = el('div', 'alt'), a = el('input'), t = el('input'), c = el('input'), x = el('button', 'sec', 'Remover');
+    a.placeholder = 'Letra'; a.maxLength = 2; a.setAttribute('data-a', 'letra');
+    t.placeholder = 'Texto da alternativa'; t.setAttribute('data-a', 'texto');
+    c.type = 'checkbox'; c.setAttribute('data-a', 'correta');
+    x.type = 'button'; x.onclick = function () { r.parentNode.removeChild(r); };
+    r.appendChild(a); r.appendChild(t);
+    var lc = el('label'); lc.appendChild(c); lc.appendChild(document.createTextNode(' alternativa correta')); r.appendChild(lc);
+    var cs = checks('c', 'concepcoes'); r.appendChild(el('span', 'aux', 'Concepções ligadas a esta alternativa')); r.appendChild(cs);
+    r.appendChild(x);
+    return r;
+  }
+  function campo(f) {
+    var w = el('div'), i;
+    w.appendChild(el('label', '', f.l));
+    if (f.t === 'textarea') { i = el('textarea'); i.rows = 3; i.name = f.k; i.required = true; w.appendChild(i); }
+    else if (f.t === 'bool') { i = el('input'); i.type = 'checkbox'; i.name = f.k; w.appendChild(i); }
+    else if (f.t === 'ref') {
+      i = el('select'); i.name = f.k; i.required = !f.opt;
+      var v = el('option', '', '(escolher)'); v.value = ''; i.appendChild(v);
+      var l = cache[f.de] || [], j;
+      for (j = 0; j < l.length; j++) { var o = el('option', '', rot(f.de, l[j])); o.value = l[j].id; i.appendChild(o); }
+      w.appendChild(i);
+    }
+    else if (f.t === 'refs') { w.appendChild(checks(f.k, f.de)); }
+    else if (f.t === 'alts') {
+      var box = el('div'), add = el('button', 'sec', '+ Adicionar alternativa');
+      box.id = 'alts'; box.appendChild(linhaAlt()); box.appendChild(linhaAlt());
+      add.type = 'button'; add.onclick = function () { box.appendChild(linhaAlt()); };
+      w.appendChild(box); w.appendChild(add);
+    }
+    else { i = el('input'); i.name = f.k; i.type = f.t || 'text'; i.required = true; w.appendChild(i); }
+    return w;
+  }
+  function marcados(form, nome) {
+    var s = form.querySelectorAll('input[name="' + nome + '"]:checked'), r = [], i;
+    for (i = 0; i < s.length; i++) { r.push({ id: Number(s[i].value) }); }
+    return r;
+  }
+  function coletar(def, form) {
+    var o = {}, i, f;
+    for (i = 0; i < def.f.length; i++) {
+      f = def.f[i];
+      var e = form.elements[f.k];
+      if (f.t === 'bool') { o[f.k] = e.checked; }
+      else if (f.t === 'number') { o[f.k] = Number(e.value); }
+      else if (f.t === 'ref') { if (e.value) { o[f.k] = { id: Number(e.value) }; } }
+      else if (f.t === 'refs') { o[f.k] = marcados(form, f.k); }
+      else if (f.t === 'alts') {
+        var rs = form.querySelectorAll('#alts .alt'), j, arr = [];
+        for (j = 0; j < rs.length; j++) {
+          var le = rs[j].querySelector('[data-a=letra]').value, te = rs[j].querySelector('[data-a=texto]').value;
+          if (le && te) {
+            arr.push({ letra: le, texto: te, correta: rs[j].querySelector('[data-a=correta]').checked, concepcoes: marcados(rs[j], 'c') });
+          }
+        }
+        o[f.k] = arr;
+      }
+      else { o[f.k] = e.value; }
+    }
+    return o;
+  }
+  function celula(f, o) {
+    var v = o[f.k];
+    if (f.t === 'ref') { return v ? rot(f.de, v) : '-'; }
+    if (f.t === 'refs') { var s = [], i; for (i = 0; i < (v || []).length; i++) { s.push(rot(f.de, v[i])); } return s.join(', ') || '-'; }
+    if (f.t === 'alts') { var a = [], j; for (j = 0; j < (v || []).length; j++) { a.push(v[j].letra + (v[j].correta ? '*' : '')); } return a.join(' ') || '-'; }
+    if (f.t === 'bool') { return v ? 'sim' : 'não'; }
+    return v === null || v === undefined ? '-' : String(v);
+  }
+  function desenhar(def) {
+    var form = el('form'), i;
+    form.appendChild(el('h2', '', 'Novo cadastro: ' + def.t));
+    for (i = 0; i < def.f.length; i++) { form.appendChild(campo(def.f[i])); }
+    var b = el('button', '', 'Salvar'); b.type = 'submit'; b.style.marginTop = '16px'; form.appendChild(b);
+    form.onsubmit = function () {
+      Simaf.ajax('POST', def.p, coletar(def, form), function () { msg('Salvo', 'ok'); abrir(chave); },
+        function (st, d) { msg(d && d.message ? d.message : 'Erro ' + st + ' (veja o terminal do Spring)', 'erro'); });
+      return false;
+    };
+    var f = $('form'); f.innerHTML = ''; f.appendChild(form);
+
+    $('tit').textContent = def.t + ' cadastrados(as) (' + (cache[chave] || []).length + ')';
+    var l = $('lista'); l.innerHTML = '';
+    var linhas = cache[chave] || [];
+    if (!linhas.length) { l.appendChild(el('p', 'aux', 'Nada cadastrado ainda')); return; }
+    var tb = el('table'), h = el('tr'), r, j;
+    h.appendChild(el('th', '', 'id'));
+    for (i = 0; i < def.f.length; i++) { h.appendChild(el('th', '', def.f[i].l)); }
+    tb.appendChild(h);
+    for (j = 0; j < linhas.length; j++) {
+      r = el('tr'); r.appendChild(el('td', '', linhas[j].id));
+      for (i = 0; i < def.f.length; i++) { r.appendChild(el('td', '', celula(def.f[i], linhas[j]))); }
+      tb.appendChild(r);
+    }
+    var wrap = el('div'); wrap.style.overflowX = 'auto'; wrap.appendChild(tb); l.appendChild(wrap);
+  }
+  function abrir(c) {
+    chave = c;
+    var def = E[c], dep = [c], i;
+    for (i = 0; i < def.dep.length; i++) { dep.push(def.dep[i]); }
+    carregar(dep, function () { desenhar(def); });
+  }
+  var abas = $('abas'), n;
+  for (n in E) {
+    if (E.hasOwnProperty(n)) {
+      (function (c) { var b = el('button', 'sec', E[c].t); b.type = 'button'; b.onclick = function () { msg(''); abrir(c); }; abas.appendChild(b); }(n));
+    }
+  }
+  abrir('turmas');
+}());
+</script></body></html>

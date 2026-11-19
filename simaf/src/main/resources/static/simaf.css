@@ -1,0 +1,14 @@
+body{font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;font-variant-numeric:tabular-nums;margin:0;padding:16px;background:#F7F8FA;color:#344054;font-size:16px;line-height:1.5}
+h1{font-size:20px;font-weight:600;margin:4px 0 16px}h2{font-size:16px;font-weight:500;margin:0 0 16px}
+.wrap{max-width:960px;margin:0 auto}.card{background:#fff;border:1px solid #E1E7EF;border-radius:12px;padding:16px;margin-bottom:16px}
+label{display:block;margin:12px 0 8px;font-size:14px;font-weight:500}
+select,input,textarea{width:100%;min-height:44px;font-size:16px;font-family:inherit;color:#344054;padding:8px 12px;border:1px solid #AAB6C6;border-radius:10px;background:#fff;box-sizing:border-box}
+input[type=checkbox],input[type=radio]{width:auto;min-height:0}
+button,.btn{min-height:44px;padding:10px 20px;font-family:inherit;font-size:16px;font-weight:500;border:1.5px solid #244A73;border-radius:10px;background:#244A73;color:#fff;cursor:pointer;text-decoration:none;display:inline-block;box-sizing:border-box}
+button.sec,.btn.sec{background:#fff;color:#244A73}
+#msg{padding:12px;border-radius:10px;margin-bottom:16px;display:none;font-size:14px}
+#msg.ok{background:#DCEFEC;color:#245650;display:block}#msg.erro{background:#F8DAD3;color:#8A2E1B;display:block}
+table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid #E8EDF3;padding:10px 8px;text-align:left;vertical-align:top}th{font-weight:500;color:#566579}
+.aux{font-size:14px;color:#566579}.bar{overflow:hidden;margin-bottom:16px}.bar a{margin-right:8px}
+.abas{margin-bottom:16px}.abas button{margin:0 8px 8px 0;min-height:40px;padding:6px 14px}
+.chk label{display:block;margin:4px 0;font-weight:400}.alt{border-top:1px solid #E8EDF3;padding:12px 0}

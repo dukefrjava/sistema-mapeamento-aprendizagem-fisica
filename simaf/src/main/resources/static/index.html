@@ -1,20 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SIMAF</title>
-<style>
-body { font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 24px 16px; background: #F7F8FA; color: #344054; max-width: 480px; }
-h1 { font-size: 24px; font-weight: 600; color: #244A73; margin: 0 0 4px; }
-p { margin: 0 0 24px; color: #566579; }
-a { display: block; padding: 16px; margin-bottom: 12px; background: #ffffff; border: 1px solid #E1E7EF; border-radius: 12px; color: #244A73; font-weight: 500; text-decoration: none; }
-</style>
-</head>
-<body>
-<h1>SIMAF</h1>
-<p>Sistema de Mapeamento da Aprendizagem em Física</p>
-<a href="/scanner.html">Ler prova</a>
-<a href="/dashboard.html">Dashboard da avaliação</a>
-</body>
-</html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMAF</title><link rel="stylesheet" href="/css/simaf.css"></head>
+<body><div style="max-width:480px;margin:24px auto">
+<h1 style="font-size:24px;color:#244A73;margin-bottom:4px">SIMAF</h1>
+<p class="aux" style="margin:0 0 24px">Olá, <span id="u"></span></p>
+<p><a class="btn" style="display:block;text-align:center" href="/scanner.html">Ler prova</a></p>
+<p><a class="btn sec" style="display:block;text-align:center" href="/dashboard.html">Dashboard da avaliação</a></p>
+<p><a class="btn sec" style="display:block;text-align:center" href="/cadastros.html">Cadastros</a></p>
+<p class="aux"><a href="#" id="sair">Sair</a></p></div>
+<script src="/js/simaf.js"></script>
+<script>Simaf.exigir();document.getElementById('u').textContent=Simaf.usuario();document.getElementById('sair').onclick=function(){Simaf.sair();return false;};</script></body></html>
