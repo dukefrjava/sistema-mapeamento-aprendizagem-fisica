@@ -4,88 +4,102 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMAF - Ler prova</title>
-<style>
-body { font-family: Inter, "Segoe UI", Roboto, Arial, Helvetica, sans-serif; font-variant-numeric: tabular-nums; margin: 0; padding: 16px; background: #F7F8FA; color: #344054; font-size: 16px; line-height: 1.5; }
-h1 { font-size: 20px; font-weight: 600; margin: 4px 0 16px; }
-.card { background: #ffffff; border: 1px solid #E1E7EF; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-label { display: block; margin: 16px 0 8px; font-size: 14px; font-weight: 500; }
-select, input { width: 100%; min-height: 44px; font-size: 16px; font-family: inherit; color: #344054; padding: 8px 12px; border: 1px solid #AAB6C6; border-radius: 10px; background: #ffffff; box-sizing: border-box; }
-button { width: 100%; min-height: 48px; margin-top: 16px; padding: 12px 20px; font-family: inherit; font-size: 16px; font-weight: 500; border: 1.5px solid #244A73; border-radius: 10px; background: #244A73; color: #ffffff; }
-button.sec { background: #ffffff; color: #244A73; }
-button[disabled] { background: #8E9FB3; border-color: #8E9FB3; color: #ffffff; }
-#msg { padding: 12px; border-radius: 10px; margin-bottom: 16px; display: none; font-size: 14px; }
-#msg.ok { background: #DCEFEC; color: #245650; display: block; }
-#msg.erro { background: #F8DAD3; color: #8A2E1B; display: block; }
-#msg.info { background: #E6EFF8; color: #244A73; display: block; }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid #E8EDF3; padding: 12px 8px; text-align: left; }
-th { font-size: 14px; font-weight: 500; color: #566579; }
-#linhas td:last-child { font-weight: 500; color: #244A73; }
-strong { font-weight: 500; }
-ul { padding-left: 20px; margin: 12px 0 0; font-size: 14px; }
-</style>
+<link rel="stylesheet" href="/css/simaf.css">
 </head>
 <body>
-<h1>SIMAF &middot; Ler prova</h1>
+<div class="app-shell">
+  <header class="topbar-mobile">
+    <a class="brand" href="/scanner.html">Ler prova</a>
+    <a class="menu-btn" href="/cadastros.html" title="Cadastros">&#9776;</a>
+  </header>
 
-<div id="msg"></div>
+  <aside class="sidebar">
+    <a class="brand" href="/dashboard.html">SIMAF</a>
+    <a href="/dashboard.html">Dashboard</a>
+    <a class="ativo" href="/scanner.html">Ler prova</a>
+    <a href="/cadastros.html">Cadastros</a>
+    <div class="rodape">
+      <div id="nomeProf">Professor(a)</div>
+      <a href="#" id="sair" style="padding:4px 0;color:#244A73;font-weight:500">Sair</a>
+    </div>
+  </aside>
 
-<div class="card">
-  <label for="avaliacao">Avaliação</label>
-  <select id="avaliacao"></select>
+  <main class="main-area">
+    <h1>Ler prova</h1>
+    <p class="sub">Envie a prova marcada, confira o que foi lido e só então grave</p>
 
-  <label for="aluno">Aluno</label>
-  <select id="aluno"></select>
+    <div id="msg"></div>
 
-  <label for="modo">Tipo de arquivo</label>
-  <select id="modo">
-    <option value="imagem">Foto da prova</option>
-    <option value="pdf">PDF</option>
-  </select>
+    <div class="grid-2">
+      <div class="col">
+        <div class="card">
+          <h2>Arquivos</h2>
 
-  <div id="boxImagem">
-    <label for="modelo">Modelo (prova em branco)</label>
-    <input type="file" id="modelo" accept="image/*">
-    <label for="marcada">Prova marcada (abre a câmera)</label>
-    <input type="file" id="marcada" accept="image/*" capture="environment">
-  </div>
+          <label for="avaliacao">Avaliação</label>
+          <select id="avaliacao"></select>
 
-  <div id="boxPdf" style="display:none">
-    <label for="pdf">PDF da prova marcada</label>
-    <input type="file" id="pdf" accept="application/pdf">
-  </div>
+          <label for="aluno">Aluno</label>
+          <select id="aluno"></select>
 
-  <button type="button" id="ler">Ler prova</button>
+          <label for="modo">Tipo de arquivo</label>
+          <select id="modo">
+            <option value="imagem">Foto da prova</option>
+            <option value="pdf">PDF</option>
+          </select>
+
+          <div id="boxImagem">
+            <label for="modelo">Modelo (prova em branco)</label>
+            <input type="file" id="modelo" accept="image/*">
+            <label for="marcada">Prova marcada (abre a câmera)</label>
+            <input type="file" id="marcada" accept="image/*" capture="environment">
+          </div>
+
+          <div id="boxPdf" style="display:none">
+            <label for="pdf">PDF da prova marcada</label>
+            <input type="file" id="pdf" accept="application/pdf">
+          </div>
+
+          <button type="button" id="ler" style="width:100%;margin-top:16px">Ler prova</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card" id="resultado" style="display:none">
+          <h2>O que foi lido</h2>
+          <table>
+            <thead>
+              <tr><th>Questão</th><th>Resposta</th></tr>
+            </thead>
+            <tbody id="linhas"></tbody>
+          </table>
+          <div id="avisos" style="margin-top:12px"></div>
+          <p class="aux" style="margin-top:12px">As respostas só são gravadas depois da sua confirmação</p>
+          <button type="button" id="gravar" style="width:100%;margin-top:12px">Confirmar e gravar respostas</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="/dashboard.html">Dashboard</a>
+    <a class="ativo" href="/scanner.html">Ler prova</a>
+    <a href="/cadastros.html">Cadastros</a>
+  </nav>
 </div>
 
-<div class="card" id="resultado" style="display:none">
-  <strong>O que foi lido</strong>
-  <table><thead><tr><th>Questão</th><th>Resposta</th></tr></thead><tbody id="linhas"></tbody></table>
-  <div id="avisos"></div>
-  <button type="button" id="gravar">Confirmar e gravar respostas</button>
-</div>
-
+<script src="/js/simaf.js"></script>
 <script>
 (function () {
+  Simaf.exigir();
+  if (Simaf.usuario()) { document.getElementById('nomeProf').textContent = Simaf.usuario(); }
+  document.getElementById('sair').onclick = function () { Simaf.sair(); return false; };
+
   function $(id) { return document.getElementById(id); }
 
   function mostrar(texto, tipo) {
     var m = $('msg');
-    m.className = tipo;
-    m.textContent = texto;
-  }
-
-  // XMLHttpRequest em vez de fetch: funciona no Safari do iOS 9.
-  function ajax(metodo, url, corpo, ok, erro) {
-    var x = new XMLHttpRequest();
-    x.open(metodo, url, true);
-    x.onreadystatechange = function () {
-      if (x.readyState !== 4) { return; }
-      var dados = null;
-      try { dados = JSON.parse(x.responseText); } catch (e) { dados = null; }
-      if (x.status >= 200 && x.status < 300) { ok(dados); } else { erro(x.status, dados); }
-    };
-    x.send(corpo);
+    m.className = tipo || '';
+    m.textContent = texto || '';
   }
 
   function preencher(selectId, lista, rotulo) {
@@ -107,10 +121,10 @@ ul { padding-left: 20px; margin: 12px 0 0; font-size: 14px; }
   }
 
   function carregarListas() {
-    ajax('GET', '/avaliacoes', null, function (d) {
+    Simaf.ajax('GET', '/avaliacoes', null, function (d) {
       preencher('avaliacao', d, function (a) { return '#' + a.id + ' ' + a.titulo; });
     }, function () { mostrar('Não foi possível carregar as avaliações', 'erro'); });
-    ajax('GET', '/alunos', null, function (d) {
+    Simaf.ajax('GET', '/alunos', null, function (d) {
       preencher('aluno', d, function (a) { return '#' + a.id + ' ' + a.matricula; });
     }, function () { mostrar('Não foi possível carregar os alunos', 'erro'); });
   }
@@ -145,6 +159,8 @@ ul { padding-left: 20px; margin: 12px 0 0; font-size: 14px; }
       var td2 = document.createElement('td');
       td1.textContent = chaves[i];
       td2.textContent = String(r.respostasDetectadas[chaves[i]]).toUpperCase();
+      td2.style.fontWeight = '600';
+      td2.style.color = '#244A73';
       tr.appendChild(td1);
       tr.appendChild(td2);
       corpo.appendChild(tr);
@@ -159,6 +175,11 @@ ul { padding-left: 20px; margin: 12px 0 0; font-size: 14px; }
         ul.appendChild(li);
       }
       av.appendChild(ul);
+    } else {
+      var okSpan = document.createElement('span');
+      okSpan.className = 'st ok aux';
+      okSpan.textContent = 'Leitura sem avisos';
+      av.appendChild(okSpan);
     }
     $('resultado').style.display = 'block';
     $('ler').className = 'sec';
@@ -178,7 +199,7 @@ ul { padding-left: 20px; margin: 12px 0 0; font-size: 14px; }
     $('gravar').disabled = true;
     mostrar(salvar ? 'Gravando...' : 'Lendo a prova... pode levar até 1 minuto', 'info');
 
-    ajax('POST', url, corpo, function (r) {
+    Simaf.ajax('POST', url, corpo, function (r) {
       $('ler').disabled = false;
       $('gravar').disabled = false;
       mostrarResultado(r);

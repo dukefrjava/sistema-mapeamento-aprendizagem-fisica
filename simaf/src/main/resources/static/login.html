@@ -1,43 +1,80 @@
 <!DOCTYPE html>
-<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SIMAF - Entrar</title><link rel="stylesheet" href="/css/simaf.css"></head>
-<body><div style="max-width:420px;margin:32px auto">
-<h1 style="font-size:28px;color:#244A73;margin-bottom:4px">SIMAF</h1>
-<p class="aux" style="margin:0 0 24px">Sistema de Mapeamento da Aprendizagem em Física</p>
-<div id="msg"></div>
-<form class="card" id="fEntrar">
-  <h2>Entrar</h2><p class="aux">Acesso exclusivo para professores</p>
-  <label for="e">E-mail</label><input id="e" type="email" autocomplete="username">
-  <label for="s">Senha</label><input id="s" type="password" autocomplete="current-password">
-  <p><button type="submit" style="width:100%;margin-top:16px">Entrar</button></p>
-  <p class="aux" style="text-align:center"><a href="#" id="verCriar">Criar conta com código de convite</a></p>
-</form>
-<form class="card" id="fCriar" style="display:none">
-  <h2>Criar conta</h2>
-  <label for="n">Nome</label><input id="n"><label for="e2">E-mail</label><input id="e2" type="email">
-  <label for="d">Disciplina</label><input id="d"><label for="s2">Senha (mínimo 8 caracteres)</label><input id="s2" type="password">
-  <label for="c">Código de convite</label><input id="c" type="password">
-  <p><button type="submit" style="width:100%;margin-top:16px">Criar conta</button></p>
-  <p class="aux" style="text-align:center"><a href="#" id="verEntrar">Já tenho conta</a></p>
-</form></div>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMAF - Entrar</title>
+<link rel="stylesheet" href="/css/simaf.css">
+</head>
+<body>
+<div class="login-shell">
+  <div class="login-brand">
+    <div class="titulo">SIMAF</div>
+    <p class="desc">Sistema de Mapeamento da Aprendizagem em Física</p>
+    <p class="subdesc">Leia provas por foto, corrija e veja onde a turma tem dificuldade</p>
+  </div>
+
+  <div class="login-card-wrap">
+    <div id="msg"></div>
+
+    <form class="card" id="fEntrar">
+      <h2>Entrar</h2>
+      <p class="aux">Acesso exclusivo para professores</p>
+      <label for="e">E-mail</label>
+      <input id="e" type="email" placeholder="nome@escola.com.br" autocomplete="username">
+      <label for="s">Senha</label>
+      <input id="s" type="password" autocomplete="current-password">
+      <p><button type="submit" style="width:100%;margin-top:16px">Entrar</button></p>
+      <p class="aux" style="text-align:center;margin-top:16px">
+        Primeiro acesso? <a href="#" id="verCriar">Criar conta com código de convite</a>
+      </p>
+    </form>
+
+    <form class="card" id="fCriar" style="display:none">
+      <h2>Criar conta</h2>
+      <label for="n">Nome</label>
+      <input id="n" type="text">
+      <label for="e2">E-mail</label>
+      <input id="e2" type="email" placeholder="nome@escola.com.br">
+      <label for="d">Disciplina</label>
+      <input id="d" type="text">
+      <label for="s2">Senha (mínimo 8 caracteres)</label>
+      <input id="s2" type="password">
+      <label for="c">Código de convite</label>
+      <input id="c" type="password">
+      <p><button type="submit" style="width:100%;margin-top:16px">Criar conta</button></p>
+      <p class="aux" style="text-align:center;margin-top:16px">
+        <a href="#" id="verEntrar">Já tenho conta</a>
+      </p>
+    </form>
+  </div>
+</div>
+
 <script src="/js/simaf.js"></script>
 <script>
 (function () {
   function $(i) { return document.getElementById(i); }
-  function msg(t, c) { var m = $('msg'); m.className = c; m.textContent = t; }
-  function alterna(criar) { $('fEntrar').style.display = criar ? 'none' : 'block'; $('fCriar').style.display = criar ? 'block' : 'none'; msg('', ''); }
+  function msg(t, c) { var m = $('msg'); m.className = c || ''; m.textContent = t || ''; }
+  function alterna(criar) {
+    $('fEntrar').style.display = criar ? 'none' : 'block';
+    $('fCriar').style.display = criar ? 'block' : 'none';
+    msg('', '');
+  }
   $('verCriar').onclick = function () { alterna(true); return false; };
-  $('verEntrar').onclick = function () { alterna(false); return false; };
-  $('fEntrar').onsubmit = function () {
-    Simaf.entrar($('e').value, $('s').value, function () { location.href = '/index.html'; },
+  $('verEntrar').onclick = function () { alterna(false); return false; };$('fEntrar').onsubmit = function () {
+    Simaf.entrar($('e').value, $('s').value, function () { location.href = '/dashboard.html'; },
       function (st) { msg(st === 401 ? 'E-mail ou senha incorretos' : (st === 0 ? 'Sem conexão com o servidor' : 'Erro ' + st), 'erro'); });
     return false;
   };
   $('fCriar').onsubmit = function () {
-    Simaf.bruto('POST', '/auth/registrar', { nome: $('n').value, email: $('e2').value, disciplina: $('d').value, senha: $('s2').value, convite: $('c').value }, null,
-      function () { alterna(false); $('e').value = $('e2').value; msg('Conta criada. Entre com a sua senha', 'ok'); },
+    Simaf.bruto('POST', '/auth/registrar', {
+      nome: $('n').value, email: $('e2').value, disciplina:$('d').value, senha: $('s2').value, convite:$('c').value
+    }, null,
+      function () { alterna(false); $('e').value =$('e2').value; msg('Conta criada. Entre com a sua senha', 'ok'); },
       function (st, d) { msg(d && d.message ? d.message : 'Erro ' + st, 'erro'); });
     return false;
   };
 }());
-</script></body></html>
+</script>
+</body>
+</html>
