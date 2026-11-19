@@ -1,7 +1,9 @@
 import hmac, os
 
-from flask import Flask
+from flask import Flask, jsonify, request
 from scanner.routes import bp
+
+TOKEN = os.environ.get("SCANNER_TOKEN", "")
 
 def create_app():
     app = Flask(__name__)
