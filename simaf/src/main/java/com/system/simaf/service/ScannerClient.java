@@ -19,22 +19,27 @@ import org.springframework.web.server.ResponseStatusException;
 import com.system.simaf.dto.DTOLeituraScanner;
 
 // FALA COM O SERVIÇO PYTHON
-@Component 
+@Component
 public class ScannerClient {
 
     private final RestClient http;
-    
-    public ScannerClient(@Value("${scanner.url}") String url) {
+
+    public ScannerClient(@Value("${scanner.url}") String url,
+            @Value("${scanner.token:}") String token) {
         SimpleClientHttpRequestFactory fabrica = new SimpleClientHttpRequestFactory();
         fabrica.setConnectTimeout(Duration.ofSeconds(5));
-        fabrica.setReadTimeout(Duration.ofSeconds(120)); // TEMPO DO OCR PODE SER MAIOR
-        this.http = RestClient.builder().baseUrl(url).requestFactory(fabrica).build();
+        fabrica.setReadTimeout(Duration.ofSeconds(120)); // o OCR pode demorar
+        RestClient.Builder b = RestClient.builder().baseUrl(url).requestFactory(fabrica);
+        if (!token.isBlank()) {
+            b = b.defaultHeader("X-Scanner-Token", token);
+        }
+        this.http = b.build();
     }
 
     public DTOLeituraScanner analisarPdf(byte[] pdf) {
         MultiValueMap<String, Object> corpo = new LinkedMultiValueMap<>();
         corpo.add("arquivo", parte(pdf, "prova.pdf"));
-        return enviar("/analisar-pdf", corpo); 
+        return enviar("/analisar-pdf", corpo);
     }
 
     public DTOLeituraScanner analisarImagem(byte[] modelo, byte[] marcada) {
@@ -54,7 +59,8 @@ public class ScannerClient {
         } catch (RestClientResponseException e) {
             // O PYTHON RESPONDEU, MAS RECUSOU O ARQUIVO (4xx) OU FALHOU POR DENTRO (5xx)
             HttpStatusCode status = e.getStatusCode().is4xxClientError()
-                    ? HttpStatusCode.valueOf(422) : HttpStatus.BAD_GATEWAY;
+                    ? HttpStatusCode.valueOf(422)
+                    : HttpStatus.BAD_GATEWAY;
             throw new ResponseStatusException(status,
                     "Serviço de leitura recusou o arquivo: " + e.getResponseBodyAsString());
         } catch (ResourceAccessException e) {
@@ -64,10 +70,11 @@ public class ScannerClient {
         }
     }
 
-    // O NOME É FIXO E INTERNO: NUNCA REPASSAMOS O NOME DO ARQUIVO ENVIADO PELO USUÁRIO
+    // O NOME É FIXO E INTERNO: NUNCA REPASSAMOS O NOME DO ARQUIVO ENVIADO PELO
+    // USUÁRIO
     private static ByteArrayResource parte(byte[] dados, String nome) {
         return new ByteArrayResource(dados) {
-            @Override 
+            @Override
             public String getFilename() {
                 return nome;
             }
