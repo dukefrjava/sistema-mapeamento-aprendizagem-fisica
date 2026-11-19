@@ -43,3 +43,5 @@ py/debug_*.png
 simaf/target/
 simaf/log.txt
 .env
+.neon
+node_modules/
