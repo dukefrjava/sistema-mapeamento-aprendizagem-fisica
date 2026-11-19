@@ -42,3 +42,4 @@ __pycache__/
 py/debug_*.png
 simaf/target/
 simaf/log.txt
+.env

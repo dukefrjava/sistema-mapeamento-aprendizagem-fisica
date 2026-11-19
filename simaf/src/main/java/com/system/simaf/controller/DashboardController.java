@@ -9,7 +9,7 @@ import com.system.simaf.dto.DTODashboard;
 import com.system.simaf.service.DashboardService;
 
 @RestController 
-@RequestMapping("/avaliacoes/{avaliacaoId}/dasboard")
+@RequestMapping("/avaliacoes/{avaliacaoId}/dashboard")
 public class DashboardController {
     private final DashboardService service;
 

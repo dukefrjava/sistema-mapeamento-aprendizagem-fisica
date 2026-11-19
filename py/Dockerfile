@@ -18,3 +18,4 @@ ENV TESSERACT_LANG=por+eng
 EXPOSE 8000
 CMD ["gunicorn", "-w", "2", "-t", "120", "-b", "0.0.0.0:8000", "app:create_app()"]
 
+CMD ["sh", "-c", "gunicorn -w 1 -t 120 -b 0.0.0.0:${PORT:-8000} 'app:create_app()'"]

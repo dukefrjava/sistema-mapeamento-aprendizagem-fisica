@@ -5,28 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMAF - Dashboard</title>
 <style>
-body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 12px; background: #eef1ee; color: #1d2b2a; max-width: 900px; }
-h1 { font-size: 20px; margin: 4px 0 12px; }
-h2 { font-size: 16px; margin: 0 0 8px; }
-.card { background: #ffffff; border: 1px solid #cdd6d2; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
-select { width: 100%; font-size: 16px; padding: 8px; box-sizing: border-box; }
-#msg { padding: 10px; border-radius: 6px; margin-bottom: 12px; display: none; background: #fde4e1; color: #b3261e; }
+body { font-family: Inter, "Segoe UI", Roboto, Arial, Helvetica, sans-serif; font-variant-numeric: tabular-nums; margin: 0; padding: 16px; background: #F7F8FA; color: #344054; font-size: 16px; line-height: 1.5; max-width: 960px; }
+h1 { font-size: 20px; font-weight: 600; margin: 4px 0 16px; }
+h2 { font-size: 16px; font-weight: 500; margin: 0 0 16px; }
+.card { background: #ffffff; border: 1px solid #E1E7EF; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+label { display: block; margin: 0 0 8px; font-size: 14px; font-weight: 500; }
+select, input { width: 100%; min-height: 44px; font-size: 16px; font-family: inherit; color: #344054; padding: 8px 12px; border: 1px solid #AAB6C6; border-radius: 10px; background: #ffffff; box-sizing: border-box; }
+#msg { padding: 12px; border-radius: 10px; margin-bottom: 16px; display: none; background: #F8DAD3; color: #8A2E1B; font-size: 14px; }
 .kpis { overflow: hidden; }
-.kpi { float: left; width: 20%; min-width: 110px; padding: 4px 8px 4px 0; box-sizing: border-box; }
-.kpi b { display: block; font-size: 24px; }
-.kpi span { font-size: 12px; color: #55645f; }
-.linha { margin: 8px 0; }
-.rotulo { font-size: 13px; margin-bottom: 2px; }
-.trilho { background: #e4e9e6; border-radius: 4px; height: 16px; }
-.barra { height: 16px; border-radius: 4px; background: #1f5f5b; }
-.barra.bom { background: #2f855a; }
-.barra.medio { background: #d69e2e; }
-.barra.ruim { background: #c53030; }
-.num { font-size: 12px; color: #55645f; float: right; }
+.kpi { float: left; width: 20%; min-width: 112px; padding: 4px 16px 4px 0; box-sizing: border-box; }
+.kpi b { display: block; font-size: 24px; font-weight: 500; color: #244A73; }
+.kpi span { font-size: 14px; color: #566579; }
+.linha { margin: 16px 0; }
+.rotulo { font-size: 14px; margin-bottom: 8px; }
+.trilho { background: #E4EAF1; border-radius: 5px; height: 10px; }
+.barra { height: 10px; border-radius: 5px; background: #244A73; }
+.barra.bom { background: #3D817A; }
+.barra.medio { background: #D9A23B; }
+.barra.ruim { background: #C0452F; }
+.num { font-size: 14px; color: #566579; float: right; }
 table { border-collapse: collapse; width: 100%; font-size: 14px; }
-td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
-.sug { font-size: 12px; color: #55645f; }
-.vazio { color: #55645f; font-size: 14px; }
+td, th { border-bottom: 1px solid #E8EDF3; padding: 12px 8px; text-align: left; }
+th { font-weight: 500; color: #566579; }
+.st:before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; background: #AAB6C6; }
+.st.ok:before { background: #3D817A; }
+.st.mid:before { background: #D9A23B; }
+.st.bad:before { background: #C0452F; }
+.sug { font-size: 14px; color: #566579; }
+.vazio { color: #566579; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -88,25 +94,27 @@ td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
     alvo.appendChild(l);
   }
 
-  function kpi(alvo, valor, rotulo) {
+  function kpi(alvo, valor, rotulo, estado) {
     var k = el('div', 'kpi');
     k.appendChild(el('b', '', valor));
-    k.appendChild(el('span', '', rotulo));
+    k.appendChild(el('span', estado ? 'st ' + estado : '', rotulo));
     alvo.appendChild(k);
   }
+
+  function estadoDe(d) { return d === 'ADEQUADO' ? 'ok' : (d === 'CRITICO' ? 'bad' : 'mid'); }
 
   function vazio(alvo, texto) { alvo.appendChild(el('div', 'vazio', texto)); }
 
   function mostrar(d) {
     var k = limpar('kpis');
-    kpi(k, String(d.alunosResponderam), 'alunos responderam');
+    kpi(k, String(d.alunos.length), 'alunos responderam');
     kpi(k, fmt(d.mediaPercentual) + '%', 'média da turma');
-    kpi(k, String(d.distribuicao.ADEQUADO), 'adequado');
-    kpi(k, String(d.distribuicao.EM_DESENVOLVIMENTO), 'em desenvolvimento');
-    kpi(k, String(d.distribuicao.CRITICO), 'crítico');
+    kpi(k, String(d.distribuicao.ADEQUADO), 'adequado', 'ok');
+    kpi(k, String(d.distribuicao.EM_DESENVOLVIMENTO), 'em desenvolvimento', 'mid');
+    kpi(k, String(d.distribuicao.CRITICO), 'crítico', 'bad');
 
     var q = limpar('questoes');
-    if (d.alunosResponderam === 0) { vazio(q, 'Nenhuma resposta gravada para esta avaliação ainda.'); }
+    if (d.alunos.length === 0) { vazio(q, 'Nenhuma resposta gravada para esta avaliação ainda'); }
     for (var i = 0; i < d.questoes.length; i++) {
       var it = d.questoes[i];
       barra(q, 'Q' + it.numero + ' · ' + it.enunciado, it.percentualAcerto,
@@ -116,14 +124,14 @@ td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
     var c = limpar('categorias');
     var max = 1;
     for (var a = 0; a < d.categorias.length; a++) { if (d.categorias[a].ocorrencias > max) { max = d.categorias[a].ocorrencias; } }
-    if (d.categorias.length === 0) { vazio(c, 'Nenhum erro ligado a uma categoria conceitual.'); }
+    if (d.categorias.length === 0) { vazio(c, 'Nenhum erro ligado a uma categoria conceitual'); }
     for (var j = 0; j < d.categorias.length; j++) {
       var ct = d.categorias[j];
       barra(c, ct.codigo + ' · ' + ct.nome, ct.ocorrencias * 100 / max, ct.ocorrencias + ' erro(s)', 'ruim');
     }
 
     var cc = limpar('concepcoes');
-    if (d.concepcoes.length === 0) { vazio(cc, 'Nenhuma concepção alternativa identificada.'); }
+    if (d.concepcoes.length === 0) { vazio(cc, 'Nenhuma concepção alternativa identificada'); }
     for (var m = 0; m < d.concepcoes.length; m++) {
       var co = d.concepcoes[m];
       var bloco = el('div', 'linha');
@@ -136,14 +144,14 @@ td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
 
     var dm = limpar('dimensoes');
     var cods = Object.keys(d.acertoPorDimensao);
-    if (cods.length === 0) { vazio(dm, 'Nenhuma questão classificada em dimensão ACE.'); }
+    if (cods.length === 0) { vazio(dm, 'Nenhuma questão classificada em dimensão ACE'); }
     for (var n = 0; n < cods.length; n++) {
       var p = d.acertoPorDimensao[cods[n]];
       barra(dm, cods[n], p, fmt(p) + '%', nota(p));
     }
 
     var al = limpar('alunos');
-    if (d.alunos.length === 0) { vazio(al, 'Nenhum aluno respondeu ainda.'); }
+    if (d.alunos.length === 0) { vazio(al, 'Nenhum aluno respondeu ainda'); }
     else {
       var tb = el('table');
       var cab = el('tr');
@@ -156,7 +164,9 @@ td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
         tr.appendChild(el('td', '', x.matricula));
         tr.appendChild(el('td', '', x.acertos + '/' + x.total));
         tr.appendChild(el('td', '', fmt(x.percentual)));
-        tr.appendChild(el('td', '', String(x.desempenho).replace('_', ' ').toLowerCase()));
+        var tdE = el('td');
+        tdE.appendChild(el('span', 'st ' + estadoDe(x.desempenho), String(x.desempenho).replace('_', ' ').toLowerCase()));
+        tr.appendChild(tdE);
         tb.appendChild(tr);
       }
       al.appendChild(tb);
@@ -170,14 +180,14 @@ td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
     erro('');
     ajax('/avaliacoes/' + id + '/dashboard', mostrar, function (status, d) {
       $('conteudo').style.display = 'none';
-      erro(d && d.message ? d.message : 'Erro ' + status + ' ao carregar o dashboard.');
+      erro(d && d.message ? d.message : 'Erro ' + status + ' ao carregar o dashboard');
     });
   }
 
   ajax('/avaliacoes', function (lista) {
     var s = $('avaliacao');
     s.innerHTML = '';
-    if (!lista || lista.length === 0) { erro('Nenhuma avaliação cadastrada.'); return; }
+    if (!lista || lista.length === 0) { erro('Nenhuma avaliação cadastrada'); return; }
     for (var i = 0; i < lista.length; i++) {
       var o = document.createElement('option');
       o.value = lista[i].id;
@@ -185,7 +195,7 @@ td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
       s.appendChild(o);
     }
     carregar();
-  }, function () { erro('Não foi possível carregar as avaliações.'); });
+  }, function () { erro('Não foi possível carregar as avaliações'); });
 
   $('avaliacao').onchange = carregar;
 }());

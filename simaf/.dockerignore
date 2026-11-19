@@ -1,0 +1,18 @@
+# O QUE NÃO PRECISA IR PRO BUILD DA IMAGEM
+target/
+.mvn/
+mvnw
+mvnw.cmd
+log.txt
+HELP.md
+*.md
+.gitattributes
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# NUNCA MANDAR SEGREDOS PRA IMAGEM
+.env
+*.env

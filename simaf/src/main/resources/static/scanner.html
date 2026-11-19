@@ -5,20 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMAF - Ler prova</title>
 <style>
-body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 12px; background: #eef1ee; color: #1d2b2a; }
-h1 { font-size: 20px; margin: 4px 0 12px; }
-.card { background: #ffffff; border: 1px solid #cdd6d2; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
-label { display: block; margin: 12px 0 4px; font-size: 14px; color: #55645f; }
-select, input { width: 100%; font-size: 16px; padding: 8px; box-sizing: border-box; }
-button { font-size: 17px; padding: 12px 18px; margin-top: 14px; border: 0; border-radius: 6px; background: #1f5f5b; color: #ffffff; width: 100%; }
-button[disabled] { background: #8aa7a4; }
-#msg { padding: 10px; border-radius: 6px; margin-bottom: 12px; display: none; }
-#msg.ok { background: #dff3e6; color: #1b6b3a; display: block; }
-#msg.erro { background: #fde4e1; color: #b3261e; display: block; }
-#msg.info { background: #e3eef3; color: #1f4f66; display: block; }
+body { font-family: Inter, "Segoe UI", Roboto, Arial, Helvetica, sans-serif; font-variant-numeric: tabular-nums; margin: 0; padding: 16px; background: #F7F8FA; color: #344054; font-size: 16px; line-height: 1.5; }
+h1 { font-size: 20px; font-weight: 600; margin: 4px 0 16px; }
+.card { background: #ffffff; border: 1px solid #E1E7EF; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+label { display: block; margin: 16px 0 8px; font-size: 14px; font-weight: 500; }
+select, input { width: 100%; min-height: 44px; font-size: 16px; font-family: inherit; color: #344054; padding: 8px 12px; border: 1px solid #AAB6C6; border-radius: 10px; background: #ffffff; box-sizing: border-box; }
+button { width: 100%; min-height: 48px; margin-top: 16px; padding: 12px 20px; font-family: inherit; font-size: 16px; font-weight: 500; border: 1.5px solid #244A73; border-radius: 10px; background: #244A73; color: #ffffff; }
+button.sec { background: #ffffff; color: #244A73; }
+button[disabled] { background: #8E9FB3; border-color: #8E9FB3; color: #ffffff; }
+#msg { padding: 12px; border-radius: 10px; margin-bottom: 16px; display: none; font-size: 14px; }
+#msg.ok { background: #DCEFEC; color: #245650; display: block; }
+#msg.erro { background: #F8DAD3; color: #8A2E1B; display: block; }
+#msg.info { background: #E6EFF8; color: #244A73; display: block; }
 table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid #dde3e0; padding: 6px 8px; text-align: left; }
-ul { padding-left: 20px; }
+td, th { border-bottom: 1px solid #E8EDF3; padding: 12px 8px; text-align: left; }
+th { font-size: 14px; font-weight: 500; color: #566579; }
+#linhas td:last-child { font-weight: 500; color: #244A73; }
+strong { font-weight: 500; }
+ul { padding-left: 20px; margin: 12px 0 0; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -105,10 +109,10 @@ ul { padding-left: 20px; }
   function carregarListas() {
     ajax('GET', '/avaliacoes', null, function (d) {
       preencher('avaliacao', d, function (a) { return '#' + a.id + ' ' + a.titulo; });
-    }, function () { mostrar('Não foi possível carregar as avaliações.', 'erro'); });
+    }, function () { mostrar('Não foi possível carregar as avaliações', 'erro'); });
     ajax('GET', '/alunos', null, function (d) {
       preencher('aluno', d, function (a) { return '#' + a.id + ' ' + a.matricula; });
-    }, function () { mostrar('Não foi possível carregar os alunos.', 'erro'); });
+    }, function () { mostrar('Não foi possível carregar os alunos', 'erro'); });
   }
 
   function atualizarModo() {
@@ -157,32 +161,34 @@ ul { padding-left: 20px; }
       av.appendChild(ul);
     }
     $('resultado').style.display = 'block';
+    $('ler').className = 'sec';
+    $('ler').textContent = 'Ler novamente';
     $('gravar').style.display = (r.salvo || !r.alternativasIds || r.alternativasIds.length === 0) ? 'none' : 'block';
   }
 
   function enviar(salvar) {
     var av = $('avaliacao').value;
     var al = $('aluno').value;
-    if (!av || !al) { mostrar('Escolha a avaliação e o aluno.', 'erro'); return; }
+    if (!av || !al) { mostrar('Escolha a avaliação e o aluno', 'erro'); return; }
     var corpo = montarCorpo();
-    if (!corpo) { mostrar('Escolha o(s) arquivo(s) antes de enviar.', 'erro'); return; }
+    if (!corpo) { mostrar('Escolha o(s) arquivo(s) antes de enviar', 'erro'); return; }
 
     var url = '/avaliacoes/' + av + '/alunos/' + al + '/escanear/' + $('modo').value + '?salvar=' + (salvar ? 'true' : 'false');
     $('ler').disabled = true;
     $('gravar').disabled = true;
-    mostrar(salvar ? 'Gravando...' : 'Lendo a prova... pode levar até 1 minuto.', 'info');
+    mostrar(salvar ? 'Gravando...' : 'Lendo a prova... pode levar até 1 minuto', 'info');
 
     ajax('POST', url, corpo, function (r) {
       $('ler').disabled = false;
       $('gravar').disabled = false;
       mostrarResultado(r);
-      mostrar(r.salvo ? 'Respostas gravadas.' : 'Confira a leitura e confirme para gravar.', r.salvo ? 'ok' : 'info');
+      mostrar(r.salvo ? 'Respostas gravadas' : 'Confira a leitura e confirme para gravar', r.salvo ? 'ok' : 'info');
     }, function (status, d) {
       $('ler').disabled = false;
       $('gravar').disabled = false;
       var texto = d && d.message ? d.message : 'Erro ' + status;
-      if (status === 0) { texto = 'Sem conexão com o servidor.'; }
-      if (status === 409) { texto = 'Este aluno já enviou respostas nesta avaliação.'; }
+      if (status === 0) { texto = 'Sem conexão com o servidor'; }
+      if (status === 409) { texto = 'Este aluno já enviou respostas nesta avaliação'; }
       mostrar(texto, 'erro');
     });
   }

@@ -23,6 +23,10 @@ public class Professor {
     private String disciplina;
 
     @JsonIgnore
+    @Column(name = "senha_hash")
+    private String senhaHash;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "professor")
     private List<Turma> turmas = new ArrayList<>();
 
@@ -44,6 +48,9 @@ public class Professor {
 
     public String getDisciplina() { return disciplina; }
     public void setDisciplina(String disciplina) { this.disciplina = disciplina; }
+
+    public String getSenhaHash() { return senhaHash; }
+    public void setSenhaHash(String senhaHash) { this.senhaHash = senhaHash; }
 
     public List<Turma> getTurmas() { return turmas; }
 }
