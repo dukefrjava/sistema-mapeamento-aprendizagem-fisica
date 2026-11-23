@@ -5,28 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMAF - Ler prova</title>
 <link rel="stylesheet" href="/css/simaf.css">
-<base target="_blank">
 </head>
 <body>
 <div class="app-shell">
   <header class="topbar-mobile">
-    <a class="brand" href="/scanner.html">Ler prova</a>
+    <a class="marca" href="/dashboard.html"><img class="logo" src="/img/mascote.png" alt="Mascote SIMAF"><span>Ler prova</span></a>
+    <a class="menu-btn" href="/cadastros.html" aria-label="Menu">&#9776;</a>
   </header>
-
   <aside class="sidebar">
-    <a class="brand" href="/dashboard.html">SIMAF</a>
-    <a href="/dashboard.html">Dashboard</a>
-    <a class="ativo" href="/scanner.html">Ler prova</a>
-    <a href="/cadastros.html">Cadastros</a>
+    <a class="brand" href="/dashboard.html"><img class="logo" style="width:32px" src="/img/mascote.png" alt="Mascote SIMAF"><span>SIMAF</span></a>
+    <a href="/dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a>
+    <a class="ativo" href="/scanner.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>Ler prova</a>
+    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/></svg>Avalia&ccedil;&otilde;es</a>
+    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>Quest&otilde;es</a>
+    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 20c.5-3.5 2.8-5.5 5.5-5.5s5 2 5.5 5.5"/><circle cx="17" cy="9" r="2.8"/><path d="M16.2 14.6c2.4.5 3.9 2.3 4.3 5.4"/></svg>Turmas e alunos</a>
     <div class="rodape">
       <div id="nomeProf">Professor(a)</div>
-      <a href="#" id="sair" style="padding:4px 0;color:#244A73;font-weight:500">Sair</a>
+      <a href="#" id="sair">Sair</a>
     </div>
   </aside>
-
   <main class="main-area">
     <h1>Ler prova</h1>
-    <p class="sub">Envie a prova marcada, confira o que foi lido e só então grave</p>
+    <p class="sub">Envie a prova marcada, confira o que foi lido e s&oacute; ent&atilde;o grave</p>
+
+    <ol class="passos">
+      <li class="passo" id="passo1"><span class="passo-n">1</span> Escolher arquivos</li>
+      <li class="passo" id="passo2"><span class="passo-n">2</span> Conferir a leitura</li>
+      <li class="passo" id="passo3"><span class="passo-n">3</span> Gravar</li>
+    </ol>
 
     <div id="msg"></div>
 
@@ -35,31 +41,43 @@
         <div class="card">
           <h2>Arquivos</h2>
 
-          <label for="avaliacao">Avaliação</label>
+          <label for="avaliacao">Avalia&ccedil;&atilde;o</label>
           <select id="avaliacao"></select>
 
           <label for="aluno">Aluno</label>
           <select id="aluno"></select>
 
-          <label for="modo">Tipo de arquivo</label>
-          <select id="modo">
-            <option value="imagem">Foto da prova</option>
-            <option value="pdf">PDF</option>
-          </select>
+          <label>Tipo de arquivo</label>
+          <div class="seg" id="modoSeg">
+            <button type="button" class="on" data-modo="imagem">Foto da prova</button>
+            <button type="button" data-modo="pdf">PDF</button>
+          </div>
 
           <div id="boxImagem">
-            <label for="modelo">Modelo (prova em branco)</label>
-            <input type="file" id="modelo" accept="image/*">
-            <label for="marcada">Prova marcada (abre a câmera)</label>
-            <input type="file" id="marcada" accept="image/*" capture="environment">
+            <label>Modelo (prova em branco)</label>
+            <div class="filebox">
+              <input type="file" id="modelo" class="file-input" accept="image/*">
+              <div class="file-face"><span class="file-nome">Escolher arquivo&hellip;</span><span class="file-ok">&#10003;</span></div>
+            </div>
+            <label>Prova marcada (abre a c&acirc;mera)</label>
+            <div class="filebox">
+              <input type="file" id="marcada" class="file-input" accept="image/*" capture="environment">
+              <div class="file-face"><span class="file-nome">Escolher arquivo&hellip;</span><span class="file-ok">&#10003;</span></div>
+            </div>
           </div>
 
           <div id="boxPdf" style="display:none">
-            <label for="pdf">PDF da prova marcada</label>
-            <input type="file" id="pdf" accept="application/pdf">
+            <label>PDF da prova marcada</label>
+            <div class="filebox">
+              <input type="file" id="pdf" class="file-input" accept="application/pdf">
+              <div class="file-face"><span class="file-nome">Escolher arquivo&hellip;</span><span class="file-ok">&#10003;</span></div>
+            </div>
           </div>
 
-          <button type="button" id="ler" style="width:100%;margin-top:16px">Ler prova</button>
+          <div class="acoes">
+            <button type="button" id="ler">Ler prova</button>
+            <button type="button" id="outra" class="sec" style="display:none">Tirar outra foto</button>
+          </div>
         </div>
       </div>
 
@@ -68,12 +86,12 @@
           <h2>O que foi lido</h2>
           <table>
             <thead>
-              <tr><th>Questão</th><th>Resposta</th></tr>
+              <tr><th>Quest&atilde;o</th><th>Resposta</th></tr>
             </thead>
             <tbody id="linhas"></tbody>
           </table>
           <div id="avisos" style="margin-top:12px"></div>
-          <p class="aux" style="margin-top:12px">As respostas só são gravadas depois da sua confirmação</p>
+          <p class="aux" style="margin-top:12px">As respostas s&oacute; s&atilde;o gravadas depois da sua confirma&ccedil;&atilde;o</p>
           <button type="button" id="gravar" style="width:100%;margin-top:12px">Confirmar e gravar respostas</button>
         </div>
       </div>
@@ -81,18 +99,19 @@
   </main>
 
   <nav class="bottom-nav">
-    <a href="/dashboard.html">Dashboard</a>
-    <a class="ativo" href="/scanner.html">Ler prova</a>
-    <a href="/cadastros.html">Cadastros</a>
+    <a href="/dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Dashboard</span></a>
+    <a class="ativo" href="/scanner.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg><span>Ler prova</span></a>
+    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/></svg><span>Avalia&ccedil;&otilde;es</span></a>
   </nav>
 </div>
-
 <script src="/js/simaf.js"></script>
 <script>
 (function () {
   Simaf.exigir();
   if (Simaf.usuario()) { document.getElementById('nomeProf').textContent = Simaf.usuario(); }
   document.getElementById('sair').onclick = function () { Simaf.sair(); return false; };
+
+  var modo = 'imagem';
 
   function $(id) { return document.getElementById(id); }
 
@@ -120,8 +139,6 @@
     }
   }
 
-  function ajax(metodo, url, corpo, ok, erro) { Simaf.ajax(metodo, url, corpo, ok, erro); }
-
   function carregarListas() {
     Simaf.ajax('GET', '/avaliacoes', null, function (d) {
       preencher('avaliacao', d, function (a) { return '#' + a.id + ' ' + a.titulo; });
@@ -132,14 +149,15 @@
   }
 
   function atualizarModo() {
-    var pdf = $('modo').value === 'pdf';
+    var pdf = modo === 'pdf';
     $('boxImagem').style.display = pdf ? 'none' : 'block';
     $('boxPdf').style.display = pdf ? 'block' : 'none';
+    if (pdf) { $('outra').style.display = 'none'; }
   }
 
   function montarCorpo() {
     var f = new FormData();
-    if ($('modo').value === 'pdf') {
+    if (modo === 'pdf') {
       if (!$('pdf').files || !$('pdf').files[0]) { return null; }
       f.append('arquivo', $('pdf').files[0]);
     } else {
@@ -148,6 +166,32 @@
       f.append('marcada', $('marcada').files[0]);
     }
     return f;
+  }
+
+  function setPasso(n, estado) {
+    $('passo' + n).className = 'passo' + (estado ? ' ' + estado : '');
+  }
+  function passoInicial() { setPasso(1, 'ativo'); setPasso(2, ''); setPasso(3, ''); }
+  function passosAposLeitura(salvo) {
+    setPasso(1, 'feito');
+    setPasso(2, salvo ? 'feito' : 'ativo');
+    setPasso(3, salvo ? 'feito' : '');
+  }
+
+  function ligarFilebox(id) {
+    var inp = $(id);
+    inp.addEventListener('change', function () {
+      var box = inp.parentNode;
+      var nome = (inp.files && inp.files[0]) ? inp.files[0].name : '';
+      box.classList.toggle('set', !!nome);
+      box.querySelector('.file-nome').textContent = nome || 'Escolher arquivo…';
+    });
+  }
+  function resetarFilebox(id) {
+    var inp = $(id);
+    inp.value = '';
+    inp.parentNode.classList.remove('set');
+    inp.parentNode.querySelector('.file-nome').textContent = 'Escolher arquivo…';
   }
 
   function mostrarResultado(r) {
@@ -178,15 +222,20 @@
       }
       av.appendChild(ul);
     } else {
-      var okSpan = document.createElement('span');
-      okSpan.className = 'st ok aux';
-      okSpan.textContent = 'Leitura sem avisos';
-      av.appendChild(okSpan);
+      var item = document.createElement('span');
+      item.className = 'leg-item';
+      var dot = document.createElement('span');
+      dot.className = 'dot ok';
+      item.appendChild(dot);
+      item.appendChild(document.createTextNode('Leitura sem avisos'));
+      av.appendChild(item);
     }
     $('resultado').style.display = 'block';
     $('ler').className = 'sec';
     $('ler').textContent = 'Ler novamente';
+    if (modo !== 'pdf') { $('outra').style.display = 'block'; }
     $('gravar').style.display = (r.salvo || !r.alternativasIds || r.alternativasIds.length === 0) ? 'none' : 'block';
+    passosAposLeitura(!!r.salvo);
   }
 
   function enviar(salvar) {
@@ -196,7 +245,7 @@
     var corpo = montarCorpo();
     if (!corpo) { mostrar('Escolha o(s) arquivo(s) antes de enviar', 'erro'); return; }
 
-    var url = '/avaliacoes/' + av + '/alunos/' + al + '/escanear/' + $('modo').value + '?salvar=' + (salvar ? 'true' : 'false');
+    var url = '/avaliacoes/' + av + '/alunos/' + al + '/escanear/' + modo + '?salvar=' + (salvar ? 'true' : 'false');
     $('ler').disabled = true;
     $('gravar').disabled = true;
     mostrar(salvar ? 'Gravando...' : 'Lendo a prova... pode levar até 1 minuto', 'info');
@@ -216,9 +265,34 @@
     });
   }
 
-  $('modo').onchange = atualizarModo;
+  var segBotoes = document.querySelectorAll('#modoSeg button');
+  for (var sgi = 0; sgi < segBotoes.length; sgi++) {
+    segBotoes[sgi].onclick = function () {
+      modo = this.getAttribute('data-modo');
+      for (var j = 0; j < segBotoes.length; j++) { segBotoes[j].className = (segBotoes[j] === this) ? 'on' : ''; }
+      atualizarModo();
+    };
+  }
+
+  $('outra').onclick = function () {
+    resetarFilebox('modelo');
+    resetarFilebox('marcada');
+    $('resultado').style.display = 'none';
+    $('ler').className = '';
+    $('ler').textContent = 'Ler prova';
+    $('gravar').style.display = 'none';
+    $('outra').style.display = 'none';
+    passoInicial();
+    mostrar('', '');
+  };
+
+  ligarFilebox('modelo');
+  ligarFilebox('marcada');
+  ligarFilebox('pdf');
+
   $('ler').onclick = function () { enviar(false); };
   $('gravar').onclick = function () { enviar(true); };
+  passoInicial();
   atualizarModo();
   carregarListas();
 }());

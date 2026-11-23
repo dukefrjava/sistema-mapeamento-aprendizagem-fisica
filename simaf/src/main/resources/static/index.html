@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMAF</title><link rel="stylesheet" href="/css/simaf.css"></head>
-<body><div style="max-width:480px;margin:24px auto">
-<h1 style="font-size:24px;color:#244A73;margin-bottom:4px">SIMAF</h1>
-<p class="aux" style="margin:0 0 24px">Olá, <span id="u"></span></p>
-<p><a class="btn" style="display:block;text-align:center" href="/scanner.html">Ler prova</a></p>
-<p><a class="btn sec" style="display:block;text-align:center" href="/dashboard.html">Dashboard da avaliação</a></p>
-<p><a class="btn sec" style="display:block;text-align:center" href="/cadastros.html">Cadastros</a></p>
-<p class="aux"><a href="#" id="sair">Sair</a></p></div>
+<body>
+<div style="max-width:440px;margin:0 auto;padding:48px 16px">
+  <div class="card" style="text-align:center">
+    <div style="display:flex;justify-content:center;margin-bottom:8px"><img class="login-logo" style="width:84px;margin:0" src="/img/mascote.png" alt="Mascote SIMAF"></div>
+    <h1 style="font-size:24px;color:#244A73;margin-bottom:2px">SIMAF</h1>
+    <p class="aux" style="margin:0 0 20px">Ol&aacute;, <span id="u"></span></p>
+    <p><a class="btn" style="display:block;text-align:center" href="/scanner.html">Ler prova</a></p>
+    <p><a class="btn sec" style="display:block;text-align:center" href="/dashboard.html">Dashboard da avalia&ccedil;&atilde;o</a></p>
+    <p style="margin:0"><a class="btn sec" style="display:block;text-align:center" href="/cadastros.html">Cadastros</a></p>
+  </div>
+  <p class="aux" style="text-align:center;margin-top:16px"><a href="#" id="sair">Sair</a></p>
+</div>
 <script src="/js/simaf.js"></script>
 <script>Simaf.exigir();document.getElementById('u').textContent=Simaf.usuario();document.getElementById('sair').onclick=function(){Simaf.sair();return false;};</script></body></html>

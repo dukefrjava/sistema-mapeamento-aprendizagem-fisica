@@ -5,33 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMAF - Dashboard</title>
 <link rel="stylesheet" href="/css/simaf.css">
-
 </head>
 <body>
 <div class="app-shell">
   <header class="topbar-mobile">
-    <a class="brand" href="/dashboard.html">Dashboard</a>
+    <a class="marca" href="/dashboard.html"><img class="logo" src="/img/mascote.png" alt="Mascote SIMAF"><span>Dashboard</span></a>
+    <a class="menu-btn" href="/cadastros.html" aria-label="Menu">&#9776;</a>
   </header>
-
   <aside class="sidebar">
-    <a class="brand" href="/dashboard.html">SIMAF</a>
-    <a class="ativo" href="/dashboard.html">Dashboard</a>
-    <a href="/scanner.html">Ler prova</a>
-    <a href="/cadastros.html">Cadastros</a>
+    <a class="brand" href="/dashboard.html"><img class="logo" style="width:32px" src="/img/mascote.png" alt="Mascote SIMAF"><span>SIMAF</span></a>
+    <a class="ativo" href="/dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a>
+    <a href="/scanner.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>Ler prova</a>
+    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/></svg>Avalia&ccedil;&otilde;es</a>
+    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>Quest&otilde;es</a>
+    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 20c.5-3.5 2.8-5.5 5.5-5.5s5 2 5.5 5.5"/><circle cx="17" cy="9" r="2.8"/><path d="M16.2 14.6c2.4.5 3.9 2.3 4.3 5.4"/></svg>Turmas e alunos</a>
     <div class="rodape">
       <div id="nomeProf">Professor(a)</div>
-      <a href="#" id="sair" style="padding:4px 0;color:#244A73;font-weight:500">Sair</a>
+      <a href="#" id="sair">Sair</a>
     </div>
   </aside>
-
   <main class="main-area">
-    <div class="bar">
-      <div style="float:left">
-        <h1>Dashboard da avaliação</h1>
+    <div class="cabecalho">
+      <div>
+        <h1>Dashboard da avalia&ccedil;&atilde;o</h1>
         <p class="sub">Onde a turma acerta e onde ela erra</p>
       </div>
-      <div style="float:right;min-width:240px;max-width:100%">
-        <label for="avaliacao" style="margin-top:0">Avaliação</label>
+      <div class="sel-av">
+        <label for="avaliacao" style="margin-top:0">Avalia&ccedil;&atilde;o</label>
         <select id="avaliacao"></select>
       </div>
     </div>
@@ -39,22 +39,27 @@
     <div id="msg"></div>
 
     <div id="conteudo" style="display:none">
-      <div class="card kpis" id="kpis"></div>
-
-      <div class="card">
-        <h2>Distribuição do desempenho</h2>
-        <div id="distBarra" style="height:12px;border-radius:6px;overflow:hidden;background:#E4EAF1;margin-bottom:12px"></div>
-        <div id="distLegenda" class="aux"></div>
+      <div class="grid-2">
+        <div class="col">
+          <div class="card kpis" id="kpis"></div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h2>Distribui&ccedil;&atilde;o do desempenho</h2>
+            <div id="distBarra" class="dist-trilho"></div>
+            <div id="distLegenda" class="leg"></div>
+          </div>
+        </div>
       </div>
 
       <div class="grid-2">
         <div class="col">
           <div class="card">
-            <h2>Acerto por questão</h2>
+            <h2>Acerto por quest&atilde;o</h2>
             <div id="questoes"></div>
           </div>
           <div class="card">
-            <h2>Mapa por dimensão ACE</h2>
+            <h2>Mapa por dimens&atilde;o ACE</h2>
             <div id="dimensoes"></div>
           </div>
         </div>
@@ -65,7 +70,7 @@
             <div id="categorias"></div>
           </div>
           <div class="card">
-            <h2>Concepções alternativas mais frequentes</h2>
+            <h2>Concep&ccedil;&otilde;es alternativas mais frequentes</h2>
             <div id="concepcoes"></div>
           </div>
         </div>
@@ -79,12 +84,11 @@
   </main>
 
   <nav class="bottom-nav">
-    <a class="ativo" href="/dashboard.html">Dashboard</a>
-    <a href="/scanner.html">Ler prova</a>
-    <a href="/cadastros.html">Cadastros</a>
+    <a class="ativo" href="/dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Dashboard</span></a>
+    <a href="/scanner.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg><span>Ler prova</span></a>
+    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/></svg><span>Avalia&ccedil;&otilde;es</span></a>
   </nav>
 </div>
-
 <script src="/js/simaf.js"></script>
 <script>
 (function () {
@@ -103,6 +107,8 @@
   function erro(t) { var m = $('msg'); m.className = t ? 'erro' : ''; m.textContent = t || ''; }
   function nota(p) { return p >= 70 ? 'bom' : (p >= 40 ? 'medio' : 'ruim'); }
   function fmt(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
+  function estadoDe(d) { return d === 'ADEQUADO' ? 'ok' : (d === 'CRITICO' ? 'bad' : 'mid'); }
+  function vazio(alvo, texto) { alvo.appendChild(el('div', 'vazio', texto)); }
 
   function barra(alvo, rotulo, percentual, texto, classe) {
     var l = el('div', 'linha');
@@ -117,24 +123,18 @@
     alvo.appendChild(l);
   }
 
-  function kpi(alvo, valor, rotulo, estado) {
+  function kpi(alvo, valor, rotulo) {
     var k = el('div', 'kpi');
     k.appendChild(el('b', '', valor));
-    k.appendChild(el('span', estado ? 'st ' + estado : '', rotulo));
+    k.appendChild(el('span', '', rotulo));
     alvo.appendChild(k);
   }
-
-  function estadoDe(d) { return d === 'ADEQUADO' ? 'ok' : (d === 'CRITICO' ? 'bad' : 'mid'); }
-  function vazio(alvo, texto) { alvo.appendChild(el('div', 'vazio', texto)); }
 
   function mostrar(d) {
     var total = d.alunos.length;
     var k = limpar('kpis');
     kpi(k, String(total), 'alunos responderam');
     kpi(k, fmt(d.mediaPercentual) + '%', 'média da turma');
-    kpi(k, String(d.distribuicao.ADEQUADO), 'adequado', 'ok');
-    kpi(k, String(d.distribuicao.EM_DESENVOLVIMENTO), 'em desenvolvimento', 'mid');
-    kpi(k, String(d.distribuicao.CRITICO), 'crítico', 'bad');
 
     var db = limpar('distBarra');
     var dl = limpar('distLegenda');
@@ -147,16 +147,19 @@
       for (var z = 0; z < segs.length; z++) {
         if (segs[z].qtd > 0) {
           var fatia = el('div');
-          fatia.style.float = 'left';
-          fatia.style.height = '12px';
-          fatia.style.width = (segs[z].qtd * 100 / total) + '%';
+          fatia.style.flex = segs[z].qtd + ' 1 0';
           fatia.style.background = segs[z].cor;
+          fatia.style.height = '12px';
           db.appendChild(fatia);
         }
-        var item = el('span', 'st ' + segs[z].cl, segs[z].nome + ' ' + segs[z].qtd);
-        item.style.marginRight = '16px';
-        item.style.display = 'inline-block';
-        dl.appendChild(item);
+      }
+      for (var z2 = 0; z2 < segs.length; z2++) {
+        if (segs[z2].qtd > 0) {
+          var item = el('span', 'leg-item');
+          item.appendChild(el('span', 'dot ' + segs[z2].cl));
+          item.appendChild(document.createTextNode(segs[z2].nome + ' ' + segs[z2].qtd));
+          dl.appendChild(item);
+        }
       }
     } else {
       vazio(dl, 'Sem dados suficientes para exibir a distribuição');
@@ -215,8 +218,11 @@
         tr.appendChild(el('td', '', x.matricula));
         tr.appendChild(el('td', '', x.acertos + '/' + x.total));
         tr.appendChild(el('td', '', fmt(x.percentual)));
+        var txt = String(x.desempenho).replace('_', ' ').toLowerCase();
+        txt = txt.charAt(0).toUpperCase() + txt.slice(1);
         var tdE = el('td');
-        tdE.appendChild(el('span', 'st ' + estadoDe(x.desempenho), String(x.desempenho).replace('_', ' ').toLowerCase()));
+        tdE.appendChild(el('span', 'dot ' + estadoDe(x.desempenho)));
+        tdE.appendChild(document.createTextNode(txt));
         tr.appendChild(tdE);
         tb.appendChild(tr);
       }
@@ -224,8 +230,6 @@
     }
     $('conteudo').style.display = 'block';
   }
-
-  function ajax(url, ok, falha) { Simaf.ajax('GET', url, null, ok, falha); }
 
   function carregar() {
     var id = $('avaliacao').value;
