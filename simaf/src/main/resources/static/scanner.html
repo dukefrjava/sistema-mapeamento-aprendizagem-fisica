@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMAF - Ler prova</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar-mobile">
+    <a class="brand" href="/scanner.html">Ler prova</a>
+    <a class="menu-btn" href="/cadastros.html" title="Cadastros">&#9776;</a>
+  </header>
+
+  <aside class="sidebar">
+    <a class="brand" href="/dashboard.html">SIMAF</a>
+    <a href="/dashboard.html">Dashboard</a>
+    <a class="ativo" href="/scanner.html">Ler prova</a>
+    <a href="/cadastros.html">Cadastros</a>
+    <div class="rodape">
+      <div id="nomeProf">Professor(a)</div>
+      <a href="#" id="sair" style="padding:4px 0;color:#244A73;font-weight:500">Sair</a>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <h1>Ler prova</h1>
+    <p class="sub">Envie a prova marcada, confira o que foi lido e só então grave</p>
+
+    <div id="msg"></div>
+
+    <div class="grid-2">
+      <div class="col">
+        <div class="card">
+          <h2>Arquivos</h2>
+
+          <label for="avaliacao">Avaliação</label>
+          <select id="avaliacao"></select>
+
+          <label for="aluno">Aluno</label>
+          <select id="aluno"></select>
+
+          <label for="modo">Tipo de arquivo</label>
+          <select id="modo">
+            <option value="imagem">Foto da prova</option>
+            <option value="pdf">PDF</option>
+          </select>
+
+          <div id="boxImagem">
+            <label for="modelo">Modelo (prova em branco)</label>
+            <input type="file" id="modelo" accept="image/*">
+            <label for="marcada">Prova marcada (abre a câmera)</label>
+            <input type="file" id="marcada" accept="image/*" capture="environment">
+          </div>
+
+          <div id="boxPdf" style="display:none">
+            <label for="pdf">PDF da prova marcada</label>
+            <input type="file" id="pdf" accept="application/pdf">
+          </div>
+
+          <button type="button" id="ler" style="width:100%;margin-top:16px">Ler prova</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card" id="resultado" style="display:none">
+          <h2>O que foi lido</h2>
+          <table>
+            <thead>
+              <tr><th>Questão</th><th>Resposta</th></tr>
+            </thead>
+            <tbody id="linhas"></tbody>
+          </table>
+          <div id="avisos" style="margin-top:12px"></div>
+          <p class="aux" style="margin-top:12px">As respostas só são gravadas depois da sua confirmação</p>
+          <button type="button" id="gravar" style="width:100%;margin-top:12px">Confirmar e gravar respostas</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="/dashboard.html">Dashboard</a>
+    <a class="ativo" href="/scanner.html">Ler prova</a>
+    <a href="/cadastros.html">Cadastros</a>
+  </nav>
+</div>
+
+<script src="/js/simaf.js"></script>
+<script>
+(function () {
+  Simaf.exigir();
+  if (Simaf.usuario()) { document.getElementById('nomeProf').textContent = Simaf.usuario(); }
+  document.getElementById('sair').onclick = function () { Simaf.sair(); return false; };
+
+  function $(id) { return document.getElementById(id); }
+
+  function mostrar(texto, tipo) {
+    var m = $('msg');
+    m.className = tipo || '';
+    m.textContent = texto || '';
+  }
+
+  function preencher(selectId, lista, rotulo) {
+    var s = $(selectId);
+    s.innerHTML = '';
+    if (!lista || lista.length === 0) {
+      var vazio = document.createElement('option');
+      vazio.value = '';
+      vazio.textContent = '(nada cadastrado)';
+      s.appendChild(vazio);
+      return;
+    }
+    for (var i = 0; i < lista.length; i++) {
+      var o = document.createElement('option');
+      o.value = lista[i].id;
+      o.textContent = rotulo(lista[i]);
+      s.appendChild(o);
+    }
+  }
+
+  function ajax(metodo, url, corpo, ok, erro) { Simaf.ajax(metodo, url, corpo, ok, erro); }
+
+  function carregarListas() {
+    Simaf.ajax('GET', '/avaliacoes', null, function (d) {
+      preencher('avaliacao', d, function (a) { return '#' + a.id + ' ' + a.titulo; });
+    }, function () { mostrar('Não foi possível carregar as avaliações', 'erro'); });
+    Simaf.ajax('GET', '/alunos', null, function (d) {
+      preencher('aluno', d, function (a) { return '#' + a.id + ' ' + a.matricula; });
+    }, function () { mostrar('Não foi possível carregar os alunos', 'erro'); });
+  }
+
+  function atualizarModo() {
+    var pdf = $('modo').value === 'pdf';
+    $('boxImagem').style.display = pdf ? 'none' : 'block';
+    $('boxPdf').style.display = pdf ? 'block' : 'none';
+  }
+
+  function montarCorpo() {
+    var f = new FormData();
+    if ($('modo').value === 'pdf') {
+      if (!$('pdf').files || !$('pdf').files[0]) { return null; }
+      f.append('arquivo', $('pdf').files[0]);
+    } else {
+      if (!$('modelo').files || !$('modelo').files[0] || !$('marcada').files || !$('marcada').files[0]) { return null; }
+      f.append('modelo', $('modelo').files[0]);
+      f.append('marcada', $('marcada').files[0]);
+    }
+    return f;
+  }
+
+  function mostrarResultado(r) {
+    var corpo = $('linhas');
+    corpo.innerHTML = '';
+    var chaves = Object.keys(r.respostasDetectadas || {});
+    chaves.sort(function (a, b) { return parseInt(a.slice(1), 10) - parseInt(b.slice(1), 10); });
+    for (var i = 0; i < chaves.length; i++) {
+      var tr = document.createElement('tr');
+      var td1 = document.createElement('td');
+      var td2 = document.createElement('td');
+      td1.textContent = chaves[i];
+      td2.textContent = String(r.respostasDetectadas[chaves[i]]).toUpperCase();
+      td2.style.fontWeight = '600';
+      td2.style.color = '#244A73';
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      corpo.appendChild(tr);
+    }
+    var av = $('avisos');
+    av.innerHTML = '';
+    if (r.avisos && r.avisos.length > 0) {
+      var ul = document.createElement('ul');
+      for (var j = 0; j < r.avisos.length; j++) {
+        var li = document.createElement('li');
+        li.textContent = r.avisos[j];
+        ul.appendChild(li);
+      }
+      av.appendChild(ul);
+    } else {
+      var okSpan = document.createElement('span');
+      okSpan.className = 'st ok aux';
+      okSpan.textContent = 'Leitura sem avisos';
+      av.appendChild(okSpan);
+    }
+    $('resultado').style.display = 'block';
+    $('ler').className = 'sec';
+    $('ler').textContent = 'Ler novamente';
+    $('gravar').style.display = (r.salvo || !r.alternativasIds || r.alternativasIds.length === 0) ? 'none' : 'block';
+  }
+
+  function enviar(salvar) {
+    var av = $('avaliacao').value;
+    var al = $('aluno').value;
+    if (!av || !al) { mostrar('Escolha a avaliação e o aluno', 'erro'); return; }
+    var corpo = montarCorpo();
+    if (!corpo) { mostrar('Escolha o(s) arquivo(s) antes de enviar', 'erro'); return; }
+
+    var url = '/avaliacoes/' + av + '/alunos/' + al + '/escanear/' + $('modo').value + '?salvar=' + (salvar ? 'true' : 'false');
+    $('ler').disabled = true;
+    $('gravar').disabled = true;
+    mostrar(salvar ? 'Gravando...' : 'Lendo a prova... pode levar até 1 minuto', 'info');
+
+    Simaf.ajax('POST', url, corpo, function (r) {
+      $('ler').disabled = false;
+      $('gravar').disabled = false;
+      mostrarResultado(r);
+      mostrar(r.salvo ? 'Respostas gravadas' : 'Confira a leitura e confirme para gravar', r.salvo ? 'ok' : 'info');
+    }, function (status, d) {
+      $('ler').disabled = false;
+      $('gravar').disabled = false;
+      var texto = d && d.message ? d.message : 'Erro ' + status;
+      if (status === 0) { texto = 'Sem conexão com o servidor'; }
+      if (status === 409) { texto = 'Este aluno já enviou respostas nesta avaliação'; }
+      mostrar(texto, 'erro');
+    });
+  }
+
+  $('modo').onchange = atualizarModo;
+  $('ler').onclick = function () { enviar(false); };
+  $('gravar').onclick = function () { enviar(true); };
+  atualizarModo();
+  carregarListas();
+}());
+</script>
+</body>
+</html>
