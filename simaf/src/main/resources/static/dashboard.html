@@ -215,7 +215,11 @@
       for (var s = 0; s < total; s++) {
         var x = d.alunos[s];
         var tr = el('tr');
-        tr.appendChild(el('td', '', x.matricula));
+        var td0 = el('td');
+        var lnk = el('a', '', x.matricula);
+        lnk.href = '/resultado.html?avaliacao=' + $('avaliacao').value + '&aluno=' + x.alunoId;
+        td0.appendChild(lnk);
+        tr.appendChild(td0);
         tr.appendChild(el('td', '', x.acertos + '/' + x.total));
         tr.appendChild(el('td', '', fmt(x.percentual)));
         var txt = String(x.desempenho).replace('_', ' ').toLowerCase();
