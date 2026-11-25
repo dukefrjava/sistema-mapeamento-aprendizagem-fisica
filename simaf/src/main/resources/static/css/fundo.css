@@ -1,0 +1,12 @@
+/* Fundo quadriculado sutil (so estetico). Uso: <body class="fundo-grade"> */
+body.fundo-grade {
+  background-color: #F7F8FA;
+  background-image:
+    -webkit-linear-gradient(rgba(36,74,115,.07) 1px, transparent 1px),
+    -webkit-linear-gradient(left, rgba(36,74,115,.07) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(36,74,115,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36,74,115,.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}

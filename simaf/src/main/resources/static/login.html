@@ -1,38 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SIMAF - Entrar</title><link rel="stylesheet" href="/css/simaf.css"></head>
-<body>
-<div class="login">
-  <section class="login-lado login-marca">
-    <div class="login-col larga">
-      <img class="login-logo" src="/img/mascote.png" alt="Mascote SIMAF">
-      <h1 class="login-titulo">SIMAF</h1>
-      <p class="login-tag">Sistema de Mapeamento da Aprendizagem em F&iacute;sica</p>
-      <p class="login-sub">Leia provas por foto, corrija e veja onde a turma tem dificuldade</p>
-    </div>
-  </section>
-  <section class="login-lado login-form">
-    <div class="login-col">
-      <div id="msg"></div>
-      <form class="card" id="fEntrar">
-        <h2 style="font-size:20px;font-weight:600">Entrar</h2>
-        <p class="aux">Acesso exclusivo para professores</p>
-        <label for="e">E-mail</label><input id="e" type="email" autocomplete="username" placeholder="nome@escola.com.br">
-        <label for="s">Senha</label><input id="s" type="password" autocomplete="current-password">
-        <p><button type="submit" style="width:100%;margin-top:16px">Entrar</button></p>
-        <p class="aux" style="text-align:center;margin:0">Primeiro acesso? <a href="#" id="verCriar">Criar conta com c&oacute;digo de convite</a></p>
-      </form>
-      <form class="card" id="fCriar" style="display:none">
-        <h2 style="font-size:20px;font-weight:600">Criar conta</h2>
-        <label for="n">Nome</label><input id="n"><label for="e2">E-mail</label><input id="e2" type="email">
-        <label for="d">Disciplina</label><input id="d"><label for="s2">Senha (m&iacute;nimo 8 caracteres)</label><input id="s2" type="password">
-        <label for="c">C&oacute;digo de convite</label><input id="c" type="password">
-        <p><button type="submit" style="width:100%;margin-top:16px">Criar conta</button></p>
-        <p class="aux" style="text-align:center;margin:0"><a href="#" id="verEntrar">J&aacute; tenho conta</a></p>
-      </form>
-    </div>
-  </section>
-</div>
+<title>SIMAF - Entrar</title><link rel="stylesheet" href="/css/simaf.css"><link rel="stylesheet" href="/css/fundo.css"></head>
+<body class="fundo-grade"><div style="max-width:420px;margin:32px auto">
+<h1 style="font-size:28px;color:#244A73;margin-bottom:4px">SIMAF</h1>
+<p class="aux" style="margin:0 0 24px">Sistema de Mapeamento da Aprendizagem em Física</p>
+<div id="msg"></div>
+<form class="card" id="fEntrar">
+  <h2>Entrar</h2><p class="aux">Acesso exclusivo para professores</p>
+  <label for="e">E-mail</label><input id="e" type="email" autocomplete="username">
+  <label for="s">Senha</label><input id="s" type="password" autocomplete="current-password">
+  <p><button type="submit" style="width:100%;margin-top:16px">Entrar</button></p>
+  <p class="aux" style="text-align:center"><a href="#" id="verCriar">Criar conta com código de convite</a></p>
+</form>
+<form class="card" id="fCriar" style="display:none">
+  <h2>Criar conta</h2>
+  <label for="n">Nome</label><input id="n"><label for="e2">E-mail</label><input id="e2" type="email">
+  <label for="d">Disciplina</label><input id="d"><label for="s2">Senha (mínimo 8 caracteres)</label><input id="s2" type="password">
+  <label for="c">Código de convite</label><input id="c" type="password">
+  <p><button type="submit" style="width:100%;margin-top:16px">Criar conta</button></p>
+  <p class="aux" style="text-align:center"><a href="#" id="verEntrar">Já tenho conta</a></p>
+</form></div>
 <script src="/js/simaf.js"></script>
 <script>
 (function () {
@@ -42,7 +29,7 @@
   $('verCriar').onclick = function () { alterna(true); return false; };
   $('verEntrar').onclick = function () { alterna(false); return false; };
   $('fEntrar').onsubmit = function () {
-    Simaf.entrar($('e').value, $('s').value, function () { location.href = '/index.html'; },
+    Simaf.entrar($('e').value, $('s').value, function () { location.href = '/dashboard.html'; },
       function (st) { msg(st === 401 ? 'E-mail ou senha incorretos' : (st === 0 ? 'Sem conexão com o servidor' : 'Erro ' + st), 'erro'); });
     return false;
   };
