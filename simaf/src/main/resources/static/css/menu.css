@@ -3,6 +3,18 @@
 .sidebar a .mi { display: inline-flex; flex: none; }
 .sidebar a.brand img { flex: none; }
 .sidebar a.grupo .seta { margin-left: auto; display: inline-flex; transition: transform .15s; }
-.sidebar .sub { margin: 2px 0 6px; }
-.sidebar .sub a { padding-left: 40px; font-size: 14px; min-height: 32px; }
+
+.sidebar .sub a { padding: 8px 12px 8px 40px; font-size: 14px; min-height: 0; line-height: 1.3; }
 .sidebar .rodape a { display: block; }
+
+/* Submenu Cadastros: desliza ao abrir/fechar (só estético) */
+.sidebar .sub {
+  max-height: 0; overflow: hidden; opacity: 0;
+  -webkit-transition: max-height .3s ease, opacity .25s ease, margin .3s ease;
+  transition: max-height .3s ease, opacity .25s ease, margin .3s ease;
+}
+.sidebar .sub.aberto { max-height: 700px; opacity: 1; margin: 2px 0 6px; }
+.sidebar .sub a { -webkit-transform: translateY(-4px); transform: translateY(-4px); -webkit-transition: transform .3s ease; transition: transform .3s ease; }
+.sidebar .sub.aberto a { -webkit-transform: none; transform: none; }
+.sidebar a.grupo .seta { -webkit-transition: -webkit-transform .3s ease; transition: transform .3s ease; }
+.sidebar a.grupo.aberto .seta { -webkit-transform: rotate(180deg); transform: rotate(180deg); }

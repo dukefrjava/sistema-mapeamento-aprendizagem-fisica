@@ -58,22 +58,22 @@ var Menu = (function () {
     var g = link('/cadastros.html', ICONES.pasta, 'Cadastros');
     g.className = 'grupo' + (pag === 'cadastros' ? ' ativo' : '');
     var sp = el('span', 'seta'); sp.innerHTML = ICONES.seta; g.appendChild(sp);
+    var sub = el('div', 'sub' + (aberto ? ' aberto' : '')), i, a;
     g.onclick = function () {
-      if (pag === 'cadastros') { aberto = !aberto; montar(); return false; }
-      aberto = !aberto; montar(); return false;
+      aberto = !aberto;
+      sub.className = 'sub' + (aberto ? ' aberto' : '');
+      g.className = g.className.replace(' aberto', '') + (aberto ? ' aberto' : '');
+      return false;
     };
+    if (aberto) { g.className += ' aberto'; }
     raiz.appendChild(g);
-
-    if (aberto) {
-      var sub = el('div', 'sub'), i, a;
-      for (i = 0; i < CADASTROS.length; i++) {
-        a = el('a', '', CADASTROS[i][1]);
-        a.href = '/cadastros.html#' + CADASTROS[i][0];
-        if (pag === 'cadastros' && abaAtual() === CADASTROS[i][0]) { a.className = 'ativo'; }
-        sub.appendChild(a);
-      }
-      raiz.appendChild(sub);
+    for (i = 0; i < CADASTROS.length; i++) {
+      a = el('a', '', CADASTROS[i][1]);
+      a.href = '/cadastros.html#' + CADASTROS[i][0];
+      if (pag === 'cadastros' && abaAtual() === CADASTROS[i][0]) { a.className = 'ativo'; }
+      sub.appendChild(a);
     }
+    raiz.appendChild(sub);
 
     var rodape = el('div', 'rodape');
     var nome = el('div', '', Simaf.usuario() || 'Professor(a)'); nome.id = 'nomeProf';
