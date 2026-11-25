@@ -1,1154 +1,1229 @@
 {
- "titulo": "Inventário de Conceitos Térmicos (Yeo e Zadnik) - versão em português",
- "fase": "Pré-teste",
- "categorias": [
-  {
-   "codigo": "A",
-   "nome": "Concepções dos estudantes sobre o calor"
-  },
-  {
-   "codigo": "B",
-   "nome": "Concepções dos estudantes sobre temperatura"
-  },
-  {
-   "codigo": "C",
-   "nome": "Concepções sobre transferência de calor e mudança de temperatura"
-  },
-  {
-   "codigo": "D",
-   "nome": "Concepções sobre propriedades térmicas dos materiais"
-  }
- ],
- "concepcoes": [
-  {
-   "codigo": "A1",
-   "categoria": "A",
-   "descricao": "Calor é uma substância"
-  },
-  {
-   "codigo": "A2",
-   "categoria": "A",
-   "descricao": "Calor e frio são diferentes (e não extremos de um contínuo)"
-  },
-  {
-   "codigo": "A3",
-   "categoria": "A",
-   "descricao": "Calor e temperatura são a mesma coisa"
-  },
-  {
-   "codigo": "A4",
-   "categoria": "A",
-   "descricao": "Calor é proporcional à temperatura"
-  },
-  {
-   "codigo": "A5",
-   "categoria": "A",
-   "descricao": "Calor não é mensurável"
-  },
-  {
-   "codigo": "B1",
-   "categoria": "B",
-   "descricao": "A temperatura é a \"intensidade\" do calor"
-  },
-  {
-   "codigo": "B2",
-   "categoria": "B",
-   "descricao": "Percepções de calor e frio não estão relacionadas à transferência de energia"
-  },
-  {
-   "codigo": "B3",
-   "categoria": "B",
-   "descricao": "Se a temperatura de ebulição permanece constante, algo está \"errado\""
-  },
-  {
-   "codigo": "B4",
-   "categoria": "B",
-   "descricao": "Um corpo frio não contém calor"
-  },
-  {
-   "codigo": "B5",
-   "categoria": "B",
-   "descricao": "A temperatura de um objeto depende do seu tamanho"
-  },
-  {
-   "codigo": "B6",
-   "categoria": "B",
-   "descricao": "Não há limite para as temperaturas mais baixas"
-  },
-  {
-   "codigo": "C1",
-   "categoria": "C",
-   "descricao": "Aquecimento sempre resulta em elevação da temperatura"
-  },
-  {
-   "codigo": "C2",
-   "categoria": "C",
-   "descricao": "Calor só se movimenta para cima (calor ascende)"
-  },
-  {
-   "codigo": "C3",
-   "categoria": "C",
-   "descricao": "Calor e frio fluem como líquidos"
-  },
-  {
-   "codigo": "C4",
-   "categoria": "C",
-   "descricao": "A temperatura pode ser transferida"
-  },
-  {
-   "codigo": "C5",
-   "categoria": "C",
-   "descricao": "Objetos em contato não atingem necessariamente a mesma temperatura (equilíbrio térmico não é um conceito)"
-  },
-  {
-   "codigo": "C6",
-   "categoria": "C",
-   "descricao": "Objetos quentes naturalmente esfriam, objetos frios naturalmente esquentam"
-  },
-  {
-   "codigo": "C7",
-   "categoria": "C",
-   "descricao": "A teoria cinética não explica de fato a transferência de calor"
-  },
-  {
-   "codigo": "D1",
-   "categoria": "D",
-   "descricao": "Temperatura é uma propriedade de um material ou objeto em particular"
-  },
-  {
-   "codigo": "D2",
-   "categoria": "D",
-   "descricao": "Metal tem a habilidade de atrair, reter, intensificar ou absorver calor e frio"
-  },
-  {
-   "codigo": "D3",
-   "categoria": "D",
-   "descricao": "Objetos que se aquecem rápido não esfriam rápido"
-  },
-  {
-   "codigo": "D4",
-   "categoria": "D",
-   "descricao": "Materiais diferentes retêm a mesma quantidade de calor"
-  },
-  {
-   "codigo": "D5",
-   "categoria": "D",
-   "descricao": "O ponto de ebulição da água é 100 °C (somente)"
-  },
-  {
-   "codigo": "D6",
-   "categoria": "D",
-   "descricao": "Gelo está a 0 °C e/ou não pode mudar de temperatura"
-  },
-  {
-   "codigo": "D7",
-   "categoria": "D",
-   "descricao": "Água não pode estar a 0 °C (água é sempre líquida)"
-  },
-  {
-   "codigo": "D8",
-   "categoria": "D",
-   "descricao": "Vapor está a mais de 100 °C"
-  },
-  {
-   "codigo": "D9",
-   "categoria": "D",
-   "descricao": "Materiais como lã têm a capacidade de aquecer as coisas"
-  },
-  {
-   "codigo": "D10",
-   "categoria": "D",
-   "descricao": "Alguns materiais são difíceis de aquecer: são mais resistentes ao aquecimento"
-  },
-  {
-   "codigo": "D11",
-   "categoria": "D",
-   "descricao": "As bolhas na ebulição da água contêm \"ar\", \"oxigênio\" ou \"nada\""
-  }
- ],
- "questoes": [
-  {
-   "numero": 1,
-   "enunciado": "Qual é a temperatura mais provável de cubos de gelo guardados no congelador de uma geladeira?",
-   "descartada": false,
-   "alternativas": [
+  "titulo": "Inventário de Conceitos Térmicos (Yeo e Zadnik) - versão em português",
+  "fase": "Pré-teste",
+  "categorias": [
     {
-     "letra": "A",
-     "texto": "–10 °C",
-     "correta": true,
-     "concepcoes": []
+      "codigo": "A",
+      "nome": "Concepções dos estudantes sobre o calor"
     },
     {
-     "letra": "B",
-     "texto": "0 °C",
-     "correta": false,
-     "concepcoes": [
-      "D6"
-     ]
+      "codigo": "B",
+      "nome": "Concepções dos estudantes sobre temperatura"
     },
     {
-     "letra": "C",
-     "texto": "5 °C",
-     "correta": false,
-     "concepcoes": [
-      "C5"
-     ]
+      "codigo": "C",
+      "nome": "Concepções sobre transferência de calor e mudança de temperatura"
     },
     {
-     "letra": "D",
-     "texto": "Depende do tamanho dos cubos de gelo",
-     "correta": false,
-     "concepcoes": [
-      "B5"
-     ]
+      "codigo": "D",
+      "nome": "Concepções sobre propriedades térmicas dos materiais"
     }
-   ]
-  },
-  {
-   "numero": 2,
-   "enunciado": "Caio tira seis cubos de gelo do congelador e coloca quatro deles em um copo com água. Deixa dois em cima da bancada. Ele mexe e mexe até os cubos ficarem bem menores e pararem de derreter. Qual é a temperatura mais provável da água nesse momento?",
-   "descartada": false,
-   "alternativas": [
+  ],
+  "concepcoes": [
     {
-     "letra": "A",
-     "texto": "–10 °C",
-     "correta": false,
-     "concepcoes": []
+      "codigo": "A1",
+      "categoria": "A",
+      "descricao": "Calor é uma substância",
+      "sugestao": "Mostre que calor é energia em trânsito, não algo guardado no corpo: peça que esfreguem as mãos e expliquem o aquecimento sem \"passar\" nada de um corpo a outro. Use \"energia transferida\" no lugar de \"calor guardado\"."
     },
     {
-     "letra": "B",
-     "texto": "0 °C",
-     "correta": true,
-     "concepcoes": []
+      "codigo": "A2",
+      "categoria": "A",
+      "descricao": "Calor e frio são diferentes (e não extremos de um contínuo)",
+      "sugestao": "Trate frio como temperatura mais baixa, não como outra coisa: peça que ordenem objetos do mais quente ao mais frio numa escala única. Troque \"o frio entrou\" por \"o calor saiu\"."
     },
     {
-     "letra": "C",
-     "texto": "5 °C",
-     "correta": false,
-     "concepcoes": [
-      "D7"
-     ]
+      "codigo": "A3",
+      "categoria": "A",
+      "descricao": "Calor e temperatura são a mesma coisa",
+      "sugestao": "Compare uma xícara e uma panela de água à mesma temperatura: a temperatura é igual, mas a quantidade de energia é bem diferente. Peça que prevejam qual derrete mais gelo."
     },
     {
-     "letra": "D",
-     "texto": "10 °C",
-     "correta": false,
-     "concepcoes": [
-      "D7"
-     ]
+      "codigo": "A4",
+      "categoria": "A",
+      "descricao": "Calor é proporcional à temperatura",
+      "sugestao": "Use um contraexemplo: 1 kg e 5 kg de água a 50 °C têm a mesma temperatura e energias diferentes. Introduza massa e calor específico como as grandezas que faltam na relação."
+    },
+    {
+      "codigo": "A5",
+      "categoria": "A",
+      "descricao": "Calor não é mensurável",
+      "sugestao": "Mostre que a energia trocada pode ser calculada: com um calorímetro simples (misturas de água e um termômetro), obtenha Q = m·c·ΔT e compare a previsão com a medida."
+    },
+    {
+      "codigo": "B1",
+      "categoria": "B",
+      "descricao": "A temperatura é a \"intensidade\" do calor",
+      "sugestao": "Separe as duas grandezas: temperatura indica o grau médio de agitação das partículas, e calor é energia transferida. Discuta por que 10 °C não é \"o dobro\" de 5 °C: o zero da escala Celsius é arbitrário."
+    },
+    {
+      "codigo": "B2",
+      "categoria": "B",
+      "descricao": "Percepções de calor e frio não estão relacionadas à transferência de energia",
+      "sugestao": "Faça o experimento das três bacias (quente, fria e morna): a mesma água morna parece quente ou fria conforme a mão usada antes. A sensação depende da taxa de troca de energia, não só da temperatura."
+    },
+    {
+      "codigo": "B3",
+      "categoria": "B",
+      "descricao": "Se a temperatura de ebulição permanece constante, algo está \"errado\"",
+      "sugestao": "Aqueça água até ferver e registre a temperatura minuto a minuto: ela fica constante. Explique que durante a mudança de fase a energia fornecida muda o estado da água, não a temperatura."
+    },
+    {
+      "codigo": "B4",
+      "categoria": "B",
+      "descricao": "Um corpo frio não contém calor",
+      "sugestao": "Explique que todo corpo tem energia interna, mesmo os frios, e que a energia passa do corpo de temperatura maior para o de menor. Use o gelo, que derrete ao receber energia do ambiente."
+    },
+    {
+      "codigo": "B5",
+      "categoria": "B",
+      "descricao": "A temperatura de um objeto depende do seu tamanho",
+      "sugestao": "Meça a temperatura de um copo grande e de um copo pequeno de água da mesma torneira, ou de blocos de gelo de tamanhos diferentes: a temperatura é a mesma. O tamanho muda a quantidade de energia, não a temperatura."
+    },
+    {
+      "codigo": "B6",
+      "categoria": "B",
+      "descricao": "Não há limite para as temperaturas mais baixas",
+      "sugestao": "Apresente o zero absoluto e a escala Kelvin: existe uma temperatura mínima, quando as partículas têm a menor agitação possível. Use o nitrogênio líquido e os supercondutores como exemplos de temperaturas muito baixas, mas não menores que o limite."
+    },
+    {
+      "codigo": "C1",
+      "categoria": "C",
+      "descricao": "Aquecimento sempre resulta em elevação da temperatura",
+      "sugestao": "Mostre o gráfico de aquecimento da água (gelo, água, vapor), com patamares: peça que prevejam o que acontece com a temperatura durante a fusão e a ebulição, e depois confira com medidas."
+    },
+    {
+      "codigo": "C2",
+      "categoria": "C",
+      "descricao": "Calor só se movimenta para cima (calor ascende)",
+      "sugestao": "Separe condução, convecção e radiação: o calor não \"sobe\", o ar quente é menos denso e sobe. Aqueça uma barra metálica em posições diferentes para mostrar que a condução vai em todas as direções."
+    },
+    {
+      "codigo": "C3",
+      "categoria": "C",
+      "descricao": "Calor e frio fluem como líquidos",
+      "sugestao": "Reconstrua a explicação com o modelo da energia que passa do corpo mais quente para o mais frio, sem \"frio\" fluindo. Exemplo: o gelo na bebida esfria a bebida porque a energia sai dela."
+    },
+    {
+      "codigo": "C4",
+      "categoria": "C",
+      "descricao": "A temperatura pode ser transferida",
+      "sugestao": "Diferencie o que é transferido, a energia, do que muda como consequência, a temperatura. Treine a reformulação: \"a temperatura do ovo diminuiu porque ele cedeu energia à água\"."
+    },
+    {
+      "codigo": "C5",
+      "categoria": "C",
+      "descricao": "Objetos em contato não atingem necessariamente a mesma temperatura (equilíbrio térmico não é um conceito)",
+      "sugestao": "Deixe objetos de materiais diferentes na mesma sala e peça que prevejam as temperaturas; depois meça todos com um termômetro. Todos marcam a temperatura ambiente: \"parecer diferente\" não é \"estar diferente\"."
+    },
+    {
+      "codigo": "C6",
+      "categoria": "C",
+      "descricao": "Objetos quentes naturalmente esfriam, objetos frios naturalmente esquentam",
+      "sugestao": "Pergunte \"para onde foi a energia?\": o objeto quente esfria porque cede energia a um ambiente mais frio. Compare com um objeto quente em ambiente mais quente ou isolado."
+    },
+    {
+      "codigo": "C7",
+      "categoria": "C",
+      "descricao": "A teoria cinética não explica de fato a transferência de calor",
+      "sugestao": "Use uma animação ou simulação de partículas para mostrar que colisões transferem energia. Relacione o modelo à condução e à evaporação, em vez de tratá-lo como assunto separado."
+    },
+    {
+      "codigo": "D1",
+      "categoria": "D",
+      "descricao": "Temperatura é uma propriedade de um material ou objeto em particular",
+      "sugestao": "Meça um objeto de metal e um de plástico ou madeira que ficaram na mesma sala: as temperaturas são iguais. Discuta por que o metal \"parece\" mais frio: ele conduz energia da mão mais rápido."
+    },
+    {
+      "codigo": "D2",
+      "categoria": "D",
+      "descricao": "Metal tem a habilidade de atrair, reter, intensificar ou absorver calor e frio",
+      "sugestao": "Reforce que o metal não atrai nem guarda frio ou calor: ele conduz energia mais rápido, e por isso retira energia da mão com mais rapidez. A sensação ao toque depende dessa rapidez."
+    },
+    {
+      "codigo": "D3",
+      "categoria": "D",
+      "descricao": "Objetos que se aquecem rápido não esfriam rápido",
+      "sugestao": "Aqueça e esfrie blocos de materiais diferentes e meça os tempos. Mostre que a rapidez de variação da temperatura depende da condutividade e do calor específico, e vale nos dois sentidos."
+    },
+    {
+      "codigo": "D4",
+      "categoria": "D",
+      "descricao": "Materiais diferentes retêm a mesma quantidade de calor",
+      "sugestao": "Aqueça massas iguais de água e de areia (ou óleo) com a mesma fonte pelo mesmo tempo e compare as temperaturas. Introduza o calor específico: materiais diferentes precisam de energias diferentes para variar a mesma temperatura."
+    },
+    {
+      "codigo": "D5",
+      "categoria": "D",
+      "descricao": "O ponto de ebulição da água é 100 °C (somente)",
+      "sugestao": "Mostre que o ponto de ebulição depende da pressão: água fervendo a uma temperatura menor em pressão reduzida e a uma temperatura maior na panela de pressão. O valor de 100 °C vale à pressão ao nível do mar."
+    },
+    {
+      "codigo": "D6",
+      "categoria": "D",
+      "descricao": "Gelo está a 0 °C e/ou não pode mudar de temperatura",
+      "sugestao": "Meça o gelo recém-saído do congelador (abaixo de 0 °C) e acompanhe o aquecimento até 0 °C e durante a fusão. Mostre que o gelo pode estar em temperaturas diferentes de 0 °C."
+    },
+    {
+      "codigo": "D7",
+      "categoria": "D",
+      "descricao": "Água não pode estar a 0 °C (água é sempre líquida)",
+      "sugestao": "Misture gelo e água e meça: os dois ficam a 0 °C em equilíbrio. Explique que 0 °C é a temperatura em que gelo e água líquida coexistem."
+    },
+    {
+      "codigo": "D8",
+      "categoria": "D",
+      "descricao": "Vapor está a mais de 100 °C",
+      "sugestao": "Compare a temperatura do vapor logo acima da água fervente com a da água, perto de 100 °C ao nível do mar; a demonstração deve ser feita pelo professor, com segurança. Distinga esse vapor do vapor aquecido depois, em recipiente fechado."
+    },
+    {
+      "codigo": "D9",
+      "categoria": "D",
+      "descricao": "Materiais como lã têm a capacidade de aquecer as coisas",
+      "sugestao": "Envolva um copo de água quente em lã e outro sem lã e meça as temperaturas depois de um tempo. A lã não produz calor: ela diminui a perda de energia, porque é isolante."
+    },
+    {
+      "codigo": "D10",
+      "categoria": "D",
+      "descricao": "Alguns materiais são difíceis de aquecer: são mais resistentes ao aquecimento",
+      "sugestao": "Diferencie isolante térmico, que conduz mal, de material com grande capacidade térmica, que exige muita energia para aquecer. Discuta a boneca da questão: o cobertor só evita a perda de energia, e a boneca não produz calor."
+    },
+    {
+      "codigo": "D11",
+      "categoria": "D",
+      "descricao": "As bolhas na ebulição da água contêm \"ar\", \"oxigênio\" ou \"nada\"",
+      "sugestao": "Mostre que as bolhas são vapor de água: observe a condensação numa tampa fria e use água já fervida antes, em que as bolhas continuam a aparecer. Relacione com a mudança de fase líquido-vapor."
     }
-   ]
-  },
-  {
-   "numero": 3,
-   "enunciado": "Os cubos de gelo que Caio deixou na bancada já quase derreteram e estão numa poça de água. Qual é a temperatura mais provável desses cubos menores?",
-   "descartada": false,
-   "alternativas": [
+  ],
+  "questoes": [
     {
-     "letra": "A",
-     "texto": "–10 °C",
-     "correta": false,
-     "concepcoes": [
-      "C6"
-     ]
+      "numero": 1,
+      "enunciado": "Qual é a temperatura mais provável de cubos de gelo guardados no congelador de uma geladeira?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "–10 °C",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "0 °C",
+          "correta": false,
+          "concepcoes": [
+            "D6"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "5 °C",
+          "correta": false,
+          "concepcoes": [
+            "C5"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Depende do tamanho dos cubos de gelo",
+          "correta": false,
+          "concepcoes": [
+            "B5"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
     },
     {
-     "letra": "B",
-     "texto": "0 °C",
-     "correta": true,
-     "concepcoes": []
+      "numero": 2,
+      "enunciado": "Caio tira seis cubos de gelo do congelador e coloca quatro deles em um copo com água. Deixa dois em cima da bancada. Ele mexe e mexe até os cubos ficarem bem menores e pararem de derreter. Qual é a temperatura mais provável da água nesse momento?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "–10 °C",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "0 °C",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "5 °C",
+          "correta": false,
+          "concepcoes": [
+            "D7"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "10 °C",
+          "correta": false,
+          "concepcoes": [
+            "D7"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
     },
     {
-     "letra": "C",
-     "texto": "5 °C",
-     "correta": false,
-     "concepcoes": [
-      "C1"
-     ]
+      "numero": 3,
+      "enunciado": "Os cubos de gelo que Caio deixou na bancada já quase derreteram e estão numa poça de água. Qual é a temperatura mais provável desses cubos menores?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "–10 °C",
+          "correta": false,
+          "concepcoes": [
+            "C6"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "0 °C",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "5 °C",
+          "correta": false,
+          "concepcoes": [
+            "C1"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "10 °C",
+          "correta": false,
+          "concepcoes": [
+            "C1"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
     },
     {
-     "letra": "D",
-     "texto": "10 °C",
-     "correta": false,
-     "concepcoes": [
-      "C1"
-     ]
+      "numero": 4,
+      "enunciado": "Sobre o fogão há uma chaleira cheia de água. A água começou a ferver com força. A temperatura mais provável da água é de cerca de:",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "88 °C",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "98 °C",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "110 °C",
+          "correta": false,
+          "concepcoes": [
+            "C1"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Nenhuma das respostas acima pode estar certa",
+          "correta": false,
+          "concepcoes": [
+            "D5"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
+    },
+    {
+      "numero": 5,
+      "enunciado": "Cinco minutos depois, a água da chaleira continua fervendo. A temperatura mais provável da água agora é de cerca de:",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "88 °C",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "98 °C",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "110 °C",
+          "correta": false,
+          "concepcoes": [
+            "C1"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "120 °C",
+          "correta": false,
+          "concepcoes": [
+            "B3",
+            "C1"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
+    },
+    {
+      "numero": 6,
+      "enunciado": "Qual você acha que é a temperatura do vapor logo acima da água fervente na chaleira?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "88 °C",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "98 °C",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "110 °C",
+          "correta": false,
+          "concepcoes": [
+            "D8"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "120 °C",
+          "correta": false,
+          "concepcoes": [
+            "D8"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
+    },
+    {
+      "numero": 7,
+      "enunciado": "Léo pega dois copos de água a 40 °C e mistura com um copo de água a 10 °C. Qual é a temperatura mais provável da mistura?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "20 °C",
+          "correta": false,
+          "concepcoes": [
+            "A5",
+            "B4"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "25 °C",
+          "correta": false,
+          "concepcoes": [
+            "B4"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "30 °C",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "50 °C",
+          "correta": false,
+          "concepcoes": [
+            "A4"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (complexa)"
+    },
+    {
+      "numero": 8,
+      "enunciado": "João acha que precisa de água fervente para fazer uma xícara de chá. Ele diz aos amigos: “Eu não conseguiria fazer chá acampando no alto de uma montanha, porque a água não ferve em altitudes elevadas.” Com quem você concorda?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Joana diz: “Ferve sim, mas a água fervente simplesmente não fica tão quente quanto aqui.”",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "Tânia diz: “Isso não é verdade. A água sempre ferve na mesma temperatura.”",
+          "correta": false,
+          "concepcoes": [
+            "D5"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Lúcio diz: “O ponto de ebulição da água diminui, mas a própria água continua a 100 graus.”",
+          "correta": false,
+          "concepcoes": [
+            "D5"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Marta diz: “Concordo com o João. A água nunca chega ao ponto de ebulição.”",
+          "correta": false,
+          "concepcoes": [
+            "D5"
+          ]
+        }
+      ],
+      "dimensao": "Avaliar (complexa)"
+    },
+    {
+      "numero": 9,
+      "enunciado": "Samuel tira da geladeira, onde estavam desde a noite anterior, uma lata de refrigerante e uma garrafa plástica de refrigerante. Ele rapidamente coloca um termômetro no refrigerante da lata. A temperatura é 7 °C. Quais são as temperaturas mais prováveis da garrafa plástica e do refrigerante que há dentro dela?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Ambos estão abaixo de 7 °C.",
+          "correta": false,
+          "concepcoes": [
+            "C5"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Ambos estão a 7 °C.",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "Ambos estão acima de 7 °C.",
+          "correta": false,
+          "concepcoes": [
+            "D2"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "O refrigerante está a 7 °C, mas a garrafa está acima de 7 °C.",
+          "correta": false,
+          "concepcoes": [
+            "D1"
+          ]
+        },
+        {
+          "letra": "E",
+          "texto": "Depende da quantidade de refrigerante e/ou do tamanho da garrafa.",
+          "correta": false,
+          "concepcoes": [
+            "B5"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
+    },
+    {
+      "numero": 10,
+      "enunciado": "Alguns minutos depois, Nando pega a lata de refrigerante e comenta com todos que o tampo da bancada embaixo dela está mais frio do que o resto da bancada. A explicação de quem você acha a melhor?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Jonas diz: “O frio foi transferido do refrigerante para a bancada.”",
+          "correta": false,
+          "concepcoes": [
+            "A1"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Rogério diz: “Não sobrou energia na bancada embaixo da lata.”",
+          "correta": false,
+          "concepcoes": [
+            "B4"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Sueli diz: “Um pouco de calor foi transferido da bancada para o refrigerante.”",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "Eduardo diz: “A lata faz o calor que está embaixo dela se afastar pela bancada.”",
+          "correta": false,
+          "concepcoes": [
+            "C3"
+          ]
+        }
+      ],
+      "dimensao": "Avaliar (simples)"
+    },
+    {
+      "numero": 11,
+      "enunciado": "Paula pergunta a um grupo de amigos: “Se eu colocar no congelador 100 gramas de gelo a 0 °C e 100 gramas de água a 0 °C, qual dos dois vai acabar perdendo a maior quantidade de calor?” Com qual dos amigos dela você mais concorda?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Camila diz: “Os 100 gramas de gelo.”",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "Beto diz: “Os 100 gramas de água.”",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "Nina diz: “Nenhum, porque os dois contêm a mesma quantidade de calor.”",
+          "correta": false,
+          "concepcoes": [
+            "D4"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Mateus diz: “Não há resposta, porque o gelo não contém nenhum calor.”",
+          "correta": false,
+          "concepcoes": [
+            "B4"
+          ]
+        },
+        {
+          "letra": "E",
+          "texto": "Jair diz: “Não há resposta, porque não existe água a 0 °C.”",
+          "correta": false,
+          "concepcoes": [
+            "D7"
+          ]
+        }
+      ],
+      "dimensao": "Avaliar (complexa)"
+    },
+    {
+      "numero": 12,
+      "enunciado": "Melissa está fervendo água numa panela sobre o fogão. O que você acha que há nas bolhas que se formam na água fervente? Principalmente:",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Ar",
+          "correta": false,
+          "concepcoes": [
+            "D11"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Oxigênio e hidrogênio gasosos",
+          "correta": false,
+          "concepcoes": [
+            "D11"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Vapor de água",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "Não há nada nas bolhas",
+          "correta": false,
+          "concepcoes": [
+            "D11"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
+    },
+    {
+      "numero": 13,
+      "enunciado": "Depois de cozinhar ovos na água fervente, Melissa os esfria colocando-os numa tigela de água fria. Qual das alternativas explica o processo de resfriamento?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "A temperatura é transferida dos ovos para a água.",
+          "correta": false,
+          "concepcoes": [
+            "C4"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "O frio passa da água para os ovos.",
+          "correta": false,
+          "concepcoes": [
+            "C3"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Objetos quentes naturalmente esfriam.",
+          "correta": false,
+          "concepcoes": [
+            "C6"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "A energia é transferida dos ovos para a água.",
+          "correta": true,
+          "concepcoes": []
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
+    },
+    {
+      "numero": 14,
+      "enunciado": "Janaína diz que não gosta de sentar nas cadeiras de metal da sala porque “elas são mais frias que as de plástico”. Quem você acha que está certo?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "João concorda e diz: “Elas são mais frias porque o metal é naturalmente mais frio que o plástico.”",
+          "correta": false,
+          "concepcoes": [
+            "D1"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Davi diz: “Elas não são mais frias, estão na mesma temperatura.”",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "Lúcia diz: “Elas não são mais frias, as de metal só parecem mais frias porque são mais pesadas.”",
+          "correta": false,
+          "concepcoes": [
+            "B5"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Maria diz: “Elas são mais frias porque o metal tem menos calor para perder do que o plástico.”",
+          "correta": false,
+          "concepcoes": [
+            "D2"
+          ]
+        }
+      ],
+      "dimensao": "Avaliar (simples)"
+    },
+    {
+      "numero": 15,
+      "enunciado": "Um grupo ouve a previsão do tempo no rádio: “… hoje à noite fará uns frios 5 °C, mais frio que os 10 °C da noite passada.” Com a afirmação de quem você mais concorda?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Jéssica diz: “Isso quer dizer que vai fazer o dobro do frio de ontem à noite.”",
+          "correta": false,
+          "concepcoes": [
+            "A3",
+            "B1"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Alice diz: “Isso não está certo. 5 °C não é o dobro do frio de 10 °C.”",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "Rafael diz: “Está em parte certo, mas ela deveria ter dito que 10 °C é duas vezes mais quente que 5 °C.”",
+          "correta": false,
+          "concepcoes": [
+            "A3",
+            "A4",
+            "B1"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Guilherme diz: “Está em parte certo, mas ela deveria ter dito que 5 °C é metade do frio de 10 °C.”",
+          "correta": false,
+          "concepcoes": [
+            "A3",
+            "B1"
+          ]
+        }
+      ],
+      "dimensao": "Avaliar (simples)"
+    },
+    {
+      "numero": 16,
+      "enunciado": "Kauê tira uma régua de metal e uma régua de madeira do estojo. Ele anuncia que a de metal parece mais fria que a de madeira. Qual é a sua explicação preferida?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "O metal conduz energia para longe da mão dele mais rapidamente que a madeira.",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "A madeira é uma substância naturalmente mais quente que o metal.",
+          "correta": false,
+          "concepcoes": [
+            "D1"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "A régua de madeira contém mais calor que a régua de metal.",
+          "correta": false,
+          "concepcoes": [
+            "D1"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Os metais são melhores irradiadores de calor que a madeira.",
+          "correta": false,
+          "concepcoes": [
+            "D2"
+          ]
+        },
+        {
+          "letra": "E",
+          "texto": "O frio flui mais facilmente a partir de um metal.",
+          "correta": false,
+          "concepcoes": []
+        }
+      ],
+      "dimensao": "Aplicar (complexa)"
+    },
+    {
+      "numero": 17,
+      "enunciado": "Aline pegou duas garrafas de vidro com água a 20 °C e as envolveu em panos de prato. Um dos panos estava molhado e o outro, seco. Vinte minutos depois, ela mediu a temperatura da água em cada uma. A água da garrafa com o pano molhado estava a 18 °C, e a da garrafa com o pano seco estava a 22 °C. A temperatura ambiente mais provável durante o experimento era:",
+      "descartada": true,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "26 °C",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "21 °C",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "20 °C",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "18 °C",
+          "correta": false,
+          "concepcoes": []
+        }
+      ]
+    },
+    {
+      "numero": 18,
+      "enunciado": "Daniel pega ao mesmo tempo duas caixinhas de leite com chocolate: uma fria, da geladeira, e outra morna, que ficou algum tempo sobre a bancada. Por que você acha que a caixinha da geladeira parece mais fria que a da bancada? Em comparação com a caixinha morna, a caixinha fria —",
+      "descartada": true,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "contém mais frio.",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "contém menos calor.",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "C",
+          "texto": "é pior condutora de calor.",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "conduz calor mais rapidamente a partir da mão de Daniel.",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "E",
+          "texto": "conduz frio mais rapidamente para a mão de Daniel.",
+          "correta": false,
+          "concepcoes": []
+        }
+      ]
+    },
+    {
+      "numero": 19,
+      "enunciado": "Ronaldo acha que a mãe dele cozinha sopa na panela de pressão porque ela cozinha mais rápido que numa panela comum, mas ele não sabe por quê. [As panelas de pressão têm tampa vedada, de modo que a pressão interna fica bem acima da pressão atmosférica.] Com qual pessoa você mais concorda?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Emília diz: “É porque a pressão faz a água ferver acima de 100 °C.”",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "Cláudio diz: “É porque a pressão alta gera calor extra.”",
+          "correta": false,
+          "concepcoes": [
+            "D5"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Fátima diz: “É porque o vapor está a uma temperatura mais alta que a da sopa fervendo.”",
+          "correta": false,
+          "concepcoes": [
+            "D5"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Tomás diz: “É porque as panelas de pressão espalham o calor de forma mais uniforme pela comida.”",
+          "correta": false,
+          "concepcoes": [
+            "D5"
+          ]
+        }
+      ],
+      "dimensao": "Avaliar (complexa)"
+    },
+    {
+      "numero": 20,
+      "enunciado": "Patrícia acredita que o pai dela assa bolos na prateleira de cima do forno elétrico porque lá em cima é mais quente do que embaixo. Quem você acha que está certo?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Pâmela diz que lá em cima é mais quente porque o calor sobe.",
+          "correta": false,
+          "concepcoes": [
+            "C2"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Samuel diz que é mais quente porque as assadeiras de metal concentram o calor.",
+          "correta": false,
+          "concepcoes": [
+            "C7"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Raul diz que lá em cima é mais quente porque, quanto mais quente o ar, menos denso ele é.",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "Tiago discorda de todos e diz que não é possível ser mais quente em cima.",
+          "correta": true,
+          "concepcoes": []
+        }
+      ],
+      "dimensao": "Avaliar (complexa)"
+    },
+    {
+      "numero": 21,
+      "enunciado": "Beatriz está lendo uma questão de múltipla escolha de um livro: “O suor esfria você porque o suor sobre a pele: Qual resposta você diria a ela para marcar?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "molha a superfície, e superfícies molhadas retiram mais calor que superfícies secas.”",
+          "correta": false,
+          "concepcoes": [
+            "B2"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "tira o calor dos poros e o espalha pela superfície da pele.”",
+          "correta": false,
+          "concepcoes": [
+            "B2"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "está na mesma temperatura da pele, mas está evaporando e, assim, leva o calor embora.”",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "está um pouco mais frio que a pele, por causa da evaporação, e por isso o calor passa da pele para o suor.”",
+          "correta": false,
+          "concepcoes": [
+            "C7"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (complexa)"
+    },
+    {
+      "numero": 22,
+      "enunciado": "Quando Zeca usa uma bomba de ar para encher o pneu da bicicleta, ele nota que a bomba fica bem quente. Qual das explicações abaixo parece a melhor?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Energia foi transferida para a bomba.",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "B",
+          "texto": "Temperatura foi transferida para a bomba.",
+          "correta": false,
+          "concepcoes": [
+            "B2",
+            "B4"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "O calor flui das mãos dele para a bomba.",
+          "correta": false,
+          "concepcoes": [
+            "B2",
+            "B4"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "O metal da bomba faz a temperatura subir.",
+          "correta": false,
+          "concepcoes": [
+            "B2",
+            "B4"
+          ]
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
+    },
+    {
+      "numero": 23,
+      "enunciado": "Por que usamos agasalhos quando faz frio?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Para impedir a entrada do frio.",
+          "correta": false,
+          "concepcoes": [
+            "A2"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Para gerar calor.",
+          "correta": false,
+          "concepcoes": [
+            "A2",
+            "D9"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Para reduzir a perda de calor.",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "As três razões acima estão corretas.",
+          "correta": false,
+          "concepcoes": []
+        }
+      ],
+      "dimensao": "Aplicar (simples)"
+    },
+    {
+      "numero": 24,
+      "enunciado": "Vítor tira do congelador, onde os colocou no dia anterior, alguns picolés e diz a todos que os palitos de madeira estão a uma temperatura mais alta que a parte de gelo. Com qual pessoa você mais concorda?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Débora diz: “Você tem razão, porque os palitos de madeira não ficam tão frios quanto o gelo.”",
+          "correta": false,
+          "concepcoes": [
+            "C5",
+            "D1"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Ícaro diz: “Você tem razão, porque o gelo contém mais frio que a madeira.”",
+          "correta": false,
+          "concepcoes": [
+            "C5",
+            "D1"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Rosa diz: “Você está errado, eles só parecem diferentes porque os palitos contêm mais calor.”",
+          "correta": false,
+          "concepcoes": [
+            "C5",
+            "D1"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Ana diz: “Acho que estão na mesma temperatura porque estão juntos.”",
+          "correta": true,
+          "concepcoes": []
+        }
+      ],
+      "dimensao": "Avaliar (simples)"
+    },
+    {
+      "numero": 25,
+      "enunciado": "Gabi está contando um trecho de TV que viu na noite anterior: “Vi físicos fazendo ímãs supercondutores, que estavam a uma temperatura de –260 °C.” Quem você acha que está certo?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "José duvida: “Você deve ter se enganado. Não dá para ter uma temperatura tão baixa.”",
+          "correta": false,
+          "concepcoes": [
+            "B6"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Kátia discorda: “Dá sim. Não há limite para a temperatura mais baixa.”",
+          "correta": false,
+          "concepcoes": [
+            "B6"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Leandro acredita estar certo: “Acho que o ímã estava perto da menor temperatura possível.”",
+          "correta": true,
+          "concepcoes": []
+        },
+        {
+          "letra": "D",
+          "texto": "Gabi não tem certeza: “Acho que supercondutores são bons condutores de calor, então não dá para esfriá-los até uma temperatura tão baixa.”",
+          "correta": false,
+          "concepcoes": [
+            "D3"
+          ]
+        }
+      ],
+      "dimensao": "Avaliar (simples)"
+    },
+    {
+      "numero": 26,
+      "enunciado": "Quatro estudantes conversavam sobre coisas que faziam quando crianças. Ouviu-se a seguinte conversa: Amanda: “Eu enrolava minhas bonecas em cobertores, mas nunca entendi por que elas não esquentavam.” Com quem você concorda?",
+      "descartada": false,
+      "alternativas": [
+        {
+          "letra": "A",
+          "texto": "Nelson respondeu: “É porque os cobertores que você usava provavelmente eram maus isolantes.”",
+          "correta": false,
+          "concepcoes": [
+            "D10"
+          ]
+        },
+        {
+          "letra": "B",
+          "texto": "Lívia respondeu: “É porque os cobertores que você usava provavelmente eram maus condutores.”",
+          "correta": false,
+          "concepcoes": [
+            "D10"
+          ]
+        },
+        {
+          "letra": "C",
+          "texto": "Jaime respondeu: “É porque as bonecas eram feitas de um material que não retinha bem o calor.”",
+          "correta": false,
+          "concepcoes": [
+            "B4"
+          ]
+        },
+        {
+          "letra": "D",
+          "texto": "Kléber respondeu: “É porque as bonecas eram feitas de um material que demorava muito para esquentar.”",
+          "correta": false,
+          "concepcoes": []
+        },
+        {
+          "letra": "E",
+          "texto": "Joana respondeu: “Vocês estão todos errados.”",
+          "correta": true,
+          "concepcoes": []
+        }
+      ],
+      "dimensao": "Avaliar (complexa)"
     }
-   ]
-  },
-  {
-   "numero": 4,
-   "enunciado": "Sobre o fogão há uma chaleira cheia de água. A água começou a ferver com força. A temperatura mais provável da água é de cerca de:",
-   "descartada": false,
-   "alternativas": [
+  ],
+  "dimensoes": [
     {
-     "letra": "A",
-     "texto": "88 °C",
-     "correta": false,
-     "concepcoes": []
+      "codigo": "Aplicar (simples)",
+      "tipoRaciocinio": "Aplicar",
+      "complexidade": "Simples"
     },
     {
-     "letra": "B",
-     "texto": "98 °C",
-     "correta": true,
-     "concepcoes": []
+      "codigo": "Aplicar (complexa)",
+      "tipoRaciocinio": "Aplicar",
+      "complexidade": "Complexa"
     },
     {
-     "letra": "C",
-     "texto": "110 °C",
-     "correta": false,
-     "concepcoes": [
-      "C1"
-     ]
+      "codigo": "Avaliar (simples)",
+      "tipoRaciocinio": "Avaliar",
+      "complexidade": "Simples"
     },
     {
-     "letra": "D",
-     "texto": "Nenhuma das respostas acima pode estar certa",
-     "correta": false,
-     "concepcoes": [
-      "D5"
-     ]
+      "codigo": "Avaliar (complexa)",
+      "tipoRaciocinio": "Avaliar",
+      "complexidade": "Complexa"
     }
-   ]
-  },
-  {
-   "numero": 5,
-   "enunciado": "Cinco minutos depois, a água da chaleira continua fervendo. A temperatura mais provável da água agora é de cerca de:",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "88 °C",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "98 °C",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "C",
-     "texto": "110 °C",
-     "correta": false,
-     "concepcoes": [
-      "C1"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "120 °C",
-     "correta": false,
-     "concepcoes": [
-      "B3",
-      "C1"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 6,
-   "enunciado": "Qual você acha que é a temperatura do vapor logo acima da água fervente na chaleira?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "88 °C",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "98 °C",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "C",
-     "texto": "110 °C",
-     "correta": false,
-     "concepcoes": [
-      "D8"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "120 °C",
-     "correta": false,
-     "concepcoes": [
-      "D8"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 7,
-   "enunciado": "Léo pega dois copos de água a 40 °C e mistura com um copo de água a 10 °C. Qual é a temperatura mais provável da mistura?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "20 °C",
-     "correta": false,
-     "concepcoes": [
-      "A5",
-      "B4"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "25 °C",
-     "correta": false,
-     "concepcoes": [
-      "B4"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "30 °C",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "50 °C",
-     "correta": false,
-     "concepcoes": [
-      "A4"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 8,
-   "enunciado": "João acha que precisa de água fervente para fazer uma xícara de chá. Ele diz aos amigos: “Eu não conseguiria fazer chá acampando no alto de uma montanha, porque a água não ferve em altitudes elevadas.” Com quem você concorda?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Joana diz: “Ferve sim, mas a água fervente simplesmente não fica tão quente quanto aqui.”",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "Tânia diz: “Isso não é verdade. A água sempre ferve na mesma temperatura.”",
-     "correta": false,
-     "concepcoes": [
-      "D5"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Lúcio diz: “O ponto de ebulição da água diminui, mas a própria água continua a 100 graus.”",
-     "correta": false,
-     "concepcoes": [
-      "D5"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "Marta diz: “Concordo com o João. A água nunca chega ao ponto de ebulição.”",
-     "correta": false,
-     "concepcoes": [
-      "D5"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 9,
-   "enunciado": "Samuel tira da geladeira, onde estavam desde a noite anterior, uma lata de refrigerante e uma garrafa plástica de refrigerante. Ele rapidamente coloca um termômetro no refrigerante da lata. A temperatura é 7 °C. Quais são as temperaturas mais prováveis da garrafa plástica e do refrigerante que há dentro dela?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Ambos estão abaixo de 7 °C.",
-     "correta": false,
-     "concepcoes": [
-      "C5"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Ambos estão a 7 °C.",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "C",
-     "texto": "Ambos estão acima de 7 °C.",
-     "correta": false,
-     "concepcoes": [
-      "D2"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "O refrigerante está a 7 °C, mas a garrafa está acima de 7 °C.",
-     "correta": false,
-     "concepcoes": [
-      "D1"
-     ]
-    },
-    {
-     "letra": "E",
-     "texto": "Depende da quantidade de refrigerante e/ou do tamanho da garrafa.",
-     "correta": false,
-     "concepcoes": [
-      "B5"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 10,
-   "enunciado": "Alguns minutos depois, Nando pega a lata de refrigerante e comenta com todos que o tampo da bancada embaixo dela está mais frio do que o resto da bancada. A explicação de quem você acha a melhor?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Jonas diz: “O frio foi transferido do refrigerante para a bancada.”",
-     "correta": false,
-     "concepcoes": [
-      "A1"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Rogério diz: “Não sobrou energia na bancada embaixo da lata.”",
-     "correta": false,
-     "concepcoes": [
-      "B4"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Sueli diz: “Um pouco de calor foi transferido da bancada para o refrigerante.”",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "Eduardo diz: “A lata faz o calor que está embaixo dela se afastar pela bancada.”",
-     "correta": false,
-     "concepcoes": [
-      "C3"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 11,
-   "enunciado": "Paula pergunta a um grupo de amigos: “Se eu colocar no congelador 100 gramas de gelo a 0 °C e 100 gramas de água a 0 °C, qual dos dois vai acabar perdendo a maior quantidade de calor?” Com qual dos amigos dela você mais concorda?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Camila diz: “Os 100 gramas de gelo.”",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "Beto diz: “Os 100 gramas de água.”",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "C",
-     "texto": "Nina diz: “Nenhum, porque os dois contêm a mesma quantidade de calor.”",
-     "correta": false,
-     "concepcoes": [
-      "D4"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "Mateus diz: “Não há resposta, porque o gelo não contém nenhum calor.”",
-     "correta": false,
-     "concepcoes": [
-      "B4"
-     ]
-    },
-    {
-     "letra": "E",
-     "texto": "Jair diz: “Não há resposta, porque não existe água a 0 °C.”",
-     "correta": false,
-     "concepcoes": [
-      "D7"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 12,
-   "enunciado": "Melissa está fervendo água numa panela sobre o fogão. O que você acha que há nas bolhas que se formam na água fervente? Principalmente:",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Ar",
-     "correta": false,
-     "concepcoes": [
-      "D11"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Oxigênio e hidrogênio gasosos",
-     "correta": false,
-     "concepcoes": [
-      "D11"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Vapor de água",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "Não há nada nas bolhas",
-     "correta": false,
-     "concepcoes": [
-      "D11"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 13,
-   "enunciado": "Depois de cozinhar ovos na água fervente, Melissa os esfria colocando-os numa tigela de água fria. Qual das alternativas explica o processo de resfriamento?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "A temperatura é transferida dos ovos para a água.",
-     "correta": false,
-     "concepcoes": [
-      "C4"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "O frio passa da água para os ovos.",
-     "correta": false,
-     "concepcoes": [
-      "C3"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Objetos quentes naturalmente esfriam.",
-     "correta": false,
-     "concepcoes": [
-      "C6"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "A energia é transferida dos ovos para a água.",
-     "correta": true,
-     "concepcoes": []
-    }
-   ]
-  },
-  {
-   "numero": 14,
-   "enunciado": "Janaína diz que não gosta de sentar nas cadeiras de metal da sala porque “elas são mais frias que as de plástico”. Quem você acha que está certo?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "João concorda e diz: “Elas são mais frias porque o metal é naturalmente mais frio que o plástico.”",
-     "correta": false,
-     "concepcoes": [
-      "D1"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Davi diz: “Elas não são mais frias, estão na mesma temperatura.”",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "C",
-     "texto": "Lúcia diz: “Elas não são mais frias, as de metal só parecem mais frias porque são mais pesadas.”",
-     "correta": false,
-     "concepcoes": [
-      "B5"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "Maria diz: “Elas são mais frias porque o metal tem menos calor para perder do que o plástico.”",
-     "correta": false,
-     "concepcoes": [
-      "D2"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 15,
-   "enunciado": "Um grupo ouve a previsão do tempo no rádio: “… hoje à noite fará uns frios 5 °C, mais frio que os 10 °C da noite passada.” Com a afirmação de quem você mais concorda?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Jéssica diz: “Isso quer dizer que vai fazer o dobro do frio de ontem à noite.”",
-     "correta": false,
-     "concepcoes": [
-      "A3",
-      "B1"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Alice diz: “Isso não está certo. 5 °C não é o dobro do frio de 10 °C.”",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "C",
-     "texto": "Rafael diz: “Está em parte certo, mas ela deveria ter dito que 10 °C é duas vezes mais quente que 5 °C.”",
-     "correta": false,
-     "concepcoes": [
-      "A3",
-      "A4",
-      "B1"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "Guilherme diz: “Está em parte certo, mas ela deveria ter dito que 5 °C é metade do frio de 10 °C.”",
-     "correta": false,
-     "concepcoes": [
-      "A3",
-      "B1"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 16,
-   "enunciado": "Kauê tira uma régua de metal e uma régua de madeira do estojo. Ele anuncia que a de metal parece mais fria que a de madeira. Qual é a sua explicação preferida?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "O metal conduz energia para longe da mão dele mais rapidamente que a madeira.",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "A madeira é uma substância naturalmente mais quente que o metal.",
-     "correta": false,
-     "concepcoes": [
-      "D1"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "A régua de madeira contém mais calor que a régua de metal.",
-     "correta": false,
-     "concepcoes": [
-      "D1"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "Os metais são melhores irradiadores de calor que a madeira.",
-     "correta": false,
-     "concepcoes": [
-      "D2"
-     ]
-    },
-    {
-     "letra": "E",
-     "texto": "O frio flui mais facilmente a partir de um metal.",
-     "correta": false,
-     "concepcoes": []
-    }
-   ]
-  },
-  {
-   "numero": 17,
-   "enunciado": "Aline pegou duas garrafas de vidro com água a 20 °C e as envolveu em panos de prato. Um dos panos estava molhado e o outro, seco. Vinte minutos depois, ela mediu a temperatura da água em cada uma. A água da garrafa com o pano molhado estava a 18 °C, e a da garrafa com o pano seco estava a 22 °C. A temperatura ambiente mais provável durante o experimento era:",
-   "descartada": true,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "26 °C",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "21 °C",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "C",
-     "texto": "20 °C",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "18 °C",
-     "correta": false,
-     "concepcoes": []
-    }
-   ]
-  },
-  {
-   "numero": 18,
-   "enunciado": "Daniel pega ao mesmo tempo duas caixinhas de leite com chocolate: uma fria, da geladeira, e outra morna, que ficou algum tempo sobre a bancada. Por que você acha que a caixinha da geladeira parece mais fria que a da bancada? Em comparação com a caixinha morna, a caixinha fria —",
-   "descartada": true,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "contém mais frio.",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "contém menos calor.",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "C",
-     "texto": "é pior condutora de calor.",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "conduz calor mais rapidamente a partir da mão de Daniel.",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "E",
-     "texto": "conduz frio mais rapidamente para a mão de Daniel.",
-     "correta": false,
-     "concepcoes": []
-    }
-   ]
-  },
-  {
-   "numero": 19,
-   "enunciado": "Ronaldo acha que a mãe dele cozinha sopa na panela de pressão porque ela cozinha mais rápido que numa panela comum, mas ele não sabe por quê. [As panelas de pressão têm tampa vedada, de modo que a pressão interna fica bem acima da pressão atmosférica.] Com qual pessoa você mais concorda?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Emília diz: “É porque a pressão faz a água ferver acima de 100 °C.”",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "Cláudio diz: “É porque a pressão alta gera calor extra.”",
-     "correta": false,
-     "concepcoes": [
-      "D5"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Fátima diz: “É porque o vapor está a uma temperatura mais alta que a da sopa fervendo.”",
-     "correta": false,
-     "concepcoes": [
-      "D5"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "Tomás diz: “É porque as panelas de pressão espalham o calor de forma mais uniforme pela comida.”",
-     "correta": false,
-     "concepcoes": [
-      "D5"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 20,
-   "enunciado": "Patrícia acredita que o pai dela assa bolos na prateleira de cima do forno elétrico porque lá em cima é mais quente do que embaixo. Quem você acha que está certo?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Pâmela diz que lá em cima é mais quente porque o calor sobe.",
-     "correta": false,
-     "concepcoes": [
-      "C2"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Samuel diz que é mais quente porque as assadeiras de metal concentram o calor.",
-     "correta": false,
-     "concepcoes": [
-      "C7"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Raul diz que lá em cima é mais quente porque, quanto mais quente o ar, menos denso ele é.",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "Tiago discorda de todos e diz que não é possível ser mais quente em cima.",
-     "correta": true,
-     "concepcoes": []
-    }
-   ]
-  },
-  {
-   "numero": 21,
-   "enunciado": "Beatriz está lendo uma questão de múltipla escolha de um livro: “O suor esfria você porque o suor sobre a pele: Qual resposta você diria a ela para marcar?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "molha a superfície, e superfícies molhadas retiram mais calor que superfícies secas.”",
-     "correta": false,
-     "concepcoes": [
-      "B2"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "tira o calor dos poros e o espalha pela superfície da pele.”",
-     "correta": false,
-     "concepcoes": [
-      "B2"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "está na mesma temperatura da pele, mas está evaporando e, assim, leva o calor embora.”",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "está um pouco mais frio que a pele, por causa da evaporação, e por isso o calor passa da pele para o suor.”",
-     "correta": false,
-     "concepcoes": [
-      "C7"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 22,
-   "enunciado": "Quando Zeca usa uma bomba de ar para encher o pneu da bicicleta, ele nota que a bomba fica bem quente. Qual das explicações abaixo parece a melhor?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Energia foi transferida para a bomba.",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "B",
-     "texto": "Temperatura foi transferida para a bomba.",
-     "correta": false,
-     "concepcoes": [
-      "B2",
-      "B4"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "O calor flui das mãos dele para a bomba.",
-     "correta": false,
-     "concepcoes": [
-      "B2",
-      "B4"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "O metal da bomba faz a temperatura subir.",
-     "correta": false,
-     "concepcoes": [
-      "B2",
-      "B4"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 23,
-   "enunciado": "Por que usamos agasalhos quando faz frio?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Para impedir a entrada do frio.",
-     "correta": false,
-     "concepcoes": [
-      "A2"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Para gerar calor.",
-     "correta": false,
-     "concepcoes": [
-      "A2",
-      "D9"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Para reduzir a perda de calor.",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "As três razões acima estão corretas.",
-     "correta": false,
-     "concepcoes": []
-    }
-   ]
-  },
-  {
-   "numero": 24,
-   "enunciado": "Vítor tira do congelador, onde os colocou no dia anterior, alguns picolés e diz a todos que os palitos de madeira estão a uma temperatura mais alta que a parte de gelo. Com qual pessoa você mais concorda?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Débora diz: “Você tem razão, porque os palitos de madeira não ficam tão frios quanto o gelo.”",
-     "correta": false,
-     "concepcoes": [
-      "C5",
-      "D1"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Ícaro diz: “Você tem razão, porque o gelo contém mais frio que a madeira.”",
-     "correta": false,
-     "concepcoes": [
-      "C5",
-      "D1"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Rosa diz: “Você está errado, eles só parecem diferentes porque os palitos contêm mais calor.”",
-     "correta": false,
-     "concepcoes": [
-      "C5",
-      "D1"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "Ana diz: “Acho que estão na mesma temperatura porque estão juntos.”",
-     "correta": true,
-     "concepcoes": []
-    }
-   ]
-  },
-  {
-   "numero": 25,
-   "enunciado": "Gabi está contando um trecho de TV que viu na noite anterior: “Vi físicos fazendo ímãs supercondutores, que estavam a uma temperatura de –260 °C.” Quem você acha que está certo?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "José duvida: “Você deve ter se enganado. Não dá para ter uma temperatura tão baixa.”",
-     "correta": false,
-     "concepcoes": [
-      "B6"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Kátia discorda: “Dá sim. Não há limite para a temperatura mais baixa.”",
-     "correta": false,
-     "concepcoes": [
-      "B6"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Leandro acredita estar certo: “Acho que o ímã estava perto da menor temperatura possível.”",
-     "correta": true,
-     "concepcoes": []
-    },
-    {
-     "letra": "D",
-     "texto": "Gabi não tem certeza: “Acho que supercondutores são bons condutores de calor, então não dá para esfriá-los até uma temperatura tão baixa.”",
-     "correta": false,
-     "concepcoes": [
-      "D3"
-     ]
-    }
-   ]
-  },
-  {
-   "numero": 26,
-   "enunciado": "Quatro estudantes conversavam sobre coisas que faziam quando crianças. Ouviu-se a seguinte conversa: Amanda: “Eu enrolava minhas bonecas em cobertores, mas nunca entendi por que elas não esquentavam.” Com quem você concorda?",
-   "descartada": false,
-   "alternativas": [
-    {
-     "letra": "A",
-     "texto": "Nelson respondeu: “É porque os cobertores que você usava provavelmente eram maus isolantes.”",
-     "correta": false,
-     "concepcoes": [
-      "D10"
-     ]
-    },
-    {
-     "letra": "B",
-     "texto": "Lívia respondeu: “É porque os cobertores que você usava provavelmente eram maus condutores.”",
-     "correta": false,
-     "concepcoes": [
-      "D10"
-     ]
-    },
-    {
-     "letra": "C",
-     "texto": "Jaime respondeu: “É porque as bonecas eram feitas de um material que não retinha bem o calor.”",
-     "correta": false,
-     "concepcoes": [
-      "B4"
-     ]
-    },
-    {
-     "letra": "D",
-     "texto": "Kléber respondeu: “É porque as bonecas eram feitas de um material que demorava muito para esquentar.”",
-     "correta": false,
-     "concepcoes": []
-    },
-    {
-     "letra": "E",
-     "texto": "Joana respondeu: “Vocês estão todos errados.”",
-     "correta": true,
-     "concepcoes": []
-    }
-   ]
-  }
- ]
+  ]
 }

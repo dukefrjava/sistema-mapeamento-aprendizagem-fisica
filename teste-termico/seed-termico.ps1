@@ -57,8 +57,11 @@ $cats = @{}
 foreach ($c in $dados.categorias) { $cats[$c.codigo] = Garantir '/categorias' 'codigo' $c.codigo @{ codigo = $c.codigo; nome = $c.nome } "categoria $($c.codigo)" }
 $concs = @{}
 foreach ($c in $dados.concepcoes) {
-  $concs[$c.codigo] = Garantir '/concepcoes' 'descricao' $c.descricao @{ descricao = $c.descricao; categorias = @(Ref $cats[$c.categoria]) } "concepção $($c.codigo)"
+  $concs[$c.codigo] = Garantir '/concepcoes' 'descricao' $c.descricao @{ descricao = $c.descricao; sugestaoIntervencao = $c.sugestao; categorias = @(Ref $cats[$c.categoria]) } "concepção $($c.codigo)"
 }
+
+$dims = @{}
+foreach ($d in $dados.dimensoes) { $dims[$d.codigo] = Garantir '/dimensoes' 'codigo' $d.codigo @{ codigo = $d.codigo; tipoRaciocinio = $d.tipoRaciocinio; complexidade = $d.complexidade } "dimensão ACE $($d.codigo)" }
 
 Write-Host '3/5 Questões e avaliação' -ForegroundColor Cyan
 $av = @(Api GET '/avaliacoes') | Where-Object { $_.titulo -eq $dados.titulo } | Select-Object -First 1
@@ -70,7 +73,9 @@ else {
     foreach ($a in $q.alternativas) {
       $alts += @{ letra = $a.letra; texto = $a.texto; correta = [bool]$a.correta; concepcoes = @($a.concepcoes | ForEach-Object { Ref $concs[$_] }) }
     }
-    $nova = Api POST '/questoes' @{ numero = [int]$q.numero; enunciado = $q.enunciado; instrumento = 'Yeo e Zadnik (2001)'; tipo = 'Múltipla escolha'; descartada = [bool]$q.descartada; alternativas = $alts }
+    $corpoQ = @{ numero = [int]$q.numero; enunciado = $q.enunciado; instrumento = 'Yeo e Zadnik (2001)'; tipo = 'Múltipla escolha'; descartada = [bool]$q.descartada; alternativas = $alts }
+    if ($q.dimensao -and $dims[$q.dimensao]) { $corpoQ.dimensao = Ref $dims[$q.dimensao] }
+    $nova = Api POST '/questoes' $corpoQ
     $refs += (Ref $nova)
   }
   Write-Host "  $($refs.Count) questões criadas" -ForegroundColor Green
