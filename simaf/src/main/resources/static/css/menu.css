@@ -1,0 +1,8 @@
+/* Complementa o simaf.css: ícones, mascote e o grupo Cadastros do menu lateral. */
+.sidebar a { display: flex; align-items: center; gap: 10px; }
+.sidebar a .mi { display: inline-flex; flex: none; }
+.sidebar a.brand img { flex: none; }
+.sidebar a.grupo .seta { margin-left: auto; display: inline-flex; transition: transform .15s; }
+.sidebar .sub { margin: 2px 0 6px; }
+.sidebar .sub a { padding-left: 40px; font-size: 14px; min-height: 32px; }
+.sidebar .rodape a { display: block; }

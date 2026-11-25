@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMAF - Resultado do aluno</title>
+<link rel="stylesheet" href="/css/simaf.css">
+<link rel="stylesheet" href="/css/menu.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar-mobile">
+    <a class="brand" href="/dashboard.html">Resultado</a>
+    <a class="menu-btn" href="/cadastros.html" title="Cadastros">&#9776;</a>
+  </header>
+
+  <aside class="sidebar" id="menu"></aside>
+
+  <main class="main-area">
+    <p class="aux" style="margin:0 0 8px"><a href="/dashboard.html">Voltar ao dashboard</a></p>
+    <h1>Resultado do aluno</h1>
+    <p class="sub">Desempenho individual e as concepções que os erros indicam</p>
+
+    <div id="msg"></div>
+
+    <div class="card">
+      <div class="grid-2">
+        <div>
+          <label for="avaliacao" style="margin-top:0">Avaliação</label>
+          <select id="avaliacao"></select>
+        </div>
+        <div>
+          <label for="aluno" style="margin-top:0">Aluno</label>
+          <select id="aluno"></select>
+        </div>
+      </div>
+    </div>
+
+    <div id="conteudo" style="display:none">
+      <div class="card">
+        <div class="kpis" id="kpis"></div>
+        <p id="estado" style="margin:12px 0 0"></p>
+      </div>
+
+      <div class="grid-2">
+        <div class="col">
+          <div class="card">
+            <h2>Acerto por dimensão ACE</h2>
+            <div id="dimensoes"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h2>Concepções alternativas identificadas</h2>
+            <div id="concepcoes"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a class="ativo" href="/dashboard.html">Dashboard</a>
+    <a href="/scanner.html">Ler prova</a>
+    <a href="/cadastros.html">Cadastros</a>
+  </nav>
+</div>
+
+<script src="/js/simaf.js"></script>
+<script src="/js/menu.js"></script>
+<script>
+(function () {
+  Simaf.exigir();
+  document.getElementById('sair').onclick = function () { Simaf.sair(); return false; };
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, classe, texto) {
+    var e = document.createElement(tag);
+    if (classe) { e.className = classe; }
+    if (texto !== undefined && texto !== null) { e.textContent = texto; }
+    return e;
+  }
+  function limpar(id) { var n = $(id); n.innerHTML = ''; return n; }
+  function aviso(t, tipo) { var m = $('msg'); m.className = t ? (tipo || 'erro') : ''; m.textContent = t || ''; }
+  function nota(p) { return p >= 70 ? 'bom' : (p >= 40 ? 'medio' : 'ruim'); }
+  function fmt(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
+  function estadoDe(d) { return d === 'ADEQUADO' ? 'ok' : (d === 'CRITICO' ? 'bad' : 'mid'); }
+  function rotuloEstado(d) { return d === 'ADEQUADO' ? 'Adequado' : (d === 'CRITICO' ? 'Crítico' : 'Em desenvolvimento'); }
+  function param(nome) {
+    var m = new RegExp('[?&]' + nome + '=([^&]*)').exec(location.search);
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+  function vazio(alvo, texto) { alvo.appendChild(el('div', 'vazio', texto)); }
+  function preencher(id, itens) {
+    var s = $(id), i, o;
+    s.innerHTML = '';
+    for (i = 0; i < itens.length; i++) {
+      o = document.createElement('option');
+      o.value = String(itens[i].valor);
+      o.textContent = itens[i].texto;
+      s.appendChild(o);
+    }
+  }
+  function existe(id, valor) {
+    var s = $(id), i;
+    for (i = 0; i < s.options.length; i++) { if (s.options[i].value === String(valor)) { return true; } }
+    return false;
+  }
+
+  function mostrar(r) {
+    var k = limpar('kpis'), a, b;
+    a = el('div', 'kpi'); a.appendChild(el('b', '', r.acertos + ' de ' + r.total)); a.appendChild(el('span', '', 'acertos')); k.appendChild(a);
+    b = el('div', 'kpi'); b.appendChild(el('b', '', fmt(r.percentual) + '%')); b.appendChild(el('span', '', 'aproveitamento')); k.appendChild(b);
+
+    var est = limpar('estado');
+    est.appendChild(el('span', 'st ' + estadoDe(r.desempenho), 'Desempenho: ' + rotuloEstado(r.desempenho)));
+
+    var dm = limpar('dimensoes'), cods = Object.keys(r.acertoPorDimensao || {}), i;
+    if (cods.length === 0) { vazio(dm, 'Nenhuma questão classificada em dimensão ACE'); }
+    for (i = 0; i < cods.length; i++) {
+      var p = r.acertoPorDimensao[cods[i]];
+      var l = el('div', 'linha'), rot = el('div', 'rotulo', cods[i]);
+      rot.appendChild(el('span', 'num', fmt(p) + '%'));
+      var t = el('div', 'trilho'), br = el('div', 'barra ' + nota(p));
+      br.style.width = Math.max(0, Math.min(100, p)) + '%';
+      t.appendChild(br); l.appendChild(rot); l.appendChild(t); dm.appendChild(l);
+    }
+
+    var cc = limpar('concepcoes'), lista = r.concepcoesIdentificadas || [], j;
+    if (lista.length === 0) {
+      vazio(cc, r.acertos === r.total ? 'Acertou todas as questões' : 'Nenhuma concepção alternativa ligada aos erros deste aluno');
+    }
+    for (j = 0; j < lista.length; j++) { cc.appendChild(el('div', 'linha', lista[j])); }
+    $('conteudo').style.display = 'block';
+  }
+
+  function carregarResultado() {
+    var av = $('avaliacao').value, al = $('aluno').value;
+    if (!av || !al) { $('conteudo').style.display = 'none'; return; }
+    aviso('');
+    Simaf.ajax('GET', '/avaliacoes/' + av + '/alunos/' + al + '/resultado', null, mostrar, function (st, d) {
+      $('conteudo').style.display = 'none';
+      aviso(st === 404 ? 'Este aluno ainda não respondeu esta avaliação' : (d && d.message ? d.message : 'Erro ' + st + ' ao carregar o resultado'));
+    });
+  }
+
+  // Só lista alunos que já responderam a avaliação escolhida.
+  function carregarAlunos() {
+    var av = $('avaliacao').value;
+    $('conteudo').style.display = 'none';
+    preencher('aluno', []);
+    if (!av) { return; }
+    aviso('');
+    Simaf.ajax('GET', '/avaliacoes/' + av + '/dashboard', null, function (d) {
+      var lista = d.alunos || [], itens = [], i;
+      if (lista.length === 0) { aviso('Nenhum aluno respondeu esta avaliação ainda', 'info'); return; }
+      for (i = 0; i < lista.length; i++) {
+        itens.push({ valor: lista[i].alunoId, texto: lista[i].matricula + ' · ' + fmt(lista[i].percentual) + '%' });
+      }
+      preencher('aluno', itens);
+      var pedido = param('aluno');
+      if (pedido && existe('aluno', pedido)) { $('aluno').value = pedido; }
+      carregarResultado();
+    }, function (st, d) { aviso(d && d.message ? d.message : 'Erro ' + st + ' ao carregar os alunos'); });
+  }
+
+  Simaf.ajax('GET', '/avaliacoes', null, function (lista) {
+    if (!lista || lista.length === 0) { aviso('Nenhuma avaliação cadastrada'); return; }
+    var itens = [], i;
+    for (i = 0; i < lista.length; i++) { itens.push({ valor: lista[i].id, texto: '#' + lista[i].id + ' ' + lista[i].titulo }); }
+    preencher('avaliacao', itens);
+    var pedida = param('avaliacao');
+    if (pedida && existe('avaliacao', pedida)) { $('avaliacao').value = pedida; }
+    carregarAlunos();
+  }, function () { aviso('Não foi possível carregar as avaliações'); });
+
+  $('avaliacao').onchange = carregarAlunos;
+  $('aluno').onchange = carregarResultado;
+}());
+</script>
+</body>
+</html>

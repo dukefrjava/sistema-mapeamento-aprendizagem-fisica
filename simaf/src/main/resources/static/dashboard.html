@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMAF - Dashboard</title>
 <link rel="stylesheet" href="/css/simaf.css">
+<link rel="stylesheet" href="/css/menu.css">
 </head>
 <body>
 <div class="app-shell">
@@ -12,18 +13,7 @@
     <a class="marca" href="/dashboard.html"><img class="logo" src="/img/mascote.png" alt="Mascote SIMAF"><span>Dashboard</span></a>
     <a class="menu-btn" href="/cadastros.html" aria-label="Cadastros">+</a>
   </header>
-  <aside class="sidebar">
-    <a class="brand" href="/dashboard.html"><img class="logo" style="width:32px" src="/img/mascote.png" alt="Mascote SIMAF"><span>SIMAF</span></a>
-    <a class="ativo" href="/dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a>
-    <a href="/scanner.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>Ler prova</a>
-    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/></svg>Avalia&ccedil;&otilde;es</a>
-    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>Quest&otilde;es</a>
-    <a href="/cadastros.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 20c.5-3.5 2.8-5.5 5.5-5.5s5 2 5.5 5.5"/><circle cx="17" cy="9" r="2.8"/><path d="M16.2 14.6c2.4.5 3.9 2.3 4.3 5.4"/></svg>Turmas e alunos</a>
-    <div class="rodape">
-      <div id="nomeProf">Professor(a)</div>
-      <a href="#" id="sair">Sair</a>
-    </div>
-  </aside>
+  <aside class="sidebar" id="menu"></aside>
   <main class="main-area">
     <div class="cabecalho">
       <div>
@@ -90,11 +80,10 @@
   </nav>
 </div>
 <script src="/js/simaf.js"></script>
+<script src="/js/menu.js"></script>
 <script>
 (function () {
   Simaf.exigir();
-  if (Simaf.usuario()) { document.getElementById('nomeProf').textContent = Simaf.usuario(); }
-  document.getElementById('sair').onclick = function () { Simaf.sair(); return false; };
 
   function $(id) { return document.getElementById(id); }
   function el(tag, classe, texto) {
@@ -108,6 +97,7 @@
   function nota(p) { return p >= 70 ? 'bom' : (p >= 40 ? 'medio' : 'ruim'); }
   function fmt(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
   function estadoDe(d) { return d === 'ADEQUADO' ? 'ok' : (d === 'CRITICO' ? 'bad' : 'mid'); }
+  function rotuloEstado(d) { return d === 'ADEQUADO' ? 'Adequado' : (d === 'CRITICO' ? 'Crítico' : 'Em desenvolvimento'); }
   function vazio(alvo, texto) { alvo.appendChild(el('div', 'vazio', texto)); }
 
   function barra(alvo, rotulo, percentual, texto, classe) {
@@ -222,11 +212,9 @@
         tr.appendChild(td0);
         tr.appendChild(el('td', '', x.acertos + '/' + x.total));
         tr.appendChild(el('td', '', fmt(x.percentual)));
-        var txt = String(x.desempenho).replace('_', ' ').toLowerCase();
-        txt = txt.charAt(0).toUpperCase() + txt.slice(1);
         var tdE = el('td');
         tdE.appendChild(el('span', 'dot ' + estadoDe(x.desempenho)));
-        tdE.appendChild(document.createTextNode(txt));
+        tdE.appendChild(document.createTextNode(rotuloEstado(x.desempenho)));
         tr.appendChild(tdE);
         tb.appendChild(tr);
       }

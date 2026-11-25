@@ -149,3 +149,25 @@ th{font-weight:500;color:#566579}
 
 .acoes{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
 .acoes button{flex:1;min-width:150px}
+
+/* Ajustes de espaçamento: (vale mais que o que vem antes). */
+
+/* espaço entre cartões: o último cartão de cada coluna mantém a margem */
+.card { margin-bottom: 16px; }
+.col > .card:last-child { margin-bottom: 16px !important; }
+.grid-2 { margin-bottom: 0; }
+
+/* mensagens de "sem dados" com respiro e sem colar na borda */
+.vazio { padding: 8px 0 4px; }
+.card > h2 { margin-bottom: 16px; }
+
+/* tabela: mesma altura de linha e alinhamento vertical */
+table td, table th { padding: 12px 8px; vertical-align: middle; }
+table td:first-child, table th:first-child { padding-left: 0; }
+
+/* matrícula (link) no estilo do sistema, em vez do azul padrão do navegador */
+table td a { color: #244A73; font-weight: 500; text-decoration: none; }
+table td a:hover { text-decoration: underline; }
+
+/* ponto de estado alinhado ao texto */
+.st:before { vertical-align: middle; position: relative; top: -1px; }

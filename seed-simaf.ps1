@@ -28,7 +28,7 @@ function Api([string]$Metodo, [string]$Caminho, $Corpo = $null) {
     $p.ContentType = 'application/json; charset=utf-8'
     $p.Body = [Text.Encoding]::UTF8.GetBytes((ConvertTo-Json -InputObject $Corpo -Depth 8 -Compress))
   }
-  try { return Invoke-RestMethod @p }
+  try { $resp = Invoke-RestMethod @p; return $resp }
   catch {
     $msg = $_.ErrorDetails.Message
     if (-not $msg -and $_.Exception.Response) {
