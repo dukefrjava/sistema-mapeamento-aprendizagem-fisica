@@ -52,6 +52,10 @@ public class ScannerClient {
                     .retrieve()
                     .body(DTOLeituraScanner.class);
         } catch (RestClientResponseException e) {
+            if (e.getStatusCode().value() == 401 || e.getStatusCode().value() == 403) {
+                throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,
+                        "O servico de leitura recusou o token: confira se SCANNER_TOKEN e igual nos dois servicos");
+            }
             HttpStatus status = e.getStatusCode().is4xxClientError()
                     ? HttpStatus.UNPROCESSABLE_ENTITY : HttpStatus.BAD_GATEWAY;
             throw new ResponseStatusException(status, "Serviço de leitura recusou o arquivo: " + e.getResponseBodyAsString());

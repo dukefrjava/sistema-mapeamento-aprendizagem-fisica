@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMAF - Ler prova</title>
 <link rel="stylesheet" href="/css/simaf.css">
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/img/mascote.png"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <link rel="stylesheet" href="/css/menu.css">
 </head>
 <body>
@@ -247,7 +248,7 @@
     }, function (status, d) {
       $('ler').disabled = false;
       $('gravar').disabled = false;
-      var texto = d && d.message ? d.message : 'Erro ' + status;
+      var texto = d && (d.message || d.erro || d.error) ? (d.message || d.erro || d.error) : 'Erro ' + status;
       if (status === 0) { texto = 'Sem conexão com o servidor'; }
       if (status === 409) { texto = 'Este aluno já enviou respostas nesta avaliação'; }
       mostrar(texto, 'erro');

@@ -23,7 +23,7 @@ public class SecurityConfig {
                     (req, res, ex) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
             .authorizeHttpRequests(a -> a
                 // As páginas são públicas (não têm dados). Os dados ficam atrás do login.
-                .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/img/**", "/login.html", "/favicon.ico", "/error", "/auth/registrar").permitAll()
+                .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/img/**", "/favicon.ico", "/error", "/auth/registrar").permitAll()
                 .anyRequest().authenticated());
         return http.build();
     }
