@@ -3,59 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SIMAF - Resultado do aluno</title>
+<title>SIMAF - Resultado individual</title>
 <link rel="stylesheet" href="/css/simaf.css">
 <link rel="icon" href="img/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/img/mascote.png"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <link rel="stylesheet" href="/css/menu.css">
+<style>
+/* Estilos só desta tela (prefixo ri-), sem depender do resto do CSS. ES5/iOS 9: sem grid, sem gap. */
+.ri-topo { overflow: hidden; margin: 0 0 4px; }
+.ri-topo .ri-acoes { float: right; }
+.ri-sel { margin: 0; }
+.ri-sel label { display: block; margin: 0 0 4px; font-size: 13px; }
+.ri-sel .ri-c { display: inline-block; vertical-align: top; width: 49%; box-sizing: border-box; padding-right: 8px; }
+.ri-nav { margin-top: 10px; }
+.ri-nav button { margin-right: 8px; }
+.ri-resumo { overflow: hidden; }
+.ri-nota { float: left; margin-right: 24px; min-width: 140px; }
+.ri-nota b { display: block; font-size: 44px; line-height: 1.05; color: #244A73; }
+.ri-nota span { font-size: 13px; color: #5b6b7a; }
+.ri-fatos { overflow: hidden; }
+.ri-fatos p { margin: 4px 0; }
+.ri-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; color: #fff; font-size: 13px; font-weight: 600; }
+.ri-badge.ok { background: #3D817A; } .ri-badge.mid { background: #D9A23B; } .ri-badge.bad { background: #C0452F; }
+.ri-dupla { overflow: hidden; margin: 0 -8px; }
+.ri-dupla .ri-col { float: left; width: 50%; box-sizing: border-box; padding: 0 8px; }
+.ri-l { margin: 0 0 12px; }
+.ri-l .ri-r { font-size: 14px; margin: 0 0 4px; }
+.ri-l .ri-r .ri-n { float: right; color: #5b6b7a; font-size: 13px; }
+.ri-trilho { position: relative; height: 10px; border-radius: 5px; background: #e7ecf1; }
+.ri-barra { height: 10px; border-radius: 5px; }
+.ri-barra.bom { background: #3D817A; } .ri-barra.medio { background: #D9A23B; } .ri-barra.ruim { background: #C0452F; }
+.ri-marca { position: absolute; top: -3px; width: 2px; height: 16px; background: #244A73; }
+.ri-leg { font-size: 12px; color: #5b6b7a; margin: 6px 0 0; }
+.ri-chip { display: inline-block; margin: 4px 6px 0 0; padding: 1px 8px; border-radius: 10px; background: #e7ecf1; font-size: 12px; color: #244A73; }
+.ri-sug { margin: 8px 0 0; padding: 8px 10px; border-left: 3px solid #244A73; background: #f2f6fa; font-size: 14px; }
+.ri-vazio { color: #5b6b7a; font-size: 14px; }
+.ri-aviso { font-size: 12px; color: #5b6b7a; margin: 10px 0 0; }
+.ri-tab { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ri-tab th, .ri-tab td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e1e7ee; vertical-align: top; }
+.ri-tab tr.erro td { background: #fbeeea; }
+.ri-tab tr.branco td { background: #f6f3ea; }
+.ri-tab .ri-ok { color: #3D817A; font-weight: 600; } .ri-tab .ri-no { color: #C0452F; font-weight: 600; } .ri-tab .ri-br { color: #8a6d1d; font-weight: 600; }
+.ri-rolagem { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 700px) {
+  .ri-dupla .ri-col { float: none; width: 100%; }
+  .ri-sel .ri-c { width: 100%; padding-right: 0; margin-bottom: 8px; }
+  .ri-nota { float: none; margin: 0 0 12px; }
+}
+@media print {
+  .sidebar, .topbar-mobile, .bottom-nav, .ri-sel, .ri-acoes, .ri-nav, #msg { display: none !important; }
+  .main-area { margin: 0 !important; padding: 0 !important; }
+  .card { break-inside: avoid; page-break-inside: avoid; box-shadow: none !important; }
+}
+</style>
 </head>
 <body>
 <div class="app-shell">
   <header class="topbar-mobile">
-    <a class="brand" href="/dashboard.html">Resultado</a>
-    <a class="menu-btn" href="/cadastros.html" title="Cadastros">&#9776;</a>
+    <a class="marca" href="/dashboard.html"><img class="logo" src="/img/mascote.png" alt="Mascote SIMAF"><span>Resultado</span></a>
+    <a class="menu-btn" href="/cadastros.html" aria-label="Cadastros">+</a>
   </header>
 
   <aside class="sidebar" id="menu"></aside>
 
   <main class="main-area">
-    <p class="aux" style="margin:0 0 8px"><a href="/dashboard.html">Voltar ao dashboard</a></p>
-    <h1>Resultado do aluno</h1>
-    <p class="sub">Desempenho individual e as concepções que os erros indicam</p>
+    <div class="ri-topo">
+      <div class="ri-acoes"><button type="button" class="sec" id="imprimir">Imprimir / salvar PDF</button></div>
+      <p class="aux" style="margin:0 0 8px"><a href="/dashboard.html">&larr; Voltar ao dashboard</a></p>
+    </div>
+    <h1>Resultado individual</h1>
+    <p class="sub" id="sub">Desempenho do aluno, onde ele errou e o que os erros podem indicar</p>
 
     <div id="msg"></div>
 
     <div class="card">
-      <div class="grid-2">
-        <div>
-          <label for="avaliacao" style="margin-top:0">Avaliação</label>
-          <select id="avaliacao"></select>
-        </div>
-        <div>
-          <label for="aluno" style="margin-top:0">Aluno</label>
-          <select id="aluno"></select>
-        </div>
+      <div class="ri-sel">
+        <div class="ri-c"><label for="avaliacao">Avalia&ccedil;&atilde;o</label><select id="avaliacao"></select></div><div class="ri-c"><label for="aluno">Aluno</label><select id="aluno"></select></div>
+      </div>
+      <div class="ri-nav">
+        <button type="button" class="sec" id="anterior">&lsaquo; Aluno anterior</button><button type="button" class="sec" id="proximo">Pr&oacute;ximo aluno &rsaquo;</button>
       </div>
     </div>
 
     <div id="conteudo" style="display:none">
-      <div class="card">
-        <div class="kpis" id="kpis"></div>
-        <p id="estado" style="margin:12px 0 0"></p>
+      <div class="card ri-resumo">
+        <div class="ri-nota"><b id="pct"></b><span>aproveitamento</span></div>
+        <div class="ri-fatos" id="fatos"></div>
       </div>
 
-      <div class="grid-2">
-        <div class="col">
+      <div class="ri-dupla">
+        <div class="ri-col">
           <div class="card">
-            <h2>Acerto por dimensão ACE</h2>
+            <h2>Acerto por dimens&atilde;o ACE</h2>
             <div id="dimensoes"></div>
+            <p class="ri-leg" id="legDim"></p>
           </div>
-        </div>
-        <div class="col">
           <div class="card">
-            <h2>Concepções alternativas identificadas</h2>
-            <div id="concepcoes"></div>
+            <h2>Categorias com mais erros</h2>
+            <div id="categorias"></div>
           </div>
         </div>
+        <div class="ri-col">
+          <div class="card">
+            <h2>Concep&ccedil;&otilde;es alternativas indicadas</h2>
+            <div id="concepcoes"></div>
+            <p class="ri-aviso">A concep&ccedil;&atilde;o &eacute; indicada pela alternativa que o aluno marcou. &Eacute; uma hip&oacute;tese: confirme com o aluno antes de intervir. As sugest&otilde;es s&atilde;o propostas ainda n&atilde;o validadas por professor de F&iacute;sica.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Quest&atilde;o a quest&atilde;o</h2>
+        <div class="ri-rolagem" id="questoes"></div>
       </div>
     </div>
   </main>
@@ -72,7 +130,6 @@
 <script>
 (function () {
   Simaf.exigir();
-  document.getElementById('sair').onclick = function () { Simaf.sair(); return false; };
 
   function $(id) { return document.getElementById(id); }
   function el(tag, classe, texto) {
@@ -91,7 +148,7 @@
     var m = new RegExp('[?&]' + nome + '=([^&]*)').exec(location.search);
     return m ? decodeURIComponent(m[1]) : '';
   }
-  function vazio(alvo, texto) { alvo.appendChild(el('div', 'vazio', texto)); }
+  function vazio(alvo, texto) { alvo.appendChild(el('div', 'ri-vazio', texto)); }
   function preencher(id, itens) {
     var s = $(id), i, o;
     s.innerHTML = '';
@@ -107,31 +164,92 @@
     for (i = 0; i < s.options.length; i++) { if (s.options[i].value === String(valor)) { return true; } }
     return false;
   }
+  function corta(t, n) { t = t || ''; return t.length > n ? t.slice(0, n - 1) + '…' : t; }
+
+  function barra(alvo, rotulo, p, texto, marca) {
+    var l = el('div', 'ri-l'), r = el('div', 'ri-r', rotulo);
+    r.appendChild(el('span', 'ri-n', texto));
+    var t = el('div', 'ri-trilho'), b = el('div', 'ri-barra ' + nota(p));
+    b.style.width = Math.max(0, Math.min(100, p)) + '%';
+    t.appendChild(b);
+    if (marca !== undefined && marca !== null) {
+      var m = el('div', 'ri-marca');
+      m.style.left = Math.max(0, Math.min(99, marca)) + '%';
+      m.title = 'Média da turma: ' + fmt(marca) + '%';
+      t.appendChild(m);
+    }
+    l.appendChild(r); l.appendChild(t); alvo.appendChild(l);
+  }
 
   function mostrar(r) {
-    var k = limpar('kpis'), a, b;
-    a = el('div', 'kpi'); a.appendChild(el('b', '', r.acertos + ' de ' + r.total)); a.appendChild(el('span', '', 'acertos')); k.appendChild(a);
-    b = el('div', 'kpi'); b.appendChild(el('b', '', fmt(r.percentual) + '%')); b.appendChild(el('span', '', 'aproveitamento')); k.appendChild(b);
+    var i, j;
+    $('sub').textContent = r.aluno.matricula + (r.aluno.turma ? ' · turma ' + r.aluno.turma : '') + ' · ' + r.avaliacao.titulo;
+    $('pct').textContent = fmt(r.percentual) + '%';
 
-    var est = limpar('estado');
-    est.appendChild(el('span', 'st ' + estadoDe(r.desempenho), 'Desempenho: ' + rotuloEstado(r.desempenho)));
+    var f = limpar('fatos');
+    var p1 = el('p'); p1.appendChild(el('span', 'ri-badge ' + estadoDe(r.desempenho), rotuloEstado(r.desempenho))); f.appendChild(p1);
+    var txt = r.acertos + ' acerto(s), ' + r.erros + ' erro(s)';
+    if (r.semResposta > 0) { txt += ' e ' + r.semResposta + ' sem resposta'; }
+    f.appendChild(el('p', '', txt + ', em ' + r.total + ' questões.'));
+    f.appendChild(el('p', '', 'Média da turma: ' + fmt(r.mediaTurma) + '% · posição ' + r.posicao + 'º de ' + r.totalAlunos + ' aluno(s) com resposta.'));
+    var dif = r.percentual - r.mediaTurma;
+    f.appendChild(el('p', '', 'Está ' + fmt(Math.abs(dif)) + ' ponto(s) percentual(is) ' + (dif >= 0 ? 'acima' : 'abaixo') + ' da média da turma.'));
+    if (r.semResposta > 0) { f.appendChild(el('p', 'ri-aviso', 'Questões sem resposta contam como não acertadas no aproveitamento.')); }
 
-    var dm = limpar('dimensoes'), cods = Object.keys(r.acertoPorDimensao || {}), i;
-    if (cods.length === 0) { vazio(dm, 'Nenhuma questão classificada em dimensão ACE'); }
-    for (i = 0; i < cods.length; i++) {
-      var p = r.acertoPorDimensao[cods[i]];
-      var l = el('div', 'linha'), rot = el('div', 'rotulo', cods[i]);
-      rot.appendChild(el('span', 'num', fmt(p) + '%'));
-      var t = el('div', 'trilho'), br = el('div', 'barra ' + nota(p));
-      br.style.width = Math.max(0, Math.min(100, p)) + '%';
-      t.appendChild(br); l.appendChild(rot); l.appendChild(t); dm.appendChild(l);
+    var dm = limpar('dimensoes'), leg = $('legDim');
+    if (!r.dimensoes || r.dimensoes.length === 0) {
+      vazio(dm, 'Nenhuma questão respondida está classificada em dimensão ACE'); leg.textContent = '';
+    } else {
+      for (i = 0; i < r.dimensoes.length; i++) {
+        var d = r.dimensoes[i];
+        barra(dm, d.codigo, d.percentual, d.acertos + '/' + d.total + ' (' + fmt(d.percentual) + '%)', d.percentualTurma);
+      }
+      leg.textContent = 'O traço escuro marca a média da turma na dimensão. A classificação das questões em dimensões ACE é uma proposta ainda a validar.';
     }
 
-    var cc = limpar('concepcoes'), lista = r.concepcoesIdentificadas || [], j;
-    if (lista.length === 0) {
-      vazio(cc, r.acertos === r.total ? 'Acertou todas as questões' : 'Nenhuma concepção alternativa ligada aos erros deste aluno');
+    var ct = limpar('categorias');
+    if (!r.categorias || r.categorias.length === 0) { vazio(ct, r.erros === 0 ? 'Nenhum erro nesta avaliação' : 'Os erros não estão ligados a uma categoria conceitual'); }
+    else {
+      var max = 1;
+      for (i = 0; i < r.categorias.length; i++) { if (r.categorias[i].erros > max) { max = r.categorias[i].erros; } }
+      for (i = 0; i < r.categorias.length; i++) {
+        var c = r.categorias[i];
+        barra(ct, c.codigo + ' · ' + c.nome, c.erros * 100 / max, c.erros + ' ocorrência(s)');
+      }
     }
-    for (j = 0; j < lista.length; j++) { cc.appendChild(el('div', 'linha', lista[j])); }
+
+    var cc = limpar('concepcoes');
+    if (!r.concepcoes || r.concepcoes.length === 0) {
+      vazio(cc, r.erros === 0 ? 'Acertou todas as questões respondidas' : 'Nenhuma concepção alternativa ligada aos erros deste aluno');
+    } else {
+      for (i = 0; i < r.concepcoes.length; i++) {
+        var k = r.concepcoes[i], bloco = el('div', 'ri-l');
+        var topo = el('div', 'ri-r', k.descricao);
+        topo.appendChild(el('span', 'ri-n', k.ocorrencias + ' vez(es)'));
+        bloco.appendChild(topo);
+        for (j = 0; j < (k.categorias || []).length; j++) { bloco.appendChild(el('span', 'ri-chip', k.categorias[j])); }
+        if (k.sugestaoIntervencao) { bloco.appendChild(el('div', 'ri-sug', 'Sugestão: ' + k.sugestaoIntervencao)); }
+        cc.appendChild(bloco);
+      }
+    }
+
+    var q = limpar('questoes'), tb = el('table', 'ri-tab'), cab = el('tr');
+    var tit = ['Nº', 'Questão', 'Marcou', 'Correta', 'Resultado', 'Turma acerta'];
+    for (i = 0; i < tit.length; i++) { cab.appendChild(el('th', '', tit[i])); }
+    tb.appendChild(cab);
+    for (i = 0; i < r.questoes.length; i++) {
+      var x = r.questoes[i], tr = el('tr', !x.respondida ? 'branco' : (x.acertou ? '' : 'erro'));
+      tr.appendChild(el('td', '', x.numero));
+      tr.appendChild(el('td', '', corta(x.enunciado, 90)));
+      tr.appendChild(el('td', '', x.respondida ? corta(x.marcada, 60) : '—'));
+      tr.appendChild(el('td', '', x.correta));
+      var tdr = el('td');
+      tdr.appendChild(el('span', !x.respondida ? 'ri-br' : (x.acertou ? 'ri-ok' : 'ri-no'), !x.respondida ? 'Sem resposta' : (x.acertou ? 'Acertou' : 'Errou')));
+      tr.appendChild(tdr);
+      tr.appendChild(el('td', '', fmt(x.percentualTurma) + '%'));
+      tb.appendChild(tr);
+    }
+    q.appendChild(tb);
     $('conteudo').style.display = 'block';
   }
 
@@ -139,13 +257,14 @@
     var av = $('avaliacao').value, al = $('aluno').value;
     if (!av || !al) { $('conteudo').style.display = 'none'; return; }
     aviso('');
-    Simaf.ajax('GET', '/avaliacoes/' + av + '/alunos/' + al + '/resultado', null, mostrar, function (st, d) {
+    Simaf.ajax('GET', '/avaliacoes/' + av + '/alunos/' + al + '/detalhe', null, mostrar, function (st, d) {
       $('conteudo').style.display = 'none';
-      aviso(st === 404 ? 'Este aluno ainda não respondeu esta avaliação' : (d && d.message ? d.message : 'Erro ' + st + ' ao carregar o resultado'));
+      aviso(st === 404 ? (d && d.message ? d.message : 'Este aluno ainda não respondeu esta avaliação')
+                       : (d && d.message ? d.message : 'Erro ' + st + ' ao carregar o resultado'));
     });
   }
 
-  // Só lista alunos que já responderam a avaliação escolhida.
+  // Só lista alunos que já responderam a avaliação escolhida (do menor para o maior desempenho).
   function carregarAlunos() {
     var av = $('avaliacao').value;
     $('conteudo').style.display = 'none';
@@ -165,6 +284,13 @@
     }, function (st, d) { aviso(d && d.message ? d.message : 'Erro ' + st + ' ao carregar os alunos'); });
   }
 
+  function andar(passo) {
+    var s = $('aluno'), n = s.selectedIndex + passo;
+    if (n < 0 || n >= s.options.length) { return; }
+    s.selectedIndex = n;
+    carregarResultado();
+  }
+
   Simaf.ajax('GET', '/avaliacoes', null, function (lista) {
     if (!lista || lista.length === 0) { aviso('Nenhuma avaliação cadastrada'); return; }
     var itens = [], i;
@@ -177,6 +303,9 @@
 
   $('avaliacao').onchange = carregarAlunos;
   $('aluno').onchange = carregarResultado;
+  $('anterior').onclick = function () { andar(-1); };
+  $('proximo').onclick = function () { andar(1); };
+  $('imprimir').onclick = function () { window.print(); };
 }());
 </script>
 </body>

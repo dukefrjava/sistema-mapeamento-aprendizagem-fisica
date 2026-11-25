@@ -200,7 +200,7 @@
     else {
       var tb = el('table');
       var cab = el('tr');
-      var tit = ['Matrícula', 'Acertos', '%', 'Desempenho'];
+      var tit = ['Matrícula', 'Acertos', '%', 'Desempenho', 'Resultado'];
       for (var h = 0; h < tit.length; h++) { cab.appendChild(el('th', '', tit[h])); }
       tb.appendChild(cab);
       for (var s = 0; s < total; s++) {
@@ -217,6 +217,11 @@
         tdE.appendChild(el('span', 'dot ' + estadoDe(x.desempenho)));
         tdE.appendChild(document.createTextNode(rotuloEstado(x.desempenho)));
         tr.appendChild(tdE);
+        var tdV = el('td');
+        var ver = el('a', '', 'Ver resultado');
+        ver.href = lnk.href;
+        tdV.appendChild(ver);
+        tr.appendChild(tdV);
         tb.appendChild(tr);
       }
       al.appendChild(tb);
