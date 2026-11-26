@@ -18,3 +18,15 @@
 .sidebar .sub.aberto a { -webkit-transform: none; transform: none; }
 .sidebar a.grupo .seta { -webkit-transition: -webkit-transform .3s ease; transition: transform .3s ease; }
 .sidebar a.grupo.aberto .seta { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
+
+/* Título fixo da barra superior no celular (texto, não link) */
+.topbar-mobile .titulo-topo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  color: #244A73;
+  text-decoration: none;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
